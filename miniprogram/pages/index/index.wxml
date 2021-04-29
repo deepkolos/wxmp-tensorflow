@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view 
+  class="nav-btn" 
+  wx:for="{{pages}}" 
+  wx:for-index="idx"
+  wx:for-item="item"
+  wx:key="idx"
+  data-item="{{item}}" 
+  bindtap="onBtnClick"
+>{{item.title}}</view>

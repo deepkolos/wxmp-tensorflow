@@ -1,0 +1,30 @@
+/* components/helper-view/helper-view.wxss */
+.page {
+  position: relative;
+  z-index: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.gl,
+.camera,
+.canvas {
+  width: 100vw;
+  height: 90vh;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.info-can {
+  height: 10vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-item {}

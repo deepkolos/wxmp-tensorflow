@@ -1,0 +1,25 @@
+{
+  "kernels": [
+    "FromPixels",
+    "Cast",
+    "ExpandDims",
+    "RotateWithOffset",
+    "CropAndResize",
+    "RealDiv",
+    "FusedConv2D",
+    "fusedConv2d__op",
+    "DepthwiseConv2dNative",
+    "Add",
+    "Prelu",
+    "MaxPool",
+    "PadV2",
+    "Reshape",
+    "Identity",
+    "Sigmoid",
+    "ResizeBilinear"
+  ],
+  "backends": ["cpu", "webgl"],
+  "models": ["./models/facemesh/model.json", "./models/blazeface/model.json"],
+  "outputPath": "./custom_tfjs",
+  "forwardModeOnly": true
+}

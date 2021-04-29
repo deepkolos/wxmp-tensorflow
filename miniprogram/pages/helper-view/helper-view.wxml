@@ -1,0 +1,9 @@
+<!--components/helper-view/helper-view.wxml-->
+<view class="page">
+  <camera class="camera" device-position="{{cameraPosition}}"></camera>
+  <canvas class="gl" type="webgl" id="gl"></canvas>
+  <canvas class="canvas" type="2d" id="canvas"></canvas>
+  <view class="info-can">
+    <view class="info-item">FPS: {{FPS}}</view>
+  </view>
+</view>
