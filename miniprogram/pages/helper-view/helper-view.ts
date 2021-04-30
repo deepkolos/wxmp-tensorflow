@@ -1,8 +1,8 @@
 // components/helper-view/helper-view.js
 // 获取相机帧，创建three场景
 import { Frame, FrameAdapter } from './FrameAdapter';
-import { Scene, WebGL1Renderer, PLATFORM } from 'three-platformize';
-import { WechatPlatform } from 'three-platformize/src/WechatPlatform';
+// import { Scene, WebGL1Renderer, PLATFORM } from 'three-platformize';
+// import { WechatPlatform } from 'three-platformize/src/WechatPlatform';
 import { getNode } from './utils';
 import * as tf from '@tensorflow/tfjs-core';
 import * as webgl from '@tensorflow/tfjs-backend-webgl';
@@ -25,12 +25,15 @@ setupWechatPlatform({
  */
 
 let deps: {
-  scene: Scene;
-  renderer: WebGL1Renderer;
+  // scene: Scene;
+  // renderer: WebGL1Renderer;
 
   canvasGL: HTMLCanvasElement,
   canvas2D: HTMLCanvasElement,
+  canvasInput: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
+  inputCtx: CanvasRenderingContext2D,
+
   frameAdapter: FrameAdapter;
   cameraCtx: WechatMiniprogram.CameraContext;
   cameraListener: WechatMiniprogram.CameraFrameListener;
@@ -50,6 +53,7 @@ Component({
 
   data: {
     FPS: '0',
+    usingCamera: false,
   },
 
   behaviors: ['wx://component-export'],
@@ -70,10 +74,10 @@ Component({
         }
       },
       start() {
-        deps?.cameraListener.start();
+        // deps?.cameraListener.start();
       },
       stop() {
-        deps?.cameraListener.stop();
+        // deps?.cameraListener.stop();
       },
     };
   },
@@ -82,18 +86,21 @@ Component({
     console.log('helper view ready')
     const [{ node: canvasGL }] = await getNode('#gl', this);
     const [{ node: canvas2D }] = await getNode('#canvas', this);
+    const [{ node: canvasInput }] = await getNode('#canvas-input', this);
     console.log('helper view get canvas node')
 
-    PLATFORM.set(new WechatPlatform(canvasGL));
+    // PLATFORM.set(new WechatPlatform(canvasGL));
     const ctx = canvas2D.getContext('2d') as CanvasRenderingContext2D;
-    const renderer = new WebGL1Renderer({ canvas: canvasGL, antialias: true });
-    const scene = new Scene();
+    const inputCtx = canvasInput.getContext('2d') as CanvasRenderingContext2D;
+    // const renderer = new WebGL1Renderer({ canvas: canvasGL, antialias: true });
+    // const scene = new Scene();
     const cameraCtx = wx.createCameraContext();
     const frameAdapter = new FrameAdapter(async frame => {
       if (userFrameCallback) {
         const t = Date.now()
-        await userFrameCallback(frame, deps)
         console.log('trigger userFrameCallback')
+        frame.data = frame.data.slice(0);
+        await userFrameCallback(frame, deps)
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) })
       }
     });
@@ -101,27 +108,70 @@ Component({
 
     deps = {
       ctx,
-      scene,
+      inputCtx,
+      // scene,
       canvasGL,
       canvas2D,
-      renderer,
+      canvasInput,
+      // renderer,
       cameraCtx,
       frameAdapter,
       cameraListener,
     };
-    deps.cameraListener.start();
+    // deps.cameraListener.start();
     this.triggerEvent('inited');
     console.log('helper view inited')
   },
 
   detached() {
     deps?.cameraListener.stop();
-    PLATFORM.dispose();
+    // PLATFORM.dispose();
     // @ts-ignore
     deps = null;
     // @ts-ignore
     userFrameCallback = null;
   },
 
-  methods: {},
+  methods: {
+    onBtnUseCameraClick() {
+      if (!deps) return
+      if (this.data.usingCamera) {
+        this.setData({ usingCamera: false })
+        deps.cameraListener.stop()
+      } else {
+        this.setData({ usingCamera: true })
+        deps.cameraListener.start()
+      }
+    },
+
+    onBtnSelectClick() {
+      if (!deps) return
+      wx.chooseImage({
+        count: 1,
+        success: (res) => {
+          const imgPath = res.tempFilePaths[0]
+          Promise.all([
+            new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>((resolve) => {
+              wx.getImageInfo({
+                src: imgPath,
+                success: resolve
+              })
+            }),
+            new Promise<HTMLImageElement>((resolve) => {
+              // @ts-ignore
+              const img = deps.canvasInput.createImage()
+              img.onload = () => resolve(img)
+              img.src = imgPath;
+            })
+          ]).then(([{ width, height }, img]) => {
+            deps.canvasInput.width = width;
+            deps.canvasInput.height = height;
+            deps.inputCtx.drawImage(img, 0, 0);
+            const imgData = deps.inputCtx.getImageData(0, 0, width, height)
+            userFrameCallback?.(imgData, deps)
+          })
+        }
+      })
+    }
+  },
 });

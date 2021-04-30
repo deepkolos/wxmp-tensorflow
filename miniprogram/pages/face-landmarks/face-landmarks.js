@@ -1,1 +1,1850 @@
-"use strict";var t=require("../../chunks/tfjs.js"),e=function(){return(e=Object.assign||function(t){for(var e,n=1,r=arguments.length;n<r;n++)for(var o in e=arguments[n])Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o]);return t}).apply(this,arguments)};function n(t,e,n,r){return new(n||(n=Promise))((function(o,i){function s(t){try{c(r.next(t))}catch(t){i(t)}}function a(t){try{c(r.throw(t))}catch(t){i(t)}}function c(t){var e;t.done?o(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(s,a)}c((r=r.apply(t,e||[])).next())}))}function r(t,e){var n,r,o,i,s={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]};return i={next:a(0),throw:a(1),return:a(2)},"function"==typeof Symbol&&(i[Symbol.iterator]=function(){return this}),i;function a(i){return function(a){return function(i){if(n)throw new TypeError("Generator is already executing.");for(;s;)try{if(n=1,r&&(o=2&i[0]?r.return:i[0]?r.throw||((o=r.return)&&o.call(r),0):r.next)&&!(o=o.call(r,i[1])).done)return o;switch(r=0,o&&(i=[2&i[0],o.value]),i[0]){case 0:case 1:o=i;break;case 4:return s.label++,{value:i[1],done:!1};case 5:s.label++,r=i[1],i=[0];continue;case 7:i=s.ops.pop(),s.trys.pop();continue;default:if(!((o=(o=s.trys).length>0&&o[o.length-1])||6!==i[0]&&2!==i[0])){s=0;continue}if(3===i[0]&&(!o||i[1]>o[0]&&i[1]<o[3])){s.label=i[1];break}if(6===i[0]&&s.label<o[1]){s.label=o[1],o=i;break}if(o&&s.label<o[2]){s.label=o[2],s.ops.push(i);break}o[2]&&s.ops.pop(),s.trys.pop();continue}i=e.call(t,s)}catch(t){i=[6,t],r=0}finally{n=o=0}if(5&i[0])throw i[1];return{value:i[0]?i[1]:void 0,done:!0}}([i,a])}}}function o(t,e,n,r){return new(n||(n=Promise))((function(o,i){function s(t){try{c(r.next(t))}catch(t){i(t)}}function a(t){try{c(r.throw(t))}catch(t){i(t)}}function c(t){var e;t.done?o(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(s,a)}c((r=r.apply(t,e||[])).next())}))}function i(t,e){var n,r,o,i,s={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]};return i={next:a(0),throw:a(1),return:a(2)},"function"==typeof Symbol&&(i[Symbol.iterator]=function(){return this}),i;function a(i){return function(a){return function(i){if(n)throw new TypeError("Generator is already executing.");for(;s;)try{if(n=1,r&&(o=2&i[0]?r.return:i[0]?r.throw||((o=r.return)&&o.call(r),0):r.next)&&!(o=o.call(r,i[1])).done)return o;switch(r=0,o&&(i=[2&i[0],o.value]),i[0]){case 0:case 1:o=i;break;case 4:return s.label++,{value:i[1],done:!1};case 5:s.label++,r=i[1],i=[0];continue;case 7:i=s.ops.pop(),s.trys.pop();continue;default:if(!(o=(o=s.trys).length>0&&o[o.length-1])&&(6===i[0]||2===i[0])){s=0;continue}if(3===i[0]&&(!o||i[1]>o[0]&&i[1]<o[3])){s.label=i[1];break}if(6===i[0]&&s.label<o[1]){s.label=o[1],o=i;break}if(o&&s.label<o[2]){s.label=o[2],s.ops.push(i);break}o[2]&&s.ops.pop(),s.trys.pop();continue}i=e.call(t,s)}catch(t){i=[6,t],r=0}finally{n=o=0}if(5&i[0])throw i[1];return{value:i[0]?i[1]:void 0,done:!0}}([i,a])}}}var s=function(e){return{startEndTensor:e,startPoint:t.slice(e,[0,0],[-1,2]),endPoint:t.slice(e,[0,2],[-1,2])}},a={strides:[8,16],anchors:[2,6]};function c(e,n){var r,o,i;if(e.topLeft instanceof t.Tensor&&e.bottomRight instanceof t.Tensor){var s=t.tidy((function(){return[t.concat([t.slice(t.sub(n-1,e.topLeft),0,1),t.slice(e.topLeft,1,1)]),t.concat([t.sub(n-1,t.slice(e.bottomRight,0,1)),t.slice(e.bottomRight,1,1)])]}));r=s[0],o=s[1],null!=e.landmarks&&(i=t.tidy((function(){var r=t.sub(t.tensor1d([n-1,0]),e.landmarks),o=t.tensor1d([1,-1]);return t.mul(r,o)})))}else{var a=e.topLeft,c=a[0],u=a[1],l=e.bottomRight,h=l[0],d=l[1];r=[n-1-c,u],o=[n-1-h,d],null!=e.landmarks&&(i=e.landmarks.map((function(t){return[n-1-t[0],t[1]]})))}var f={topLeft:r,bottomRight:o};return null!=i&&(f.landmarks=i),null!=e.probability&&(f.probability=e.probability instanceof t.Tensor?e.probability.clone():e.probability),f}function u(e,n){return t.tidy((function(){var r;return r=e.hasOwnProperty("box")?e.box:e,t.squeeze(function(e,n){var r=t.mul(e.startPoint,n),o=t.mul(e.endPoint,n),i=t.concat2d([r,o],1);return s(i)}(r,n).startEndTensor)}))}var l=function(){function e(e,n,r,o,i,s){this.blazeFaceModel=e,this.width=n,this.height=r,this.maxFaces=o,this.anchorsData=function(t,e,n){for(var r=[],o=0;o<n.strides.length;o++)for(var i=n.strides[o],s=Math.floor((e+i-1)/i),a=Math.floor((t+i-1)/i),c=n.anchors[o],u=0;u<s;u++)for(var l=i*(u+.5),h=0;h<a;h++)for(var d=i*(h+.5),f=0;f<c;f++)r.push([d,l]);return r}(n,r,a),this.anchors=t.tensor2d(this.anchorsData),this.inputSizeData=[n,r],this.inputSize=t.tensor1d([n,r]),this.iouThreshold=i,this.scoreThreshold=s}return e.prototype.getBoundingBoxes=function(e,n,r){return void 0===r&&(r=!0),o(this,void 0,void 0,(function(){var a,c,u,l,h,d,f,p,m,v,g,y,b,P,w=this;return i(this,(function(x){switch(x.label){case 0:return a=t.tidy((function(){var n=t.image.resizeBilinear(e,[w.width,w.height]),r=t.mul(t.sub(t.div(n,255),.5),2),o=w.blazeFaceModel.predict(r),i=t.squeeze(o),s=function(e,n,r){var o=t.slice(e,[0,1],[-1,2]),i=t.add(o,n),s=t.slice(e,[0,3],[-1,2]),a=t.div(s,r),c=t.div(i,r),u=t.div(a,2),l=t.sub(c,u),h=t.add(c,u),d=t.mul(l,r),f=t.mul(h,r);return t.concat2d([d,f],1)}(i,w.anchors,w.inputSize),a=t.slice(i,[0,0],[-1,1]);return[i,s,t.squeeze(t.sigmoid(a))]})),c=a[0],u=a[1],l=a[2],h=console.warn,console.warn=function(){},d=t.image.nonMaxSuppression(u,l,this.maxFaces,this.iouThreshold,this.scoreThreshold),console.warn=h,[4,d.array()];case 1:return f=x.sent(),d.dispose(),p=f.map((function(e){return t.slice(u,[e,0],[1,-1])})),n?[3,3]:[4,Promise.all(p.map((function(t){return o(w,void 0,void 0,(function(){var e;return i(this,(function(n){switch(n.label){case 0:return[4,t.array()];case 1:return e=n.sent(),t.dispose(),[2,e]}}))}))})))];case 2:p=x.sent(),x.label=3;case 3:for(m=e.shape[1],v=e.shape[2],g=n?t.div([v,m],this.inputSize):[v/this.inputSizeData[0],m/this.inputSizeData[1]],y=[],b=function(e){var o=p[e],i=t.tidy((function(){var i=s(o instanceof t.Tensor?o:t.tensor2d(o));if(!r)return i;var a,u=f[e];return a=n?t.slice(w.anchors,[u,0],[1,2]):w.anchorsData[u],{box:i,landmarks:t.reshape(t.squeeze(t.slice(c,[u,5],[1,-1])),[6,-1]),probability:t.slice(l,[u],[1]),anchor:a}}));y.push(i)},P=0;P<p.length;P++)b(P);return u.dispose(),l.dispose(),c.dispose(),[2,{boxes:y,scaleFactor:g}]}}))}))},e.prototype.estimateFaces=function(e,n,r,s){return void 0===n&&(n=!1),void 0===r&&(r=!1),void 0===s&&(s=!0),o(this,void 0,void 0,(function(){var a,l,h,d,f,p,m=this;return i(this,(function(v){switch(v.label){case 0:return a=function(e){return e instanceof t.Tensor?[e.shape[0],e.shape[1]]:[e.height,e.width]}(e),l=a[1],h=t.tidy((function(){return e instanceof t.Tensor||(e=t.fromPixels(e)),t.expandDims(t.cast(e,"float32"),0)})),[4,this.getBoundingBoxes(h,n,s)];case 1:return d=v.sent(),f=d.boxes,p=d.scaleFactor,h.dispose(),n?[2,f.map((function(e){var n=u(e,p),o={topLeft:t.slice(n,[0],[2]),bottomRight:t.slice(n,[2],[2])};if(s){var i=e,a=i.landmarks,h=i.probability,d=i.anchor,f=t.mul(t.add(a,d),p);o.landmarks=f,o.probability=h}return r&&(o=c(o,l)),o}))]:[2,Promise.all(f.map((function(t){return o(m,void 0,void 0,(function(){var e,n,a,h,d,f,m,v,g,y,b,P=this;return i(this,(function(w){switch(w.label){case 0:return e=u(t,p),s?[3,2]:[4,e.array()];case 1:return d=w.sent(),n={topLeft:d.slice(0,2),bottomRight:d.slice(2)},[3,4];case 2:return[4,Promise.all([t.landmarks,e,t.probability].map((function(t){return o(P,void 0,void 0,(function(){return i(this,(function(e){return[2,t.array()]}))}))})))];case 3:a=w.sent(),h=a[0],d=a[1],f=a[2],m=t.anchor,g=(v=p)[0],y=v[1],b=h.map((function(t){return[(t[0]+m[0])*g,(t[1]+m[1])*y]})),n={topLeft:d.slice(0,2),bottomRight:d.slice(2),landmarks:b,probability:f},function(t){t.startEndTensor.dispose(),t.startPoint.dispose(),t.endPoint.dispose()}(t.box),t.landmarks.dispose(),t.probability.dispose(),w.label=4;case 4:return e.dispose(),r&&(n=c(n,l)),[2,n]}}))}))})))]}}))}))},e}();function h(e){var n=void 0===e?{}:e,r=n.maxFaces,s=void 0===r?10:r,a=n.inputWidth,c=void 0===a?128:a,u=n.inputHeight,h=void 0===u?128:u,d=n.iouThreshold,f=void 0===d?.3:d,p=n.scoreThreshold,m=void 0===p?.75:p,v=n.modelUrl;return o(this,void 0,void 0,(function(){var e;return i(this,(function(n){switch(n.label){case 0:return null==v?[3,2]:[4,t.loadGraphModel(v)];case 1:return e=n.sent(),[3,4];case 2:return[4,t.loadGraphModel("https://cdn.static.oppenlab.com/weblf/test/blazeface/model.json",{fromTFHub_:!0})];case 3:e=n.sent(),n.label=4;case 4:return[2,new l(e,c,h,s,f,m)]}}))}))}var d={silhouette:[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109],lipsUpperOuter:[61,185,40,39,37,0,267,269,270,409,291],lipsLowerOuter:[146,91,181,84,17,314,405,321,375,291],lipsUpperInner:[78,191,80,81,82,13,312,311,310,415,308],lipsLowerInner:[78,95,88,178,87,14,317,402,318,324,308],rightEyeUpper0:[246,161,160,159,158,157,173],rightEyeLower0:[33,7,163,144,145,153,154,155,133],rightEyeUpper1:[247,30,29,27,28,56,190],rightEyeLower1:[130,25,110,24,23,22,26,112,243],rightEyeUpper2:[113,225,224,223,222,221,189],rightEyeLower2:[226,31,228,229,230,231,232,233,244],rightEyeLower3:[143,111,117,118,119,120,121,128,245],rightEyebrowUpper:[156,70,63,105,66,107,55,193],rightEyebrowLower:[35,124,46,53,52,65],rightEyeIris:[473,474,475,476,477],leftEyeUpper0:[466,388,387,386,385,384,398],leftEyeLower0:[263,249,390,373,374,380,381,382,362],leftEyeUpper1:[467,260,259,257,258,286,414],leftEyeLower1:[359,255,339,254,253,252,256,341,463],leftEyeUpper2:[342,445,444,443,442,441,413],leftEyeLower2:[446,261,448,449,450,451,452,453,464],leftEyeLower3:[372,340,346,347,348,349,350,357,465],leftEyebrowUpper:[383,300,293,334,296,336,285,417],leftEyebrowLower:[265,353,276,283,282,295],leftEyeIris:[468,469,470,471,472],midwayBetweenEyes:[168],noseTip:[1],noseBottom:[2],noseRightCorner:[98],noseLeftCorner:[327],rightCheek:[205],leftCheek:[425]};function f(t){return[Math.abs(t.endPoint[0]-t.startPoint[0]),Math.abs(t.endPoint[1]-t.startPoint[1])]}function p(t){return[t.startPoint[0]+(t.endPoint[0]-t.startPoint[0])/2,t.startPoint[1]+(t.endPoint[1]-t.startPoint[1])/2]}function m(t,e){void 0===e&&(e=1.5);var n=p(t),r=f(t),o=[e*r[0]/2,e*r[1]/2];return{startPoint:[n[0]-o[0],n[1]-o[1]],endPoint:[n[0]+o[0],n[1]+o[1]],landmarks:t.landmarks}}function v(t){var e=p(t),n=f(t),r=Math.max.apply(Math,n)/2;return{startPoint:[e[0]-r,e[1]-r],endPoint:[e[0]+r,e[1]+r],landmarks:t.landmarks}}var g=[[1,0,0],[0,1,0],[0,0,1]];function y(t,e){return[[1,0,t],[0,1,e],[0,0,1]]}function b(t,e){for(var n=0,r=0;r<t.length;r++)n+=t[r]*e[r];return n}function P(t,e){for(var n=[],r=0;r<t.length;r++)n.push(t[r][e]);return n}function w(t,e){for(var n=[],r=t.length,o=0;o<r;o++){n.push([]);for(var i=0;i<r;i++)n[o].push(b(t[o],P(e,i)))}return n}function x(t,e){var n=Math.cos(t),r=Math.sin(t),o=[[n,-r,0],[r,n,0],[0,0,1]],i=w(y(e[0],e[1]),o);return w(i,y(-e[0],-e[1]))}var E=[13,d.midwayBetweenEyes[0]],M=[3,2],k=d.leftEyeLower0,L=[k[0],k[k.length-1]],I=d.rightEyeLower0,C=[I[0],I[I.length-1]],B=[{key:"EyeUpper0",indices:[9,10,11,12,13,14,15]},{key:"EyeUpper1",indices:[25,26,27,28,29,30,31]},{key:"EyeUpper2",indices:[41,42,43,44,45,46,47]},{key:"EyeLower0",indices:[0,1,2,3,4,5,6,7,8]},{key:"EyeLower1",indices:[16,17,18,19,20,21,22,23,24]},{key:"EyeLower2",indices:[32,33,34,35,36,37,38,39,40]},{key:"EyeLower3",indices:[54,55,56,57,58,59,60,61,62]},{key:"EyebrowUpper",indices:[63,64,65,66,67,68,69,70]},{key:"EyebrowLower",indices:[48,49,50,51,52,53]}];function T(t,e,n,r){for(var o=0;o<B.length;o++){var i=B[o],s=i.key,a=i.indices,c=d[""+n+s];if(null==r||r.includes(s))for(var u=0;u<a.length;u++){var l=a[u];t[c[u]]=[e[l][0],e[l][1],(e[l][2]+t[c[u]][2])/2]}}}var F=function(){function o(t,e,n,r,o,i,s){this.regionsOfInterest=[],this.runsWithoutFaceDetector=0,this.boundingBoxDetector=t,this.meshDetector=e,this.irisModel=s,this.meshWidth=n,this.meshHeight=r,this.maxContinuousChecks=o,this.maxFaces=i}return o.prototype.transformRawCoords=function(t,e,n,r){var o,i,s,a,c=this,u=f({startPoint:e.startPoint,endPoint:e.endPoint}),l=[u[0]/this.meshWidth,u[1]/this.meshHeight],h=t.map((function(t){return[l[0]*(t[0]-c.meshWidth/2),l[1]*(t[1]-c.meshHeight/2),t[2]]})),d=x(n,[0,0]),m=h.map((function(t){return function(t,e){return[b(t,e[0]),b(t,e[1])]}(t,d).concat([t[2]])})),v=(i=[[(o=r)[0][0],o[1][0]],[o[0][1],o[1][1]]],s=[o[0][2],o[1][2]],a=[-b(i[0],s),-b(i[1],s)],[i[0].concat(a[0]),i[1].concat(a[1]),[0,0,1]]),g=p({startPoint:e.startPoint,endPoint:e.endPoint}).concat([1]),y=[b(g,v[0]),b(g,v[1])];return m.map((function(t){return[t[0]+y[0],t[1]+y[1],t[2]]}))},o.prototype.getLeftToRightEyeDepthDifference=function(t){return t[L[0]][2]-t[C[0]][2]},o.prototype.getEyeBox=function(e,n,r,o,i){void 0===i&&(i=!1);var s=v(m(this.calculateLandmarksBoundingBox([e[r],e[o]]),2.3)),a=f(s),c=t.image.cropAndResize(n,[[s.startPoint[1]/this.meshHeight,s.startPoint[0]/this.meshWidth,s.endPoint[1]/this.meshHeight,s.endPoint[0]/this.meshWidth]],[0],[64,64]);return i&&(c=t.image.flipLeftRight(c)),{box:s,boxSize:a,crop:c}},o.prototype.getEyeCoords=function(t,e,n,r){void 0===r&&(r=!1);for(var o=[],i=0;i<76;i++){var s=t[3*i],a=t[3*i+1],c=t[3*i+2];o.push([(r?1-s/64:s/64)*n[0]+e.startPoint[0],a/64*n[1]+e.startPoint[1],c])}return{rawCoords:o,iris:o.slice(71)}},o.prototype.getAdjustedIrisCoords=function(t,e,n){var r=t[d[n+"EyeUpper0"][3]][2],o=t[d[n+"EyeLower0"][4]][2],i=(r+o)/2;return e.map((function(t,e){var n=i;return 2===e?n=r:4===e&&(n=o),[t[0],t[1],n]}))},o.prototype.predict=function(o,i){return n(this,void 0,void 0,(function(){var n,s,a,c,u=this;return r(this,(function(r){switch(r.label){case 0:return this.shouldUpdateRegionsOfInterest()?[4,this.boundingBoxDetector.getBoundingBoxes(o,!1,!0)]:[3,2];case 1:return n=r.sent(),s=n.boxes,a=n.scaleFactor,0===s.length?(this.regionsOfInterest=[],[2,null]):(c=s.map((function(n){var r,o,i={startPoint:t.squeeze(n.box.startPoint).arraySync(),endPoint:t.squeeze(n.box.endPoint).arraySync()},s=v(m((o=a,{startPoint:[(r=i).startPoint[0]*o[0],r.startPoint[1]*o[1]],endPoint:[r.endPoint[0]*o[0],r.endPoint[1]*o[1]]})));return e({},s,{landmarks:n.landmarks.arraySync()})})),s.forEach((function(t){null!=t&&null!=t.startPoint&&(t.startEndTensor.dispose(),t.startPoint.dispose(),t.endPoint.dispose())})),this.updateRegionsOfInterest(c),this.runsWithoutFaceDetector=0,[3,3]);case 2:this.runsWithoutFaceDetector++,r.label=3;case 3:return[2,t.tidy((function(){return u.regionsOfInterest.map((function(n,r){var s,a=n.landmarks.length>=468,c=E[0],l=E[1];!1===a&&(c=M[0],l=M[1]),s=function(t,e){var n;return(n=Math.PI/2-Math.atan2(-(e[1]-t[1]),e[0]-t[0]))-2*Math.PI*Math.floor((n+Math.PI)/(2*Math.PI))}(n.landmarks[c],n.landmarks[l]);var h=p({startPoint:n.startPoint,endPoint:n.endPoint}),d=[h[0]/o.shape[2],h[1]/o.shape[1]],f=o,y=g;0!==s&&(f=t.image.rotateWithOffset(o,s,0,d),y=x(-s,h));var b={startPoint:n.startPoint,endPoint:n.endPoint},P=t.div(function(e,n,r){var o=n.shape[1],i=n.shape[2],s=[[e.startPoint[1]/o,e.startPoint[0]/i,e.endPoint[1]/o,e.endPoint[0]/i]];return t.image.cropAndResize(n,s,[0],r,"bilinear",0)}(b,f,[u.meshHeight,u.meshWidth]),255),w=u.meshDetector.predict(P),k=w[1],I=w[2],B=t.reshape(I,[-1,3]).arraySync();if(i){var F=u.getEyeBox(B,P,L[0],L[1],!0),R=F.box,O=F.boxSize,U=F.crop,S=u.getEyeBox(B,P,C[0],C[1]),z=S.box,D=S.boxSize,W=S.crop,H=u.irisModel.predict(t.concat([U,W])).dataSync(),A=H.slice(0,228),j=u.getEyeCoords(A,R,O,!0),G=j.rawCoords,q=j.iris,V=H.slice(228),_=u.getEyeCoords(V,z,D),K=_.rawCoords,N=_.iris,J=u.getLeftToRightEyeDepthDifference(B);Math.abs(J)<30?(T(B,G,"left"),T(B,K,"right")):J<1?T(B,G,"left",["EyeUpper0","EyeLower0"]):T(B,K,"right",["EyeUpper0","EyeLower0"]);var Q=u.getAdjustedIrisCoords(B,q,"left"),X=u.getAdjustedIrisCoords(B,N,"right");B=B.concat(Q).concat(X)}var Y=u.transformRawCoords(B,n,s,y),Z=t.tensor2d(Y),$=m(u.calculateLandmarksBoundingBox(Y)),tt=v($);return u.regionsOfInterest[r]=e({},tt,{landmarks:Z.arraySync()}),{coords:t.tensor2d(B,[B.length,3]),scaledCoords:Z,box:$,flag:t.squeeze(k)}}))}))]}}))}))},o.prototype.updateRegionsOfInterest=function(t){for(var e=0;e<t.length;e++){var n=t[e],r=this.regionsOfInterest[e],o=0;if(r&&r.startPoint){var i=n.startPoint,s=i[0],a=i[1],c=n.endPoint,u=c[0],l=c[1],h=r.startPoint,d=h[0],f=h[1],p=r.endPoint,m=p[0],v=p[1],g=Math.max(s,d),y=Math.max(a,f),b=(Math.min(u,m)-g)*(Math.min(l,v)-y);o=b/((u-s)*(l-a)+(m-d)*(v-a)-b)}o<.25&&(this.regionsOfInterest[e]=n)}this.regionsOfInterest=this.regionsOfInterest.slice(0,t.length)},o.prototype.clearRegionOfInterest=function(t){null!=this.regionsOfInterest[t]&&(this.regionsOfInterest=this.regionsOfInterest.slice(0,t).concat(this.regionsOfInterest.slice(t+1)))},o.prototype.shouldUpdateRegionsOfInterest=function(){var t=this.regionsOfInterest.length,e=0===t;return 1===this.maxFaces||e?e:t!==this.maxFaces&&this.runsWithoutFaceDetector>=this.maxContinuousChecks},o.prototype.calculateLandmarksBoundingBox=function(t){var e=t.map((function(t){return t[0]})),n=t.map((function(t){return t[1]}));return{startPoint:[Math.min.apply(Math,e),Math.min.apply(Math,n)],endPoint:[Math.max.apply(Math,e),Math.max.apply(Math,n)]}},o}(),R=[[.499976992607117,.652534008026123],[.500025987625122,.547487020492554],[.499974012374878,.602371990680695],[.482113003730774,.471979022026062],[.500150978565216,.527155995368958],[.499909996986389,.498252987861633],[.499523013830185,.40106201171875],[.289712011814117,.380764007568359],[.499954998493195,.312398016452789],[.499987006187439,.269918978214264],[.500023007392883,.107050001621246],[.500023007392883,.666234016418457],[.5000159740448,.679224014282227],[.500023007392883,.692348003387451],[.499976992607117,.695277988910675],[.499976992607117,.70593398809433],[.499976992607117,.719385027885437],[.499976992607117,.737019002437592],[.499967992305756,.781370997428894],[.499816000461578,.562981009483337],[.473773002624512,.573909997940063],[.104906998574734,.254140973091125],[.365929991006851,.409575998783112],[.338757991790771,.41302502155304],[.311120003461838,.409460008144379],[.274657994508743,.389131009578705],[.393361985683441,.403706014156342],[.345234006643295,.344011008739471],[.370094001293182,.346076011657715],[.319321990013123,.347265005111694],[.297903001308441,.353591024875641],[.24779200553894,.410809993743896],[.396889001131058,.842755019664764],[.280097991228104,.375599980354309],[.106310002505779,.399955987930298],[.2099249958992,.391353011131287],[.355807989835739,.534406006336212],[.471751004457474,.65040397644043],[.474155008792877,.680191993713379],[.439785003662109,.657229006290436],[.414617002010345,.66654098033905],[.450374007225037,.680860996246338],[.428770989179611,.682690978050232],[.374971002340317,.727805018424988],[.486716985702515,.547628998756409],[.485300987958908,.527395009994507],[.257764995098114,.314490020275116],[.401223003864288,.455172002315521],[.429818987846375,.548614978790283],[.421351999044418,.533740997314453],[.276895999908447,.532056987285614],[.483370006084442,.499586999416351],[.33721199631691,.282882988452911],[.296391993761063,.293242990970612],[.169294998049736,.193813979625702],[.447580009698868,.302609980106354],[.392390012741089,.353887975215912],[.354490011930466,.696784019470215],[.067304998636246,.730105042457581],[.442739009857178,.572826027870178],[.457098007202148,.584792017936707],[.381974011659622,.694710969924927],[.392388999462128,.694203019142151],[.277076005935669,.271932005882263],[.422551989555359,.563233017921448],[.385919004678726,.281364023685455],[.383103013038635,.255840003490448],[.331431001424789,.119714021682739],[.229923993349075,.232002973556519],[.364500999450684,.189113974571228],[.229622006416321,.299540996551514],[.173287004232407,.278747975826263],[.472878992557526,.666198015213013],[.446828007698059,.668527007102966],[.422762006521225,.673889994621277],[.445307999849319,.580065965652466],[.388103008270264,.693961024284363],[.403039008378983,.706539988517761],[.403629004955292,.693953037261963],[.460041999816895,.557139039039612],[.431158006191254,.692366003990173],[.452181994915009,.692366003990173],[.475387006998062,.692366003990173],[.465828001499176,.779190003871918],[.472328990697861,.736225962638855],[.473087012767792,.717857003211975],[.473122000694275,.704625964164734],[.473033010959625,.695277988910675],[.427942007780075,.695277988910675],[.426479011774063,.703539967536926],[.423162013292313,.711845993995667],[.4183090031147,.720062971115112],[.390094995498657,.639572978019714],[.013953999616206,.560034036636353],[.499913990497589,.58014702796936],[.413199990987778,.69539999961853],[.409626007080078,.701822996139526],[.468080013990402,.601534962654114],[.422728985548019,.585985004901886],[.463079988956451,.593783974647522],[.37211999297142,.47341400384903],[.334562003612518,.496073007583618],[.411671012639999,.546965003013611],[.242175996303558,.14767599105835],[.290776997804642,.201445996761322],[.327338010072708,.256527006626129],[.399509996175766,.748921036720276],[.441727995872498,.261676013469696],[.429764986038208,.187834024429321],[.412198007106781,.108901023864746],[.288955003023148,.398952007293701],[.218936994671822,.435410976409912],[.41278201341629,.398970007896423],[.257135003805161,.355440020561218],[.427684992551804,.437960982322693],[.448339998722076,.536936044692993],[.178560003638268,.45755398273468],[.247308000922203,.457193970680237],[.286267012357712,.467674970626831],[.332827985286713,.460712015628815],[.368755996227264,.447206974029541],[.398963987827301,.432654976844788],[.476410001516342,.405806005001068],[.189241006970406,.523923993110657],[.228962004184723,.348950982093811],[.490725994110107,.562400996685028],[.404670000076294,.485132992267609],[.019469000399113,.401564002037048],[.426243007183075,.420431017875671],[.396993011236191,.548797011375427],[.266469985246658,.376977026462555],[.439121007919312,.51895797252655],[.032313998788595,.644356966018677],[.419054001569748,.387154996395111],[.462783008813858,.505746960639954],[.238978996872902,.779744982719421],[.198220998048782,.831938028335571],[.107550002634525,.540755033493042],[.183610007166862,.740257024765015],[.134409993886948,.333683013916016],[.385764002799988,.883153975009918],[.490967005491257,.579378008842468],[.382384985685349,.508572995662689],[.174399003386497,.397670984268188],[.318785011768341,.39623498916626],[.343364000320435,.400596976280212],[.396100014448166,.710216999053955],[.187885001301765,.588537991046906],[.430987000465393,.944064974784851],[.318993002176285,.898285031318665],[.266247987747192,.869701027870178],[.500023007392883,.190576016902924],[.499976992607117,.954452991485596],[.366169989109039,.398822009563446],[.393207013607025,.39553701877594],[.410373002290726,.391080021858215],[.194993004202843,.342101991176605],[.388664990663528,.362284004688263],[.365961998701096,.355970978736877],[.343364000320435,.355356991291046],[.318785011768341,.35834002494812],[.301414996385574,.363156020641327],[.058132998645306,.319076001644135],[.301414996385574,.387449026107788],[.499987989664078,.618434011936188],[.415838003158569,.624195992946625],[.445681989192963,.566076993942261],[.465844005346298,.620640993118286],[.49992299079895,.351523995399475],[.288718998432159,.819945991039276],[.335278987884521,.852819979190826],[.440512001514435,.902418971061707],[.128294005990028,.791940987110138],[.408771991729736,.373893976211548],[.455606997013092,.451801002025604],[.499877005815506,.908990025520325],[.375436991453171,.924192011356354],[.11421000212431,.615022003650665],[.448662012815475,.695277988910675],[.4480200111866,.704632043838501],[.447111994028091,.715808033943176],[.444831997156143,.730794012546539],[.430011987686157,.766808986663818],[.406787008047104,.685672998428345],[.400738000869751,.681069016456604],[.392399996519089,.677703022956848],[.367855995893478,.663918972015381],[.247923001646996,.601333022117615],[.452769994735718,.420849978923798],[.43639200925827,.359887003898621],[.416164010763168,.368713974952698],[.413385987281799,.692366003990173],[.228018000721931,.683571994304657],[.468268007040024,.352671027183533],[.411361992359161,.804327011108398],[.499989002943039,.469825029373169],[.479153990745544,.442654013633728],[.499974012374878,.439637005329132],[.432112008333206,.493588984012604],[.499886006116867,.866917014122009],[.49991300702095,.821729004383087],[.456548988819122,.819200992584229],[.344549000263214,.745438992977142],[.37890899181366,.574010014533997],[.374292999505997,.780184984207153],[.319687992334366,.570737957954407],[.357154995203018,.604269981384277],[.295284003019333,.621580958366394],[.447750002145767,.862477004528046],[.410986006259918,.508723020553589],[.31395098567009,.775308012962341],[.354128003120422,.812552988529205],[.324548006057739,.703992962837219],[.189096003770828,.646299958229065],[.279776990413666,.71465802192688],[.1338230073452,.682700991630554],[.336768001317978,.644733011722565],[.429883986711502,.466521978378296],[.455527991056442,.548622965812683],[.437114000320435,.558896005153656],[.467287987470627,.529924988746643],[.414712011814117,.335219979286194],[.37704598903656,.322777986526489],[.344107985496521,.320150971412659],[.312875986099243,.32233202457428],[.283526003360748,.333190023899078],[.241245999932289,.382785975933075],[.102986000478268,.468762993812561],[.267612010240555,.424560010433197],[.297879010438919,.433175981044769],[.333433985710144,.433878004550934],[.366427004337311,.426115989685059],[.396012008190155,.416696012020111],[.420121014118195,.41022801399231],[.007561000064015,.480777025222778],[.432949006557465,.569517970085144],[.458638995885849,.479089021682739],[.473466008901596,.545744001865387],[.476087987422943,.563830018043518],[.468472003936768,.555056989192963],[.433990985155106,.582361996173859],[.483518004417419,.562983989715576],[.482482999563217,.57784903049469],[.42645001411438,.389798998832703],[.438998997211456,.39649498462677],[.450067013502121,.400434017181396],[.289712011814117,.368252992630005],[.276670008897781,.363372981548309],[.517862021923065,.471948027610779],[.710287988185883,.380764007568359],[.526226997375488,.573909997940063],[.895093023777008,.254140973091125],[.634069979190826,.409575998783112],[.661242008209229,.41302502155304],[.688880026340485,.409460008144379],[.725341975688934,.389131009578705],[.606630027294159,.40370500087738],[.654766023159027,.344011008739471],[.629905998706818,.346076011657715],[.680678009986877,.347265005111694],[.702096998691559,.353591024875641],[.75221198797226,.410804986953735],[.602918028831482,.842862963676453],[.719901978969574,.375599980354309],[.893692970275879,.399959981441498],[.790081977844238,.391354024410248],[.643998026847839,.534487962722778],[.528249025344849,.65040397644043],[.525849997997284,.680191040039062],[.560214996337891,.657229006290436],[.585384011268616,.66654098033905],[.549625992774963,.680860996246338],[.57122802734375,.682691991329193],[.624852001667023,.72809898853302],[.513050019741058,.547281980514526],[.51509702205658,.527251958847046],[.742246985435486,.314507007598877],[.598631024360657,.454979002475739],[.570338010787964,.548575043678284],[.578631997108459,.533622980117798],[.723087012767792,.532054007053375],[.516445994377136,.499638974666595],[.662801027297974,.282917976379395],[.70362401008606,.293271005153656],[.830704987049103,.193813979625702],[.552385985851288,.302568018436432],[.607609987258911,.353887975215912],[.645429015159607,.696707010269165],[.932694971561432,.730105042457581],[.557260990142822,.572826027870178],[.542901992797852,.584792017936707],[.6180260181427,.694710969924927],[.607590973377228,.694203019142151],[.722943007946014,.271963000297546],[.577413976192474,.563166975975037],[.614082992076874,.281386971473694],[.616907000541687,.255886018276215],[.668509006500244,.119913995265961],[.770092010498047,.232020974159241],[.635536015033722,.189248979091644],[.77039098739624,.299556016921997],[.826722025871277,.278755009174347],[.527121007442474,.666198015213013],[.553171992301941,.668527007102966],[.577238023281097,.673889994621277],[.554691970348358,.580065965652466],[.611896991729736,.693961024284363],[.59696102142334,.706539988517761],[.596370995044708,.693953037261963],[.539958000183105,.557139039039612],[.568841993808746,.692366003990173],[.547818005084991,.692366003990173],[.52461302280426,.692366003990173],[.534089982509613,.779141008853912],[.527670979499817,.736225962638855],[.526912987232208,.717857003211975],[.526877999305725,.704625964164734],[.526966989040375,.695277988910675],[.572058022022247,.695277988910675],[.573521018028259,.703539967536926],[.57683801651001,.711845993995667],[.581691026687622,.720062971115112],[.609944999217987,.639909982681274],[.986046016216278,.560034036636353],[.5867999792099,.69539999961853],[.590372025966644,.701822996139526],[.531915009021759,.601536989212036],[.577268004417419,.585934996604919],[.536915004253387,.593786001205444],[.627542972564697,.473352015018463],[.665585994720459,.495950996875763],[.588353991508484,.546862006187439],[.757824003696442,.14767599105835],[.709249973297119,.201507985591888],[.672684013843536,.256581008434296],[.600408971309662,.74900496006012],[.55826598405838,.261672019958496],[.570303976535797,.187870979309082],[.588165998458862,.109044015407562],[.711045026779175,.398952007293701],[.781069993972778,.435405015945435],[.587247014045715,.398931980133057],[.742869973182678,.355445981025696],[.572156012058258,.437651991844177],[.55186802148819,.536570012569427],[.821442008018494,.457556009292603],[.752701997756958,.457181990146637],[.71375697851181,.467626988887787],[.66711300611496,.460672974586487],[.631101012229919,.447153985500336],[.6008620262146,.432473003864288],[.523481011390686,.405627012252808],[.810747981071472,.523926019668579],[.771045982837677,.348959028720856],[.509127020835876,.562718033790588],[.595292985439301,.485023975372314],[.980530977249146,.401564002037048],[.573499977588654,.420000016689301],[.602994978427887,.548687994480133],[.733529984951019,.376977026462555],[.560611009597778,.519016981124878],[.967685997486115,.644356966018677],[.580985009670258,.387160003185272],[.537728011608124,.505385041236877],[.760966002941132,.779752969741821],[.801778972148895,.831938028335571],[.892440974712372,.54076099395752],[.816350996494293,.740260004997253],[.865594983100891,.333687007427216],[.614073991775513,.883246004581451],[.508952975273132,.579437971115112],[.617941975593567,.508316040039062],[.825608015060425,.397674977779388],[.681214988231659,.39623498916626],[.656635999679565,.400596976280212],[.603900015354156,.710216999053955],[.81208598613739,.588539004325867],[.56801301240921,.944564998149872],[.681007981300354,.898285031318665],[.733752012252808,.869701027870178],[.633830010890961,.398822009563446],[.606792986392975,.39553701877594],[.589659988880157,.391062021255493],[.805015981197357,.342108011245728],[.611334979534149,.362284004688263],[.634037971496582,.355970978736877],[.656635999679565,.355356991291046],[.681214988231659,.35834002494812],[.698584973812103,.363156020641327],[.941866993904114,.319076001644135],[.698584973812103,.387449026107788],[.584177017211914,.624107003211975],[.554318010807037,.566076993942261],[.534153997898102,.62064003944397],[.711217999458313,.819975018501282],[.664629995822906,.852871000766754],[.559099972248077,.902631998062134],[.871706008911133,.791940987110138],[.591234028339386,.373893976211548],[.544341027736664,.451583981513977],[.624562978744507,.924192011356354],[.88577002286911,.615028977394104],[.551338016986847,.695277988910675],[.551980018615723,.704632043838501],[.552887976169586,.715808033943176],[.555167973041534,.730794012546539],[.569944024085999,.767035007476807],[.593203008174896,.685675978660583],[.599261999130249,.681069016456604],[.607599973678589,.677703022956848],[.631937980651855,.663500010967255],[.752032995223999,.601315021514893],[.547226011753082,.420395016670227],[.563543975353241,.359827995300293],[.583841025829315,.368713974952698],[.586614012718201,.692366003990173],[.771915018558502,.683578014373779],[.531597018241882,.352482974529266],[.588370978832245,.804440975189209],[.52079701423645,.442565023899078],[.567984998226166,.493479013442993],[.543282985687256,.819254994392395],[.655317008495331,.745514988899231],[.621008992195129,.574018001556396],[.625559985637665,.78031200170517],[.680198013782501,.570719003677368],[.64276397228241,.604337990283966],[.704662978649139,.621529996395111],[.552012026309967,.862591981887817],[.589071989059448,.508637011051178],[.685944974422455,.775357007980347],[.645735025405884,.812640011310577],[.675342977046967,.703978002071381],[.810858011245728,.646304965019226],[.72012197971344,.714666962623596],[.866151988506317,.682704985141754],[.663187026977539,.644596993923187],[.570082008838654,.466325998306274],[.544561982154846,.548375964164734],[.562758982181549,.558784961700439],[.531987011432648,.530140042304993],[.585271000862122,.335177004337311],[.622952997684479,.32277899980545],[.655896008014679,.320163011550903],[.687132000923157,.322345972061157],[.716481983661652,.333200991153717],[.758756995201111,.382786989212036],[.897013008594513,.468769013881683],[.732392013072968,.424547016620636],[.70211398601532,.433162987232208],[.66652500629425,.433866024017334],[.633504986763,.426087975502014],[.603875994682312,.416586995124817],[.579657971858978,.409945011138916],[.992439985275269,.480777025222778],[.567192018032074,.569419980049133],[.54136598110199,.478899002075195],[.526564002037048,.546118021011353],[.523913025856018,.563830018043518],[.531529009342194,.555056989192963],[.566035985946655,.582329034805298],[.51631098985672,.563053965568542],[.5174720287323,.577877044677734],[.573594987392426,.389806985855103],[.560697972774506,.395331978797913],[.549755990505219,.399751007556915],[.710287988185883,.368252992630005],[.723330020904541,.363372981548309]];function O(t){return n(this,void 0,void 0,(function(){var e,n,o,i,s,a,c,u,l,h,d,f,p,m,v,g;return r(this,(function(r){switch(r.label){case 0:return e=t.maxContinuousChecks,n=void 0===e?5:e,o=t.detectionConfidence,i=void 0===o?.9:o,s=t.maxFaces,a=void 0===s?10:s,c=t.iouThreshold,u=void 0===c?.3:c,l=t.scoreThreshold,h=void 0===l?.75:l,d=t.shouldLoadIrisModel,f=void 0===d||d,p=t.modelUrl,m=t.detectorModelUrl,v=t.irisModelUrl,f?[4,Promise.all([U(m,a,u,h),S(p),z(v)])]:[3,2];case 1:return g=r.sent(),[3,4];case 2:return[4,Promise.all([U(m,a,u,h),S(p)])];case 3:g=r.sent(),r.label=4;case 4:return[2,new H(g[0],g[1],n,i,a,f?g[2]:null)]}}))}))}function U(t,e,o,i){return n(this,void 0,void 0,(function(){return r(this,(function(n){return[2,h({modelUrl:t,maxFaces:e,iouThreshold:o,scoreThreshold:i})]}))}))}function S(e){return n(this,void 0,void 0,(function(){return r(this,(function(n){return null!=e?[2,t.loadGraphModel(e)]:[2,t.loadGraphModel("https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1",{fromTFHub:!0})]}))}))}function z(e){return n(this,void 0,void 0,(function(){return r(this,(function(n){return null!=e?[2,t.loadGraphModel(e)]:[2,t.loadGraphModel("https://tfhub.dev/mediapipe/tfjs-model/iris/1/default/2",{fromTFHub:!0})]}))}))}function D(e,n){if(e.mesh instanceof t.Tensor){var r=t.tidy((function(){var r=t.tensor1d([n-1,0,0]),o=t.tensor1d([1,-1,1]);return t.tidy((function(){return[t.concat([t.sub(n-1,t.slice(e.boundingBox.topLeft,0,1)),t.slice(e.boundingBox.topLeft,1,1)]),t.concat([t.sub(n-1,t.slice(e.boundingBox.bottomRight,0,1)),t.slice(e.boundingBox.bottomRight,1,1)]),t.mul(t.sub(r,e.mesh),o),t.mul(t.sub(r,e.scaledMesh),o)]}))})),o=r[0],i=r[1],s=r[2],a=r[3];return Object.assign({},e,{boundingBox:{topLeft:o,bottomRight:i},mesh:s,scaledMesh:a})}return Object.assign({},e,{boundingBox:{topLeft:[n-1-e.boundingBox.topLeft[0],e.boundingBox.topLeft[1]],bottomRight:[n-1-e.boundingBox.bottomRight[0],e.boundingBox.bottomRight[1]]},mesh:e.mesh.map((function(t){var e=t.slice(0);return e[0]=n-1-t[0],e})),scaledMesh:e.scaledMesh.map((function(t){var e=t.slice(0);return e[0]=n-1-t[0],e}))})}var W,H=function(){function e(t,e,n,r,o,i){this.kind="MediaPipeFaceMesh",this.pipeline=new F(t,e,192,192,n,o,i),this.detectionConfidence=r}return e.getAnnotations=function(){return d},e.getUVCoords=function(){return R},e.prototype.estimateFaces=function(e){return n(this,void 0,void 0,(function(){var o,i,s,a,c,u,l,h,f,p,m,v,g=this;return r(this,(function(y){switch(y.label){case 0:if(o=e.returnTensors,i=void 0!==o&&o,s=e.flipHorizontal,a=void 0!==s&&s,c=e.predictIrises,u=void 0===c||c,l=e.input,u&&null==this.pipeline.irisModel)throw new Error("The iris model was not loaded as part of facemesh. Please initialize the model with facemesh.load({shouldLoadIrisModel: true}).");return h=function(e){return e instanceof t.Tensor?[e.shape[0],e.shape[1]]:[e.height,e.width]}(l),f=h[1],p=t.tidy((function(){return l instanceof t.Tensor||(l=t.fromPixels(l)),t.expandDims(t.cast(l,"float32"),0)})),"webgl"!==t.getBackend()?[3,2]:(v=t.env().get("WEBGL_PACK_DEPTHWISECONV"),t.env().set("WEBGL_PACK_DEPTHWISECONV",!0),[4,this.pipeline.predict(p,u)]);case 1:return m=y.sent(),t.env().set("WEBGL_PACK_DEPTHWISECONV",v),[3,4];case 2:return[4,this.pipeline.predict(p,u)];case 3:m=y.sent(),y.label=4;case 4:return p.dispose(),null!=m&&m.length>0?[2,Promise.all(m.map((function(e,o){return n(g,void 0,void 0,(function(){var s,c,l,h,p,m,v,g,y,b,P,w,x,E,M=this;return r(this,(function(k){switch(k.label){case 0:return s=e.coords,c=e.scaledCoords,l=e.box,h=e.flag,p=[h],i||(p=p.concat([s,c])),[4,Promise.all(p.map((function(t){return n(M,void 0,void 0,(function(){return r(this,(function(e){return[2,t.array()]}))}))})))];case 1:if(m=k.sent(),v=m[0],h.dispose(),v<this.detectionConfidence&&this.pipeline.clearRegionOfInterest(o),i)return g={kind:"MediaPipePredictionTensors",faceInViewConfidence:v,mesh:s,scaledMesh:c,boundingBox:{topLeft:t.tensor1d(l.startPoint),bottomRight:t.tensor1d(l.endPoint)}},a?[2,D(g,f)]:[2,g];for(E in y=m.slice(1),b=y[0],P=y[1],c.dispose(),s.dispose(),w={kind:"MediaPipePredictionValues",faceInViewConfidence:v,boundingBox:{topLeft:l.startPoint,bottomRight:l.endPoint},mesh:b,scaledMesh:P},a&&(w=D(w,f)),x={},d)(u||!1===E.includes("Iris"))&&(x[E]=d[E].map((function(t){return w.scaledMesh[t]})));return w.annotations=x,[2,w]}}))}))})))]:[2,[]]}}))}))},e}();function A(t){let e,n=t[0],r=1;for(;r<t.length;){const o=t[r],i=t[r+1];if(r+=2,("optionalAccess"===o||"optionalCall"===o)&&null==n)return;"access"===o||"optionalAccess"===o?(e=n,n=i(n)):"call"!==o&&"optionalCall"!==o||(n=i(((...t)=>n.call(e,...t))),e=void 0)}return n}(W||(W={})).mediapipeFacemesh="mediapipe-facemesh";function j(t,e){return Math.sqrt(Math.pow(t[0]-e[0],2)+Math.pow(t[1]-e[1],2))}Page({helper:null,async onReady(){console.log("face-landmarks onReady"),await t.ready(),console.log("tf ready");const e=this.selectComponent("#helper");console.log("face-landmarks load start");const o=await function(t,e){return void 0===t&&(t=W.mediapipeFacemesh),void 0===e&&(e={}),n(this,void 0,void 0,(function(){return r(this,(function(n){if(t===W.mediapipeFacemesh)return[2,O(e)];throw new Error(t+" is not a valid package name.")}))}))}(W.mediapipeFacemesh,{maxFaces:1,modelUrl:"https://cdn.static.oppenlab.com/weblf/test/facemesh/model.json",shouldLoadIrisModel:!1});console.log("face-landmarks load end"),e.set({onFrame:async(t,n)=>{const{ctx:r}=n;console.log("predict start");const i=await o.estimateFaces({input:{width:t.width,height:t.height,data:new Uint8Array(t.data)},returnTensors:!1,flipHorizontal:!1,predictIrises:!1});console.log("predict end",i.length),e.drawCanvas2D(t),i.length>0&&i.forEach((t=>{const e=t.scaledMesh;r.fillStyle="#32EEDB";for(let t=0;t<468;t++){const n=e[t][0],o=e[t][1];r.beginPath(),r.arc(n,o,1,0,2*Math.PI),r.fill()}if(e.length>468){r.strokeStyle="#FF2C35",r.lineWidth=1;const t=e[468],n=j(e[472],e[470]),o=j(e[471],e[469]);r.beginPath(),r.ellipse(t[0],t[1],o/2,n/2,0,0,2*Math.PI),r.stroke()}}))}}),this.helper=e},onShow:function(){A([this,"access",t=>t.helper,"optionalAccess",t=>t.start,"call",t=>t()])},onHide:function(){A([this,"access",t=>t.helper,"optionalAccess",t=>t.stop,"call",t=>t()])},onUnload:function(){},onShareAppMessage:function(){}});
+'use strict';
+
+var tfjs = require('../../chunks/tfjs.js');
+var face = require('../../chunks/face.js');
+
+const BLAZEFACE_MODEL_URL =
+  'https://cdn.static.oppenlab.com/weblf/test/blazeface/model.json';
+
+
+
+
+
+
+
+
+
+
+/**
+ * Load blazeface.
+ *
+ * @param config A configuration object with the following properties:
+ *  `maxFaces` The maximum number of faces returned by the model.
+ *  `inputWidth` The width of the input image.
+ *  `inputHeight` The height of the input image.
+ *  `iouThreshold` The threshold for deciding whether boxes overlap too
+ * much.
+ *  `scoreThreshold` The threshold for deciding when to remove boxes based
+ * on score.
+ */
+async function load$2({
+  maxFaces = 10,
+  inputWidth = 128,
+  inputHeight = 128,
+  iouThreshold = 0.3,
+  scoreThreshold = 0.75,
+  modelUrl,
+} = {}) {
+  let blazeface;
+  if (modelUrl != null) {
+    blazeface = await tfjs.loadGraphModel(modelUrl);
+  } else {
+    blazeface = await tfjs.loadGraphModel(BLAZEFACE_MODEL_URL, {
+      fromTFHub_: true,
+    });
+  }
+
+  const model = new face.BlazeFaceModel(
+    blazeface,
+    inputWidth,
+    inputHeight,
+    maxFaces,
+    iouThreshold,
+    scoreThreshold
+  );
+  return model;
+}
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+const MESH_ANNOTATIONS = {
+  silhouette: [
+    10,  338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288,
+    397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136,
+    172, 58,  132, 93,  234, 127, 162, 21,  54,  103, 67,  109
+  ],
+
+  lipsUpperOuter: [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291],
+  lipsLowerOuter: [146, 91, 181, 84, 17, 314, 405, 321, 375, 291],
+  lipsUpperInner: [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308],
+  lipsLowerInner: [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308],
+
+  rightEyeUpper0: [246, 161, 160, 159, 158, 157, 173],
+  rightEyeLower0: [33, 7, 163, 144, 145, 153, 154, 155, 133],
+  rightEyeUpper1: [247, 30, 29, 27, 28, 56, 190],
+  rightEyeLower1: [130, 25, 110, 24, 23, 22, 26, 112, 243],
+  rightEyeUpper2: [113, 225, 224, 223, 222, 221, 189],
+  rightEyeLower2: [226, 31, 228, 229, 230, 231, 232, 233, 244],
+  rightEyeLower3: [143, 111, 117, 118, 119, 120, 121, 128, 245],
+
+  rightEyebrowUpper: [156, 70, 63, 105, 66, 107, 55, 193],
+  rightEyebrowLower: [35, 124, 46, 53, 52, 65],
+
+  rightEyeIris: [473, 474, 475, 476, 477],
+
+  leftEyeUpper0: [466, 388, 387, 386, 385, 384, 398],
+  leftEyeLower0: [263, 249, 390, 373, 374, 380, 381, 382, 362],
+  leftEyeUpper1: [467, 260, 259, 257, 258, 286, 414],
+  leftEyeLower1: [359, 255, 339, 254, 253, 252, 256, 341, 463],
+  leftEyeUpper2: [342, 445, 444, 443, 442, 441, 413],
+  leftEyeLower2: [446, 261, 448, 449, 450, 451, 452, 453, 464],
+  leftEyeLower3: [372, 340, 346, 347, 348, 349, 350, 357, 465],
+
+  leftEyebrowUpper: [383, 300, 293, 334, 296, 336, 285, 417],
+  leftEyebrowLower: [265, 353, 276, 283, 282, 295],
+
+  leftEyeIris: [468, 469, 470, 471, 472],
+
+  midwayBetweenEyes: [168],
+
+  noseTip: [1],
+  noseBottom: [2],
+  noseRightCorner: [98],
+  noseLeftCorner: [327],
+
+  rightCheek: [205],
+  leftCheek: [425]
+};
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+
+
+// The facial bounding box.
+
+
+
+
+
+
+function scaleBoxCoordinates(box, factor) {
+  const startPoint =
+      [box.startPoint[0] * factor[0], box.startPoint[1] * factor[1]];
+  const endPoint =
+      [box.endPoint[0] * factor[0], box.endPoint[1] * factor[1]];
+
+  return {startPoint, endPoint};
+}
+
+function getBoxSize(box) {
+  return [
+    Math.abs(box.endPoint[0] - box.startPoint[0]),
+    Math.abs(box.endPoint[1] - box.startPoint[1])
+  ];
+}
+
+function getBoxCenter(box) {
+  return [
+    box.startPoint[0] + (box.endPoint[0] - box.startPoint[0]) / 2,
+    box.startPoint[1] + (box.endPoint[1] - box.startPoint[1]) / 2
+  ];
+}
+
+function cutBoxFromImageAndResize(
+    box, image, cropSize) {
+  const h = image.shape[1];
+  const w = image.shape[2];
+
+  const boxes = [[
+    box.startPoint[1] / h, box.startPoint[0] / w, box.endPoint[1] / h,
+    box.endPoint[0] / w
+  ]];
+
+  return tfjs.image.cropAndResize(image, boxes, [0], cropSize,
+    'bilinear' /* method */,
+    0 /* extrapolation value */);
+}
+
+/**
+ * Enlarges the box by the provided factor.
+ * @param box An object with startPoint and endPoint properties describing the
+ * outlines of the box to be enlarged.
+ * @param factor optional The enlargement factor. Defaults to 1.5
+ */
+function enlargeBox(box, factor = 1.5) {
+  const center = getBoxCenter(box);
+  const size = getBoxSize(box);
+
+  const newHalfSize = [factor * size[0] / 2, factor * size[1] / 2];
+  const startPoint =
+      [center[0] - newHalfSize[0], center[1] - newHalfSize[1]];
+  const endPoint =
+      [center[0] + newHalfSize[0], center[1] + newHalfSize[1]];
+
+  return {startPoint, endPoint, landmarks: box.landmarks};
+}
+
+/**
+ * Squarifies the provided box by setting its length and height equal to
+ * max(length, height) while preserving its center point.
+ * @param box An object with startPoint and endPoint properties describing the
+ * outlines of the box to be squarified.
+ */
+function squarifyBox(box) {
+  const centers = getBoxCenter(box);
+  const size = getBoxSize(box);
+  const maxEdge = Math.max(...size);
+
+  const halfSize = maxEdge / 2;
+  const startPoint =
+      [centers[0] - halfSize, centers[1] - halfSize];
+  const endPoint =
+      [centers[0] + halfSize, centers[1] + halfSize];
+
+  return {startPoint, endPoint, landmarks: box.landmarks};
+}
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+
+
+
+
+
+
+
+
+const IDENTITY_MATRIX =
+    [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+
+/**
+ * Normalizes the provided angle to the range -pi to pi.
+ * @param angle The angle in radians to be normalized.
+ */
+function normalizeRadians(angle) {
+  return angle - 2 * Math.PI * Math.floor((angle + Math.PI) / (2 * Math.PI));
+}
+
+/**
+ * Computes the angle of rotation between two anchor points.
+ * @param point1 First anchor point
+ * @param point2 Second anchor point
+ */
+function computeRotation(
+    point1, point2) {
+  const radians =
+      Math.PI / 2 - Math.atan2(-(point2[1] - point1[1]), point2[0] - point1[0]);
+  return normalizeRadians(radians);
+}
+
+function buildTranslationMatrix(x, y) {
+  return [[1, 0, x], [0, 1, y], [0, 0, 1]];
+}
+
+function dot(v1, v2) {
+  let product = 0;
+  for (let i = 0; i < v1.length; i++) {
+    product += v1[i] * v2[i];
+  }
+  return product;
+}
+
+function getColumnFrom2DArr(
+    arr, columnIndex) {
+  const column = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    column.push(arr[i][columnIndex]);
+  }
+
+  return column;
+}
+
+function multiplyTransformMatrices(
+    mat1, mat2) {
+  const product = [];
+
+  const size = mat1.length;
+
+  for (let row = 0; row < size; row++) {
+    product.push([]);
+    for (let col = 0; col < size; col++) {
+      product[row].push(dot(mat1[row], getColumnFrom2DArr(mat2, col)));
+    }
+  }
+
+  return product ;
+}
+
+function buildRotationMatrix(
+    rotation, center) {
+  const cosA = Math.cos(rotation);
+  const sinA = Math.sin(rotation);
+
+  const rotationMatrix = [[cosA, -sinA, 0], [sinA, cosA, 0], [0, 0, 1]];
+  const translationMatrix = buildTranslationMatrix(center[0], center[1]);
+  const translationTimesRotation =
+      multiplyTransformMatrices(translationMatrix, rotationMatrix);
+
+  const negativeTranslationMatrix =
+      buildTranslationMatrix(-center[0], -center[1]);
+  return multiplyTransformMatrices(
+      translationTimesRotation, negativeTranslationMatrix);
+}
+
+function invertTransformMatrix(matrix)
+ {
+  const rotationComponent =
+      [[matrix[0][0], matrix[1][0]], [matrix[0][1], matrix[1][1]]];
+  const translationComponent = [matrix[0][2], matrix[1][2]];
+  const invertedTranslation = [
+    -dot(rotationComponent[0], translationComponent),
+    -dot(rotationComponent[1], translationComponent)
+  ];
+
+  return [
+    rotationComponent[0].concat(invertedTranslation[0]) ,
+    rotationComponent[1].concat(invertedTranslation[1]) , [0, 0, 1]
+  ];
+}
+
+function rotatePoint(
+    homogeneousCoordinate,
+    rotationMatrix) {
+  return [
+    dot(homogeneousCoordinate, rotationMatrix[0]),
+    dot(homogeneousCoordinate, rotationMatrix[1])
+  ];
+}
+
+const LANDMARKS_COUNT = 468;
+const UPDATE_REGION_OF_INTEREST_IOU_THRESHOLD = 0.25;
+
+const MESH_MOUTH_INDEX = 13;
+const MESH_KEYPOINTS_LINE_OF_SYMMETRY_INDICES =
+    [MESH_MOUTH_INDEX, MESH_ANNOTATIONS['midwayBetweenEyes'][0]];
+
+const BLAZEFACE_MOUTH_INDEX = 3;
+const BLAZEFACE_NOSE_INDEX = 2;
+const BLAZEFACE_KEYPOINTS_LINE_OF_SYMMETRY_INDICES =
+    [BLAZEFACE_MOUTH_INDEX, BLAZEFACE_NOSE_INDEX];
+
+const LEFT_EYE_OUTLINE = MESH_ANNOTATIONS['leftEyeLower0'];
+const LEFT_EYE_BOUNDS =
+    [LEFT_EYE_OUTLINE[0], LEFT_EYE_OUTLINE[LEFT_EYE_OUTLINE.length - 1]];
+const RIGHT_EYE_OUTLINE = MESH_ANNOTATIONS['rightEyeLower0'];
+const RIGHT_EYE_BOUNDS =
+    [RIGHT_EYE_OUTLINE[0], RIGHT_EYE_OUTLINE[RIGHT_EYE_OUTLINE.length - 1]];
+
+const IRIS_UPPER_CENTER_INDEX = 3;
+const IRIS_LOWER_CENTER_INDEX = 4;
+const IRIS_IRIS_INDEX = 71;
+const IRIS_NUM_COORDINATES = 76;
+
+// Factor by which to enlarge the box around the eye landmarks so the input
+// region matches the expectations of the iris model.
+const ENLARGE_EYE_RATIO = 2.3;
+const IRIS_MODEL_INPUT_SIZE = 64;
+
+// A mapping from facemesh model keypoints to iris model keypoints.
+const MESH_TO_IRIS_INDICES_MAP = [
+  {key: 'EyeUpper0', indices: [9, 10, 11, 12, 13, 14, 15]},
+  {key: 'EyeUpper1', indices: [25, 26, 27, 28, 29, 30, 31]},
+  {key: 'EyeUpper2', indices: [41, 42, 43, 44, 45, 46, 47]},
+  {key: 'EyeLower0', indices: [0, 1, 2, 3, 4, 5, 6, 7, 8]},
+  {key: 'EyeLower1', indices: [16, 17, 18, 19, 20, 21, 22, 23, 24]},
+  {key: 'EyeLower2', indices: [32, 33, 34, 35, 36, 37, 38, 39, 40]},
+  {key: 'EyeLower3', indices: [54, 55, 56, 57, 58, 59, 60, 61, 62]},
+  {key: 'EyebrowUpper', indices: [63, 64, 65, 66, 67, 68, 69, 70]},
+  {key: 'EyebrowLower', indices: [48, 49, 50, 51, 52, 53]}
+];
+
+// Replace the raw coordinates returned by facemesh with refined iris model
+// coordinates.
+// Update the z coordinate to be an average of the original and the new. This
+// produces the best visual effect.
+function replaceRawCoordinates(
+    rawCoords, newCoords, prefix, keys) {
+  for (let i = 0; i < MESH_TO_IRIS_INDICES_MAP.length; i++) {
+    const {key, indices} = MESH_TO_IRIS_INDICES_MAP[i];
+    const originalIndices = MESH_ANNOTATIONS[`${prefix}${key}`];
+
+    const shouldReplaceAllKeys = keys == null;
+    if (shouldReplaceAllKeys || keys.includes(key)) {
+      for (let j = 0; j < indices.length; j++) {
+        const index = indices[j];
+
+        rawCoords[originalIndices[j]] = [
+          newCoords[index][0], newCoords[index][1],
+          (newCoords[index][2] + rawCoords[originalIndices[j]][2]) / 2
+        ];
+      }
+    }
+  }
+}
+
+// The Pipeline coordinates between the bounding box and skeleton models.
+class Pipeline {
+  // MediaPipe model for detecting facial bounding boxes.
+  
+  // MediaPipe model for detecting facial mesh.
+  
+
+  
+  
+  
+  
+
+  
+
+  // An array of facial bounding boxes.
+   __init() {this.regionsOfInterest = [];}
+   __init2() {this.runsWithoutFaceDetector = 0;}
+
+  constructor(
+      boundingBoxDetector,
+      meshDetector, meshWidth, meshHeight,
+      maxContinuousChecks, maxFaces,
+      irisModel) {Pipeline.prototype.__init.call(this);Pipeline.prototype.__init2.call(this);
+    this.boundingBoxDetector = boundingBoxDetector;
+    this.meshDetector = meshDetector;
+    this.irisModel = irisModel;
+    this.meshWidth = meshWidth;
+    this.meshHeight = meshHeight;
+    this.maxContinuousChecks = maxContinuousChecks;
+    this.maxFaces = maxFaces;
+  }
+
+  transformRawCoords(
+      rawCoords, box, angle,
+      rotationMatrix) {
+    const boxSize =
+        getBoxSize({startPoint: box.startPoint, endPoint: box.endPoint});
+    const scaleFactor =
+        [boxSize[0] / this.meshWidth, boxSize[1] / this.meshHeight];
+    const coordsScaled = rawCoords.map(
+        coord => ([
+          scaleFactor[0] * (coord[0] - this.meshWidth / 2),
+          scaleFactor[1] * (coord[1] - this.meshHeight / 2), coord[2]
+        ]));
+
+    const coordsRotationMatrix = buildRotationMatrix(angle, [0, 0]);
+    const coordsRotated = coordsScaled.map(
+        (coord) =>
+            ([...rotatePoint(coord, coordsRotationMatrix), coord[2]]));
+
+    const inverseRotationMatrix = invertTransformMatrix(rotationMatrix);
+    const boxCenter = [
+      ...getBoxCenter({startPoint: box.startPoint, endPoint: box.endPoint}), 1
+    ];
+
+    const originalBoxCenter = [
+      dot(boxCenter, inverseRotationMatrix[0]),
+      dot(boxCenter, inverseRotationMatrix[1])
+    ];
+
+    return coordsRotated.map((coord) => ([
+                               coord[0] + originalBoxCenter[0],
+                               coord[1] + originalBoxCenter[1], coord[2]
+                             ]));
+  }
+
+   getLeftToRightEyeDepthDifference(rawCoords) {
+    const leftEyeZ = rawCoords[LEFT_EYE_BOUNDS[0]][2];
+    const rightEyeZ = rawCoords[RIGHT_EYE_BOUNDS[0]][2];
+    return leftEyeZ - rightEyeZ;
+  }
+
+  // Returns a box describing a cropped region around the eye fit for passing to
+  // the iris model.
+  getEyeBox(
+      rawCoords, face, eyeInnerCornerIndex,
+      eyeOuterCornerIndex,
+      flip = false) {
+    const box = squarifyBox(enlargeBox(
+        this.calculateLandmarksBoundingBox(
+            [rawCoords[eyeInnerCornerIndex], rawCoords[eyeOuterCornerIndex]]),
+        ENLARGE_EYE_RATIO));
+    const boxSize = getBoxSize(box);
+    let crop = tfjs.image.cropAndResize(
+        face, [[
+          box.startPoint[1] / this.meshHeight,
+          box.startPoint[0] / this.meshWidth, box.endPoint[1] / this.meshHeight,
+          box.endPoint[0] / this.meshWidth
+        ]],
+        [0], [IRIS_MODEL_INPUT_SIZE, IRIS_MODEL_INPUT_SIZE]);
+    if (flip) {
+      crop = tfjs.image.flipLeftRight(crop);
+    }
+
+    return {box, boxSize, crop};
+  }
+
+  // Given a cropped image of an eye, returns the coordinates of the contours
+  // surrounding the eye and the iris.
+  getEyeCoords(
+      eyeData, eyeBox, eyeBoxSize,
+      flip = false) {
+    const eyeRawCoords = [];
+    for (let i = 0; i < IRIS_NUM_COORDINATES; i++) {
+      const x = eyeData[i * 3];
+      const y = eyeData[i * 3 + 1];
+      const z = eyeData[i * 3 + 2];
+      eyeRawCoords.push([
+        (flip ? (1 - (x / IRIS_MODEL_INPUT_SIZE)) :
+                (x / IRIS_MODEL_INPUT_SIZE)) *
+                eyeBoxSize[0] +
+            eyeBox.startPoint[0],
+        (y / IRIS_MODEL_INPUT_SIZE) * eyeBoxSize[1] + eyeBox.startPoint[1], z
+      ]);
+    }
+
+    return {rawCoords: eyeRawCoords, iris: eyeRawCoords.slice(IRIS_IRIS_INDEX)};
+  }
+
+  // The z-coordinates returned for the iris are unreliable, so we take the z
+  // values from the surrounding keypoints.
+   getAdjustedIrisCoords(
+      rawCoords, irisCoords,
+      direction) {
+    const upperCenterZ =
+        rawCoords[MESH_ANNOTATIONS[`${direction}EyeUpper0`]
+                                  [IRIS_UPPER_CENTER_INDEX]][2];
+    const lowerCenterZ =
+        rawCoords[MESH_ANNOTATIONS[`${direction}EyeLower0`]
+                                  [IRIS_LOWER_CENTER_INDEX]][2];
+    const averageZ = (upperCenterZ + lowerCenterZ) / 2;
+
+    // Iris indices:
+    // 0: center | 1: right | 2: above | 3: left | 4: below
+    return irisCoords.map((coord, i) => {
+      let z = averageZ;
+      if (i === 2) {
+        z = upperCenterZ;
+      } else if (i === 4) {
+        z = lowerCenterZ;
+      }
+      return [coord[0], coord[1], z];
+    });
+  }
+
+  /**
+   * Returns an array of predictions for each face in the input.
+   * @param input - tensor of shape [1, H, W, 3].
+   * @param predictIrises - Whether to return keypoints for the irises.
+   */
+  async predict(input, predictIrises)
+ {
+    if (this.shouldUpdateRegionsOfInterest()) {
+      const returnTensors = false;
+      const annotateFace = true;
+      const {boxes, scaleFactor} =
+          await this.boundingBoxDetector.getBoundingBoxes(
+              input, returnTensors, annotateFace);
+
+      if (boxes.length === 0) {
+        this.regionsOfInterest = [];
+        return null;
+      }
+
+      const scaledBoxes =
+          boxes.map((prediction) => {
+            const predictionBoxCPU = {
+              startPoint: tfjs.squeeze(prediction.box.startPoint).arraySync() 
+,
+              endPoint: tfjs.squeeze(prediction.box.endPoint).arraySync() 
+            };
+
+            const scaledBox =
+                scaleBoxCoordinates(predictionBoxCPU, scaleFactor );
+            const enlargedBox = enlargeBox(scaledBox);
+            const squarifiedBox = squarifyBox(enlargedBox);
+            return {
+              ...squarifiedBox,
+              landmarks: prediction.landmarks.arraySync() 
+            };
+          });
+
+      boxes.forEach((box
+
+
+
+) => {
+        if (box != null && box.startPoint != null) {
+          box.startEndTensor.dispose();
+          box.startPoint.dispose();
+          box.endPoint.dispose();
+        }
+      });
+
+      this.updateRegionsOfInterest(scaledBoxes);
+      this.runsWithoutFaceDetector = 0;
+    } else {
+      this.runsWithoutFaceDetector++;
+    }
+
+    return tfjs.tidy(() => {
+      return this.regionsOfInterest.map((box, i) => {
+        let angle = 0;
+        // The facial bounding box landmarks could come either from blazeface
+        // (if we are using a fresh box), or from the mesh model (if we are
+        // reusing an old box).
+        const boxLandmarksFromMeshModel =
+            box.landmarks.length >= LANDMARKS_COUNT;
+        let [indexOfMouth, indexOfForehead] =
+            MESH_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
+
+        if (boxLandmarksFromMeshModel === false) {
+          [indexOfMouth, indexOfForehead] =
+              BLAZEFACE_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
+        }
+
+        angle = computeRotation(
+            box.landmarks[indexOfMouth], box.landmarks[indexOfForehead]);
+
+        const faceCenter =
+            getBoxCenter({startPoint: box.startPoint, endPoint: box.endPoint});
+        const faceCenterNormalized =
+            [faceCenter[0] / input.shape[2], faceCenter[1] / input.shape[1]];
+
+        let rotatedImage = input;
+        let rotationMatrix = IDENTITY_MATRIX;
+        if (angle !== 0) {
+          rotatedImage =
+              tfjs.image.rotateWithOffset(input, angle, 0, faceCenterNormalized);
+          rotationMatrix = buildRotationMatrix(-angle, faceCenter);
+        }
+
+        const boxCPU = {startPoint: box.startPoint, endPoint: box.endPoint};
+        const face =
+            tfjs.div(cutBoxFromImageAndResize(boxCPU, rotatedImage, [
+              this.meshHeight, this.meshWidth
+            ]), 255);
+
+        // The first returned tensor represents facial contours, which are
+        // included in the coordinates.
+        const [, flag, coords] =
+            this.meshDetector.predict(
+                face) ;
+
+        const coordsReshaped = tfjs.reshape(coords, [-1, 3]);
+        let rawCoords = coordsReshaped.arraySync() ;
+
+        if (predictIrises) {
+          const {box: leftEyeBox, boxSize: leftEyeBoxSize, crop: leftEyeCrop} =
+              this.getEyeBox(
+                  rawCoords, face, LEFT_EYE_BOUNDS[0], LEFT_EYE_BOUNDS[1],
+                  true);
+          const {
+            box: rightEyeBox,
+            boxSize: rightEyeBoxSize,
+            crop: rightEyeCrop
+          } =
+              this.getEyeBox(
+                  rawCoords, face, RIGHT_EYE_BOUNDS[0], RIGHT_EYE_BOUNDS[1]);
+
+          const eyePredictions =
+              (this.irisModel.predict(
+                  tfjs.concat([leftEyeCrop, rightEyeCrop]))) ;
+          const eyePredictionsData = eyePredictions.dataSync() ;
+
+          const leftEyeData =
+              eyePredictionsData.slice(0, IRIS_NUM_COORDINATES * 3);
+          const {rawCoords: leftEyeRawCoords, iris: leftIrisRawCoords} =
+              this.getEyeCoords(leftEyeData, leftEyeBox, leftEyeBoxSize, true);
+
+          const rightEyeData =
+              eyePredictionsData.slice(IRIS_NUM_COORDINATES * 3);
+          const {rawCoords: rightEyeRawCoords, iris: rightIrisRawCoords} =
+              this.getEyeCoords(rightEyeData, rightEyeBox, rightEyeBoxSize);
+
+          const leftToRightEyeDepthDifference =
+              this.getLeftToRightEyeDepthDifference(rawCoords);
+          if (Math.abs(leftToRightEyeDepthDifference) <
+              30) {  // User is looking straight ahead.
+            replaceRawCoordinates(rawCoords, leftEyeRawCoords, 'left');
+            replaceRawCoordinates(rawCoords, rightEyeRawCoords, 'right');
+          } else if (leftToRightEyeDepthDifference < 1) {  // User is looking
+                                                           // towards the
+                                                           // right.
+            // If the user is looking to the left or to the right, the iris
+            // coordinates tend to diverge too much from the mesh coordinates
+            // for them to be merged. So we only update a single contour line
+            // above and below the eye.
+            replaceRawCoordinates(
+                rawCoords, leftEyeRawCoords, 'left',
+                ['EyeUpper0', 'EyeLower0']);
+          } else {  // User is looking towards the left.
+            replaceRawCoordinates(
+                rawCoords, rightEyeRawCoords, 'right',
+                ['EyeUpper0', 'EyeLower0']);
+          }
+
+          const adjustedLeftIrisCoords =
+              this.getAdjustedIrisCoords(rawCoords, leftIrisRawCoords, 'left');
+          const adjustedRightIrisCoords = this.getAdjustedIrisCoords(
+              rawCoords, rightIrisRawCoords, 'right');
+          rawCoords = rawCoords.concat(adjustedLeftIrisCoords)
+                          .concat(adjustedRightIrisCoords);
+        }
+
+        const transformedCoordsData =
+            this.transformRawCoords(rawCoords, box, angle, rotationMatrix);
+        const transformedCoords = tfjs.tensor2d(transformedCoordsData);
+
+        const landmarksBox = enlargeBox(
+            this.calculateLandmarksBoundingBox(transformedCoordsData));
+        const squarifiedLandmarksBox = squarifyBox(landmarksBox);
+        this.regionsOfInterest[i] = {
+          ...squarifiedLandmarksBox,
+          landmarks: transformedCoords.arraySync() 
+        };
+
+        const prediction = {
+          coords: tfjs.tensor2d(rawCoords, [rawCoords.length, 3]),
+          scaledCoords: transformedCoords,
+          box: landmarksBox,
+          flag: tfjs.squeeze(flag)
+        };
+
+        return prediction;
+      });
+    });
+  }
+
+  // Updates regions of interest if the intersection over union between
+  // the incoming and previous regions falls below a threshold.
+  updateRegionsOfInterest(boxes) {
+    for (let i = 0; i < boxes.length; i++) {
+      const box = boxes[i];
+      const previousBox = this.regionsOfInterest[i];
+      let iou = 0;
+
+      if (previousBox && previousBox.startPoint) {
+        const [boxStartX, boxStartY] = box.startPoint;
+        const [boxEndX, boxEndY] = box.endPoint;
+        const [previousBoxStartX, previousBoxStartY] = previousBox.startPoint;
+        const [previousBoxEndX, previousBoxEndY] = previousBox.endPoint;
+
+        const xStartMax = Math.max(boxStartX, previousBoxStartX);
+        const yStartMax = Math.max(boxStartY, previousBoxStartY);
+        const xEndMin = Math.min(boxEndX, previousBoxEndX);
+        const yEndMin = Math.min(boxEndY, previousBoxEndY);
+
+        const intersection = (xEndMin - xStartMax) * (yEndMin - yStartMax);
+        const boxArea = (boxEndX - boxStartX) * (boxEndY - boxStartY);
+        const previousBoxArea = (previousBoxEndX - previousBoxStartX) *
+            (previousBoxEndY - boxStartY);
+        iou = intersection / (boxArea + previousBoxArea - intersection);
+      }
+
+      if (iou < UPDATE_REGION_OF_INTEREST_IOU_THRESHOLD) {
+        this.regionsOfInterest[i] = box;
+      }
+    }
+
+    this.regionsOfInterest = this.regionsOfInterest.slice(0, boxes.length);
+  }
+
+  clearRegionOfInterest(index) {
+    if (this.regionsOfInterest[index] != null) {
+      this.regionsOfInterest = [
+        ...this.regionsOfInterest.slice(0, index),
+        ...this.regionsOfInterest.slice(index + 1)
+      ];
+    }
+  }
+
+  shouldUpdateRegionsOfInterest() {
+    const roisCount = this.regionsOfInterest.length;
+    const noROIs = roisCount === 0;
+
+    if (this.maxFaces === 1 || noROIs) {
+      return noROIs;
+    }
+
+    return roisCount !== this.maxFaces &&
+        this.runsWithoutFaceDetector >= this.maxContinuousChecks;
+  }
+
+  calculateLandmarksBoundingBox(landmarks) {
+    const xs = landmarks.map(d => d[0]);
+    const ys = landmarks.map(d => d[1]);
+
+    const startPoint = [Math.min(...xs), Math.min(...ys)];
+    const endPoint = [Math.max(...xs), Math.max(...ys)];
+    return {startPoint, endPoint};
+  }
+}
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+const UV_COORDS = [
+  [0.499976992607117, 0.652534008026123],
+  [0.500025987625122, 0.547487020492554],
+  [0.499974012374878, 0.602371990680695],
+  [0.482113003730774, 0.471979022026062],
+  [0.500150978565216, 0.527155995368958],
+  [0.499909996986389, 0.498252987861633],
+  [0.499523013830185, 0.40106201171875],
+  [0.289712011814117, 0.380764007568359],
+  [0.499954998493195, 0.312398016452789],
+  [0.499987006187439, 0.269918978214264],
+  [0.500023007392883, 0.107050001621246],
+  [0.500023007392883, 0.666234016418457],
+  [0.5000159740448, 0.679224014282227],
+  [0.500023007392883, 0.692348003387451],
+  [0.499976992607117, 0.695277988910675],
+  [0.499976992607117, 0.70593398809433],
+  [0.499976992607117, 0.719385027885437],
+  [0.499976992607117, 0.737019002437592],
+  [0.499967992305756, 0.781370997428894],
+  [0.499816000461578, 0.562981009483337],
+  [0.473773002624512, 0.573909997940063],
+  [0.104906998574734, 0.254140973091125],
+  [0.365929991006851, 0.409575998783112],
+  [0.338757991790771, 0.41302502155304],
+  [0.311120003461838, 0.409460008144379],
+  [0.274657994508743, 0.389131009578705],
+  [0.393361985683441, 0.403706014156342],
+  [0.345234006643295, 0.344011008739471],
+  [0.370094001293182, 0.346076011657715],
+  [0.319321990013123, 0.347265005111694],
+  [0.297903001308441, 0.353591024875641],
+  [0.24779200553894, 0.410809993743896],
+  [0.396889001131058, 0.842755019664764],
+  [0.280097991228104, 0.375599980354309],
+  [0.106310002505779, 0.399955987930298],
+  [0.2099249958992, 0.391353011131287],
+  [0.355807989835739, 0.534406006336212],
+  [0.471751004457474, 0.65040397644043],
+  [0.474155008792877, 0.680191993713379],
+  [0.439785003662109, 0.657229006290436],
+  [0.414617002010345, 0.66654098033905],
+  [0.450374007225037, 0.680860996246338],
+  [0.428770989179611, 0.682690978050232],
+  [0.374971002340317, 0.727805018424988],
+  [0.486716985702515, 0.547628998756409],
+  [0.485300987958908, 0.527395009994507],
+  [0.257764995098114, 0.314490020275116],
+  [0.401223003864288, 0.455172002315521],
+  [0.429818987846375, 0.548614978790283],
+  [0.421351999044418, 0.533740997314453],
+  [0.276895999908447, 0.532056987285614],
+  [0.483370006084442, 0.499586999416351],
+  [0.33721199631691, 0.282882988452911],
+  [0.296391993761063, 0.293242990970612],
+  [0.169294998049736, 0.193813979625702],
+  [0.447580009698868, 0.302609980106354],
+  [0.392390012741089, 0.353887975215912],
+  [0.354490011930466, 0.696784019470215],
+  [0.067304998636246, 0.730105042457581],
+  [0.442739009857178, 0.572826027870178],
+  [0.457098007202148, 0.584792017936707],
+  [0.381974011659622, 0.694710969924927],
+  [0.392388999462128, 0.694203019142151],
+  [0.277076005935669, 0.271932005882263],
+  [0.422551989555359, 0.563233017921448],
+  [0.385919004678726, 0.281364023685455],
+  [0.383103013038635, 0.255840003490448],
+  [0.331431001424789, 0.119714021682739],
+  [0.229923993349075, 0.232002973556519],
+  [0.364500999450684, 0.189113974571228],
+  [0.229622006416321, 0.299540996551514],
+  [0.173287004232407, 0.278747975826263],
+  [0.472878992557526, 0.666198015213013],
+  [0.446828007698059, 0.668527007102966],
+  [0.422762006521225, 0.673889994621277],
+  [0.445307999849319, 0.580065965652466],
+  [0.388103008270264, 0.693961024284363],
+  [0.403039008378983, 0.706539988517761],
+  [0.403629004955292, 0.693953037261963],
+  [0.460041999816895, 0.557139039039612],
+  [0.431158006191254, 0.692366003990173],
+  [0.452181994915009, 0.692366003990173],
+  [0.475387006998062, 0.692366003990173],
+  [0.465828001499176, 0.779190003871918],
+  [0.472328990697861, 0.736225962638855],
+  [0.473087012767792, 0.717857003211975],
+  [0.473122000694275, 0.704625964164734],
+  [0.473033010959625, 0.695277988910675],
+  [0.427942007780075, 0.695277988910675],
+  [0.426479011774063, 0.703539967536926],
+  [0.423162013292313, 0.711845993995667],
+  [0.4183090031147, 0.720062971115112],
+  [0.390094995498657, 0.639572978019714],
+  [0.013953999616206, 0.560034036636353],
+  [0.499913990497589, 0.58014702796936],
+  [0.413199990987778, 0.69539999961853],
+  [0.409626007080078, 0.701822996139526],
+  [0.468080013990402, 0.601534962654114],
+  [0.422728985548019, 0.585985004901886],
+  [0.463079988956451, 0.593783974647522],
+  [0.37211999297142, 0.47341400384903],
+  [0.334562003612518, 0.496073007583618],
+  [0.411671012639999, 0.546965003013611],
+  [0.242175996303558, 0.14767599105835],
+  [0.290776997804642, 0.201445996761322],
+  [0.327338010072708, 0.256527006626129],
+  [0.399509996175766, 0.748921036720276],
+  [0.441727995872498, 0.261676013469696],
+  [0.429764986038208, 0.187834024429321],
+  [0.412198007106781, 0.108901023864746],
+  [0.288955003023148, 0.398952007293701],
+  [0.218936994671822, 0.435410976409912],
+  [0.41278201341629, 0.398970007896423],
+  [0.257135003805161, 0.355440020561218],
+  [0.427684992551804, 0.437960982322693],
+  [0.448339998722076, 0.536936044692993],
+  [0.178560003638268, 0.45755398273468],
+  [0.247308000922203, 0.457193970680237],
+  [0.286267012357712, 0.467674970626831],
+  [0.332827985286713, 0.460712015628815],
+  [0.368755996227264, 0.447206974029541],
+  [0.398963987827301, 0.432654976844788],
+  [0.476410001516342, 0.405806005001068],
+  [0.189241006970406, 0.523923993110657],
+  [0.228962004184723, 0.348950982093811],
+  [0.490725994110107, 0.562400996685028],
+  [0.404670000076294, 0.485132992267609],
+  [0.019469000399113, 0.401564002037048],
+  [0.426243007183075, 0.420431017875671],
+  [0.396993011236191, 0.548797011375427],
+  [0.266469985246658, 0.376977026462555],
+  [0.439121007919312, 0.51895797252655],
+  [0.032313998788595, 0.644356966018677],
+  [0.419054001569748, 0.387154996395111],
+  [0.462783008813858, 0.505746960639954],
+  [0.238978996872902, 0.779744982719421],
+  [0.198220998048782, 0.831938028335571],
+  [0.107550002634525, 0.540755033493042],
+  [0.183610007166862, 0.740257024765015],
+  [0.134409993886948, 0.333683013916016],
+  [0.385764002799988, 0.883153975009918],
+  [0.490967005491257, 0.579378008842468],
+  [0.382384985685349, 0.508572995662689],
+  [0.174399003386497, 0.397670984268188],
+  [0.318785011768341, 0.39623498916626],
+  [0.343364000320435, 0.400596976280212],
+  [0.396100014448166, 0.710216999053955],
+  [0.187885001301765, 0.588537991046906],
+  [0.430987000465393, 0.944064974784851],
+  [0.318993002176285, 0.898285031318665],
+  [0.266247987747192, 0.869701027870178],
+  [0.500023007392883, 0.190576016902924],
+  [0.499976992607117, 0.954452991485596],
+  [0.366169989109039, 0.398822009563446],
+  [0.393207013607025, 0.39553701877594],
+  [0.410373002290726, 0.391080021858215],
+  [0.194993004202843, 0.342101991176605],
+  [0.388664990663528, 0.362284004688263],
+  [0.365961998701096, 0.355970978736877],
+  [0.343364000320435, 0.355356991291046],
+  [0.318785011768341, 0.35834002494812],
+  [0.301414996385574, 0.363156020641327],
+  [0.058132998645306, 0.319076001644135],
+  [0.301414996385574, 0.387449026107788],
+  [0.499987989664078, 0.618434011936188],
+  [0.415838003158569, 0.624195992946625],
+  [0.445681989192963, 0.566076993942261],
+  [0.465844005346298, 0.620640993118286],
+  [0.49992299079895, 0.351523995399475],
+  [0.288718998432159, 0.819945991039276],
+  [0.335278987884521, 0.852819979190826],
+  [0.440512001514435, 0.902418971061707],
+  [0.128294005990028, 0.791940987110138],
+  [0.408771991729736, 0.373893976211548],
+  [0.455606997013092, 0.451801002025604],
+  [0.499877005815506, 0.908990025520325],
+  [0.375436991453171, 0.924192011356354],
+  [0.11421000212431, 0.615022003650665],
+  [0.448662012815475, 0.695277988910675],
+  [0.4480200111866, 0.704632043838501],
+  [0.447111994028091, 0.715808033943176],
+  [0.444831997156143, 0.730794012546539],
+  [0.430011987686157, 0.766808986663818],
+  [0.406787008047104, 0.685672998428345],
+  [0.400738000869751, 0.681069016456604],
+  [0.392399996519089, 0.677703022956848],
+  [0.367855995893478, 0.663918972015381],
+  [0.247923001646996, 0.601333022117615],
+  [0.452769994735718, 0.420849978923798],
+  [0.43639200925827, 0.359887003898621],
+  [0.416164010763168, 0.368713974952698],
+  [0.413385987281799, 0.692366003990173],
+  [0.228018000721931, 0.683571994304657],
+  [0.468268007040024, 0.352671027183533],
+  [0.411361992359161, 0.804327011108398],
+  [0.499989002943039, 0.469825029373169],
+  [0.479153990745544, 0.442654013633728],
+  [0.499974012374878, 0.439637005329132],
+  [0.432112008333206, 0.493588984012604],
+  [0.499886006116867, 0.866917014122009],
+  [0.49991300702095, 0.821729004383087],
+  [0.456548988819122, 0.819200992584229],
+  [0.344549000263214, 0.745438992977142],
+  [0.37890899181366, 0.574010014533997],
+  [0.374292999505997, 0.780184984207153],
+  [0.319687992334366, 0.570737957954407],
+  [0.357154995203018, 0.604269981384277],
+  [0.295284003019333, 0.621580958366394],
+  [0.447750002145767, 0.862477004528046],
+  [0.410986006259918, 0.508723020553589],
+  [0.31395098567009, 0.775308012962341],
+  [0.354128003120422, 0.812552988529205],
+  [0.324548006057739, 0.703992962837219],
+  [0.189096003770828, 0.646299958229065],
+  [0.279776990413666, 0.71465802192688],
+  [0.1338230073452, 0.682700991630554],
+  [0.336768001317978, 0.644733011722565],
+  [0.429883986711502, 0.466521978378296],
+  [0.455527991056442, 0.548622965812683],
+  [0.437114000320435, 0.558896005153656],
+  [0.467287987470627, 0.529924988746643],
+  [0.414712011814117, 0.335219979286194],
+  [0.37704598903656, 0.322777986526489],
+  [0.344107985496521, 0.320150971412659],
+  [0.312875986099243, 0.32233202457428],
+  [0.283526003360748, 0.333190023899078],
+  [0.241245999932289, 0.382785975933075],
+  [0.102986000478268, 0.468762993812561],
+  [0.267612010240555, 0.424560010433197],
+  [0.297879010438919, 0.433175981044769],
+  [0.333433985710144, 0.433878004550934],
+  [0.366427004337311, 0.426115989685059],
+  [0.396012008190155, 0.416696012020111],
+  [0.420121014118195, 0.41022801399231],
+  [0.007561000064015, 0.480777025222778],
+  [0.432949006557465, 0.569517970085144],
+  [0.458638995885849, 0.479089021682739],
+  [0.473466008901596, 0.545744001865387],
+  [0.476087987422943, 0.563830018043518],
+  [0.468472003936768, 0.555056989192963],
+  [0.433990985155106, 0.582361996173859],
+  [0.483518004417419, 0.562983989715576],
+  [0.482482999563217, 0.57784903049469],
+  [0.42645001411438, 0.389798998832703],
+  [0.438998997211456, 0.39649498462677],
+  [0.450067013502121, 0.400434017181396],
+  [0.289712011814117, 0.368252992630005],
+  [0.276670008897781, 0.363372981548309],
+  [0.517862021923065, 0.471948027610779],
+  [0.710287988185883, 0.380764007568359],
+  [0.526226997375488, 0.573909997940063],
+  [0.895093023777008, 0.254140973091125],
+  [0.634069979190826, 0.409575998783112],
+  [0.661242008209229, 0.41302502155304],
+  [0.688880026340485, 0.409460008144379],
+  [0.725341975688934, 0.389131009578705],
+  [0.606630027294159, 0.40370500087738],
+  [0.654766023159027, 0.344011008739471],
+  [0.629905998706818, 0.346076011657715],
+  [0.680678009986877, 0.347265005111694],
+  [0.702096998691559, 0.353591024875641],
+  [0.75221198797226, 0.410804986953735],
+  [0.602918028831482, 0.842862963676453],
+  [0.719901978969574, 0.375599980354309],
+  [0.893692970275879, 0.399959981441498],
+  [0.790081977844238, 0.391354024410248],
+  [0.643998026847839, 0.534487962722778],
+  [0.528249025344849, 0.65040397644043],
+  [0.525849997997284, 0.680191040039062],
+  [0.560214996337891, 0.657229006290436],
+  [0.585384011268616, 0.66654098033905],
+  [0.549625992774963, 0.680860996246338],
+  [0.57122802734375, 0.682691991329193],
+  [0.624852001667023, 0.72809898853302],
+  [0.513050019741058, 0.547281980514526],
+  [0.51509702205658, 0.527251958847046],
+  [0.742246985435486, 0.314507007598877],
+  [0.598631024360657, 0.454979002475739],
+  [0.570338010787964, 0.548575043678284],
+  [0.578631997108459, 0.533622980117798],
+  [0.723087012767792, 0.532054007053375],
+  [0.516445994377136, 0.499638974666595],
+  [0.662801027297974, 0.282917976379395],
+  [0.70362401008606, 0.293271005153656],
+  [0.830704987049103, 0.193813979625702],
+  [0.552385985851288, 0.302568018436432],
+  [0.607609987258911, 0.353887975215912],
+  [0.645429015159607, 0.696707010269165],
+  [0.932694971561432, 0.730105042457581],
+  [0.557260990142822, 0.572826027870178],
+  [0.542901992797852, 0.584792017936707],
+  [0.6180260181427, 0.694710969924927],
+  [0.607590973377228, 0.694203019142151],
+  [0.722943007946014, 0.271963000297546],
+  [0.577413976192474, 0.563166975975037],
+  [0.614082992076874, 0.281386971473694],
+  [0.616907000541687, 0.255886018276215],
+  [0.668509006500244, 0.119913995265961],
+  [0.770092010498047, 0.232020974159241],
+  [0.635536015033722, 0.189248979091644],
+  [0.77039098739624, 0.299556016921997],
+  [0.826722025871277, 0.278755009174347],
+  [0.527121007442474, 0.666198015213013],
+  [0.553171992301941, 0.668527007102966],
+  [0.577238023281097, 0.673889994621277],
+  [0.554691970348358, 0.580065965652466],
+  [0.611896991729736, 0.693961024284363],
+  [0.59696102142334, 0.706539988517761],
+  [0.596370995044708, 0.693953037261963],
+  [0.539958000183105, 0.557139039039612],
+  [0.568841993808746, 0.692366003990173],
+  [0.547818005084991, 0.692366003990173],
+  [0.52461302280426, 0.692366003990173],
+  [0.534089982509613, 0.779141008853912],
+  [0.527670979499817, 0.736225962638855],
+  [0.526912987232208, 0.717857003211975],
+  [0.526877999305725, 0.704625964164734],
+  [0.526966989040375, 0.695277988910675],
+  [0.572058022022247, 0.695277988910675],
+  [0.573521018028259, 0.703539967536926],
+  [0.57683801651001, 0.711845993995667],
+  [0.581691026687622, 0.720062971115112],
+  [0.609944999217987, 0.639909982681274],
+  [0.986046016216278, 0.560034036636353],
+  [0.5867999792099, 0.69539999961853],
+  [0.590372025966644, 0.701822996139526],
+  [0.531915009021759, 0.601536989212036],
+  [0.577268004417419, 0.585934996604919],
+  [0.536915004253387, 0.593786001205444],
+  [0.627542972564697, 0.473352015018463],
+  [0.665585994720459, 0.495950996875763],
+  [0.588353991508484, 0.546862006187439],
+  [0.757824003696442, 0.14767599105835],
+  [0.709249973297119, 0.201507985591888],
+  [0.672684013843536, 0.256581008434296],
+  [0.600408971309662, 0.74900496006012],
+  [0.55826598405838, 0.261672019958496],
+  [0.570303976535797, 0.187870979309082],
+  [0.588165998458862, 0.109044015407562],
+  [0.711045026779175, 0.398952007293701],
+  [0.781069993972778, 0.435405015945435],
+  [0.587247014045715, 0.398931980133057],
+  [0.742869973182678, 0.355445981025696],
+  [0.572156012058258, 0.437651991844177],
+  [0.55186802148819, 0.536570012569427],
+  [0.821442008018494, 0.457556009292603],
+  [0.752701997756958, 0.457181990146637],
+  [0.71375697851181, 0.467626988887787],
+  [0.66711300611496, 0.460672974586487],
+  [0.631101012229919, 0.447153985500336],
+  [0.6008620262146, 0.432473003864288],
+  [0.523481011390686, 0.405627012252808],
+  [0.810747981071472, 0.523926019668579],
+  [0.771045982837677, 0.348959028720856],
+  [0.509127020835876, 0.562718033790588],
+  [0.595292985439301, 0.485023975372314],
+  [0.980530977249146, 0.401564002037048],
+  [0.573499977588654, 0.420000016689301],
+  [0.602994978427887, 0.548687994480133],
+  [0.733529984951019, 0.376977026462555],
+  [0.560611009597778, 0.519016981124878],
+  [0.967685997486115, 0.644356966018677],
+  [0.580985009670258, 0.387160003185272],
+  [0.537728011608124, 0.505385041236877],
+  [0.760966002941132, 0.779752969741821],
+  [0.801778972148895, 0.831938028335571],
+  [0.892440974712372, 0.54076099395752],
+  [0.816350996494293, 0.740260004997253],
+  [0.865594983100891, 0.333687007427216],
+  [0.614073991775513, 0.883246004581451],
+  [0.508952975273132, 0.579437971115112],
+  [0.617941975593567, 0.508316040039062],
+  [0.825608015060425, 0.397674977779388],
+  [0.681214988231659, 0.39623498916626],
+  [0.656635999679565, 0.400596976280212],
+  [0.603900015354156, 0.710216999053955],
+  [0.81208598613739, 0.588539004325867],
+  [0.56801301240921, 0.944564998149872],
+  [0.681007981300354, 0.898285031318665],
+  [0.733752012252808, 0.869701027870178],
+  [0.633830010890961, 0.398822009563446],
+  [0.606792986392975, 0.39553701877594],
+  [0.589659988880157, 0.391062021255493],
+  [0.805015981197357, 0.342108011245728],
+  [0.611334979534149, 0.362284004688263],
+  [0.634037971496582, 0.355970978736877],
+  [0.656635999679565, 0.355356991291046],
+  [0.681214988231659, 0.35834002494812],
+  [0.698584973812103, 0.363156020641327],
+  [0.941866993904114, 0.319076001644135],
+  [0.698584973812103, 0.387449026107788],
+  [0.584177017211914, 0.624107003211975],
+  [0.554318010807037, 0.566076993942261],
+  [0.534153997898102, 0.62064003944397],
+  [0.711217999458313, 0.819975018501282],
+  [0.664629995822906, 0.852871000766754],
+  [0.559099972248077, 0.902631998062134],
+  [0.871706008911133, 0.791940987110138],
+  [0.591234028339386, 0.373893976211548],
+  [0.544341027736664, 0.451583981513977],
+  [0.624562978744507, 0.924192011356354],
+  [0.88577002286911, 0.615028977394104],
+  [0.551338016986847, 0.695277988910675],
+  [0.551980018615723, 0.704632043838501],
+  [0.552887976169586, 0.715808033943176],
+  [0.555167973041534, 0.730794012546539],
+  [0.569944024085999, 0.767035007476807],
+  [0.593203008174896, 0.685675978660583],
+  [0.599261999130249, 0.681069016456604],
+  [0.607599973678589, 0.677703022956848],
+  [0.631937980651855, 0.663500010967255],
+  [0.752032995223999, 0.601315021514893],
+  [0.547226011753082, 0.420395016670227],
+  [0.563543975353241, 0.359827995300293],
+  [0.583841025829315, 0.368713974952698],
+  [0.586614012718201, 0.692366003990173],
+  [0.771915018558502, 0.683578014373779],
+  [0.531597018241882, 0.352482974529266],
+  [0.588370978832245, 0.804440975189209],
+  [0.52079701423645, 0.442565023899078],
+  [0.567984998226166, 0.493479013442993],
+  [0.543282985687256, 0.819254994392395],
+  [0.655317008495331, 0.745514988899231],
+  [0.621008992195129, 0.574018001556396],
+  [0.625559985637665, 0.78031200170517],
+  [0.680198013782501, 0.570719003677368],
+  [0.64276397228241, 0.604337990283966],
+  [0.704662978649139, 0.621529996395111],
+  [0.552012026309967, 0.862591981887817],
+  [0.589071989059448, 0.508637011051178],
+  [0.685944974422455, 0.775357007980347],
+  [0.645735025405884, 0.812640011310577],
+  [0.675342977046967, 0.703978002071381],
+  [0.810858011245728, 0.646304965019226],
+  [0.72012197971344, 0.714666962623596],
+  [0.866151988506317, 0.682704985141754],
+  [0.663187026977539, 0.644596993923187],
+  [0.570082008838654, 0.466325998306274],
+  [0.544561982154846, 0.548375964164734],
+  [0.562758982181549, 0.558784961700439],
+  [0.531987011432648, 0.530140042304993],
+  [0.585271000862122, 0.335177004337311],
+  [0.622952997684479, 0.32277899980545],
+  [0.655896008014679, 0.320163011550903],
+  [0.687132000923157, 0.322345972061157],
+  [0.716481983661652, 0.333200991153717],
+  [0.758756995201111, 0.382786989212036],
+  [0.897013008594513, 0.468769013881683],
+  [0.732392013072968, 0.424547016620636],
+  [0.70211398601532, 0.433162987232208],
+  [0.66652500629425, 0.433866024017334],
+  [0.633504986763, 0.426087975502014],
+  [0.603875994682312, 0.416586995124817],
+  [0.579657971858978, 0.409945011138916],
+  [0.992439985275269, 0.480777025222778],
+  [0.567192018032074, 0.569419980049133],
+  [0.54136598110199, 0.478899002075195],
+  [0.526564002037048, 0.546118021011353],
+  [0.523913025856018, 0.563830018043518],
+  [0.531529009342194, 0.555056989192963],
+  [0.566035985946655, 0.582329034805298],
+  [0.51631098985672, 0.563053965568542],
+  [0.5174720287323, 0.577877044677734],
+  [0.573594987392426, 0.389806985855103],
+  [0.560697972774506, 0.395331978797913],
+  [0.549755990505219, 0.399751007556915],
+  [0.710287988185883, 0.368252992630005],
+  [0.723330020904541, 0.363372981548309]
+];
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+const FACEMESH_GRAPHMODEL_PATH =
+    'https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1';
+const IRIS_GRAPHMODEL_PATH =
+    'https://tfhub.dev/mediapipe/tfjs-model/iris/1/default/2';
+const MESH_MODEL_INPUT_WIDTH = 192;
+const MESH_MODEL_INPUT_HEIGHT = 192;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const PREDICTION_VALUES = 'MediaPipePredictionValues';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const PREDICTION_TENSORS = 'MediaPipePredictionTensors';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Load the model.
+ *
+ * @param options - a configuration object with the following properties:
+ *  - `maxContinuousChecks` How many frames to go without running the bounding
+ * box detector. Only relevant if maxFaces > 1. Defaults to 5.
+ *  - `detectionConfidence` Threshold for discarding a prediction. Defaults to
+ * 0.9.
+ *  - `maxFaces` The maximum number of faces detected in the input. Should be
+ * set to the minimum number for performance. Defaults to 10.
+ *  - `iouThreshold` A float representing the threshold for deciding whether
+ * boxes overlap too much in non-maximum suppression. Must be between [0, 1].
+ * Defaults to 0.3.
+ *  - `scoreThreshold` A threshold for deciding when to remove boxes based
+ * on score in non-maximum suppression. Defaults to 0.75.
+ *  - `shouldLoadIrisModel` Whether to also load the iris detection model.
+ * Defaults to true.
+ *  - `modelUrl` Optional param for specifying a custom facemesh model url or
+ * a `tf.io.IOHandler` object.
+ *  - `detectorModelUrl` Optional param for specifying a custom blazeface model
+ * url or a `tf.io.IOHandler` object.
+ *  - `irisModelUrl` Optional param for specifying a custom iris model url or
+ * a `tf.io.IOHandler` object.
+ */
+async function load$1(config
+
+
+
+
+
+
+
+
+
+) {
+  const {
+    maxContinuousChecks = 5,
+    detectionConfidence = 0.9,
+    maxFaces = 10,
+    iouThreshold = 0.3,
+    scoreThreshold = 0.75,
+    shouldLoadIrisModel = true,
+    modelUrl,
+    detectorModelUrl,
+    irisModelUrl
+  } = config;
+
+  let models;
+  if (shouldLoadIrisModel) {
+    models = await Promise.all([
+      loadDetectorModel(
+        detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
+      ),
+      loadMeshModel(modelUrl),
+      loadIrisModel(irisModelUrl)
+    ]);
+  } else {
+    models = await Promise.all([
+      loadDetectorModel(
+        detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
+      ),
+      loadMeshModel(modelUrl)
+    ]);
+  }
+
+  const faceMesh = new FaceMesh(
+      models[0], models[1], maxContinuousChecks, detectionConfidence, maxFaces,
+      shouldLoadIrisModel ? models[2] : null);
+  return faceMesh;
+}
+
+async function loadDetectorModel(
+    modelUrl,
+    maxFaces,
+    iouThreshold,
+    scoreThreshold
+) {
+  return load$2({modelUrl, maxFaces, iouThreshold, scoreThreshold});
+}
+
+async function loadMeshModel(modelUrl
+) {
+  if (modelUrl != null) {
+    return tfjs.loadGraphModel(modelUrl);
+  }
+  return tfjs.loadGraphModel(FACEMESH_GRAPHMODEL_PATH, {fromTFHub_: true});
+}
+
+async function loadIrisModel(modelUrl
+) {
+  if (modelUrl != null) {
+    return tfjs.loadGraphModel(modelUrl);
+  }
+  return tfjs.loadGraphModel(IRIS_GRAPHMODEL_PATH, {fromTFHub: true});
+}
+
+function getInputTensorDimensions(input
+) {
+  return input instanceof tfjs.Tensor ? [input.shape[0], input.shape[1]] :
+                                      [input.height, input.width];
+}
+
+function flipFaceHorizontal(
+    face, imageWidth) {
+  if (face.mesh instanceof tfjs.Tensor) {
+    const [topLeft, bottomRight, mesh, scaledMesh] = tfjs.tidy(() => {
+      const subtractBasis = tfjs.tensor1d([imageWidth - 1, 0, 0]);
+      const multiplyBasis = tfjs.tensor1d([1, -1, 1]);
+
+      return tfjs.tidy(() => {
+        return [
+          tfjs.concat([
+            tfjs.sub(
+                imageWidth - 1,
+                tfjs.slice((face.boundingBox.topLeft ), 0, 1)),
+            tfjs.slice((face.boundingBox.topLeft ), 1, 1)
+          ]),
+          tfjs.concat([
+            tfjs.sub(
+                imageWidth - 1,
+                tfjs.slice((face.boundingBox.bottomRight ), 0, 1)),
+            tfjs.slice((face.boundingBox.bottomRight ), 1, 1)
+          ]),
+          tfjs.mul(tfjs.sub(subtractBasis, face.mesh), multiplyBasis),
+          tfjs.mul(tfjs.sub(subtractBasis, face.scaledMesh), multiplyBasis)
+        ];
+      });
+    });
+
+    return Object.assign(
+        {}, face, {boundingBox: {topLeft, bottomRight}, mesh, scaledMesh});
+  }
+
+  return Object.assign({}, face, {
+    boundingBox: {
+      topLeft: [
+        imageWidth - 1 - (face.boundingBox.topLeft )[0],
+        (face.boundingBox.topLeft )[1]
+      ],
+      bottomRight: [
+        imageWidth - 1 - (face.boundingBox.bottomRight )[0],
+        (face.boundingBox.bottomRight )[1]
+      ]
+    },
+    mesh: (face.mesh).map(coord => {
+      const flippedCoord = coord.slice(0);
+      flippedCoord[0] = imageWidth - 1 - coord[0];
+      return flippedCoord;
+    }),
+    scaledMesh: (face.scaledMesh ).map(coord => {
+      const flippedCoord = coord.slice(0);
+      flippedCoord[0] = imageWidth - 1 - coord[0];
+      return flippedCoord;
+    })
+  });
+}
+
+
+
+
+
+
+class FaceMesh  {
+  
+  
+
+   __init() {this.kind = 'MediaPipeFaceMesh'; } 
+
+  constructor(
+      blazeFace, blazeMeshModel,
+      maxContinuousChecks, detectionConfidence,
+      maxFaces, irisModel) {FaceMesh.prototype.__init.call(this);
+    this.pipeline = new Pipeline(
+        blazeFace, blazeMeshModel, MESH_MODEL_INPUT_WIDTH,
+        MESH_MODEL_INPUT_HEIGHT, maxContinuousChecks, maxFaces, irisModel);
+
+    this.detectionConfidence = detectionConfidence;
+  }
+
+  static getAnnotations() {
+    return MESH_ANNOTATIONS;
+  }
+
+  /**
+   * Returns an array of UV coordinates for the 468 facial keypoint vertices in
+   * mesh_map.jpg. Can be used to map textures to the facial mesh.
+   */
+  static getUVCoords() {
+    return UV_COORDS;
+  }
+
+  /**
+   * Returns an array of faces in an image.
+   *
+   * @param input The image to classify. Can be a tensor, DOM element image,
+   * video, or canvas.
+   * @param returnTensors (defaults to `false`) Whether to return tensors as
+   * opposed to values.
+   * @param flipHorizontal Whether to flip/mirror the facial keypoints
+   * horizontally. Should be true for videos that are flipped by default (e.g.
+   * webcams).
+   * @param predictIrises
+   *
+   * @return An array of AnnotatedPrediction objects.
+   */
+  async estimateFaces(config)
+ {
+    const {
+      returnTensors = false,
+      flipHorizontal = false,
+      predictIrises = true
+    } = config;
+    let input = config.input;
+
+    if (predictIrises && this.pipeline.irisModel == null) {
+      throw new Error(
+          'The iris model was not loaded as part of facemesh. ' +
+          'Please initialize the model with ' +
+          'facemesh.load({shouldLoadIrisModel: true}).');
+    }
+
+    const [, width] = getInputTensorDimensions(input);
+
+    const image = tfjs.tidy(() => {
+      if (!(input instanceof tfjs.Tensor)) {
+        input = tfjs.fromPixels(input);
+      }
+      return tfjs.expandDims(tfjs.cast((input ), 'float32'), 0);
+    });
+
+    let predictions;
+    if (tfjs.getBackend() === 'webgl') {
+      // Currently tfjs-core does not pack depthwiseConv because it fails for
+      // very large inputs (https://github.com/tensorflow/tfjs/issues/1652).
+      // TODO(annxingyuan): call tf.enablePackedDepthwiseConv when available
+      // (https://github.com/tensorflow/tfjs/issues/2821)
+      const savedWebglPackDepthwiseConvFlag =
+          tfjs.env().get('WEBGL_PACK_DEPTHWISECONV');
+      tfjs.env().set('WEBGL_PACK_DEPTHWISECONV', true);
+      predictions = await this.pipeline.predict(image, predictIrises);
+      tfjs.env().set('WEBGL_PACK_DEPTHWISECONV', savedWebglPackDepthwiseConvFlag);
+    } else {
+      predictions = await this.pipeline.predict(image, predictIrises);
+    }
+
+    image.dispose();
+
+    if (predictions != null && predictions.length > 0) {
+      return Promise.all(predictions.map(async (prediction, i) => {
+        const {coords, scaledCoords, box, flag} = prediction;
+        let tensorsToRead = [flag];
+        if (!returnTensors) {
+          tensorsToRead = tensorsToRead.concat([coords, scaledCoords]);
+        }
+
+        const tensorValues = await Promise.all(
+            tensorsToRead.map(async (d) => d.array()));
+        const flagValue = tensorValues[0] ;
+
+        flag.dispose();
+        if (flagValue < this.detectionConfidence) {
+          this.pipeline.clearRegionOfInterest(i);
+        }
+
+        if (returnTensors) {
+          const annotatedPrediction = {
+            kind: PREDICTION_TENSORS,
+            faceInViewConfidence: flagValue,
+            mesh: coords,
+            scaledMesh: scaledCoords,
+            boundingBox: {
+              topLeft: tfjs.tensor1d(box.startPoint),
+              bottomRight: tfjs.tensor1d(box.endPoint)
+            }
+          };
+
+          if (flipHorizontal) {
+            return flipFaceHorizontal(annotatedPrediction, width);
+          }
+
+          return annotatedPrediction;
+        }
+
+        const [coordsArr, coordsArrScaled] =
+            tensorValues.slice(1) ;
+
+        scaledCoords.dispose();
+        coords.dispose();
+
+        let annotatedPrediction = {
+          kind: PREDICTION_VALUES,
+          faceInViewConfidence: flagValue,
+          boundingBox: {topLeft: box.startPoint, bottomRight: box.endPoint},
+          mesh: coordsArr,
+          scaledMesh: coordsArrScaled
+        };
+
+        if (flipHorizontal) {
+          annotatedPrediction =
+              flipFaceHorizontal(annotatedPrediction, width) 
+;
+        }
+
+        const annotations = {};
+        for (const key in MESH_ANNOTATIONS) {
+          if (predictIrises || key.includes('Iris') === false) {
+            annotations[key] = MESH_ANNOTATIONS[key].map(
+                index => annotatedPrediction.scaledMesh[index]);
+          }
+        }
+        annotatedPrediction['annotations'] = annotations;
+
+        return annotatedPrediction;
+      }));
+    }
+
+    return [];
+  }
+}
+
+/**
+ * @license
+ * Copyright 2020 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+var SupportedPackages; (function (SupportedPackages) {
+  const mediapipeFacemesh = 'mediapipe-facemesh'; SupportedPackages["mediapipeFacemesh"] = mediapipeFacemesh;
+})(SupportedPackages || (SupportedPackages = {}));
+
+/**
+ * Load face-landmarks-detection.
+ *
+ * @param pkg - The name of the package to load, e.g. 'mediapipe-facemesh'.
+ * @param config - a configuration object with the following properties:
+ *  - `maxContinuousChecks` How many frames to go without running the bounding
+ * box detector. Only relevant if maxFaces > 1. Defaults to 5.
+ *  - `detectionConfidence` Threshold for discarding a prediction. Defaults to
+ * 0.9.
+ *  - `maxFaces` The maximum number of faces detected in the input. Should be
+ * set to the minimum number for performance. Defaults to 10.
+ *  - `iouThreshold` A float representing the threshold for deciding whether
+ * boxes overlap too much in non-maximum suppression. Must be between [0, 1].
+ * Defaults to 0.3.
+ *  - `scoreThreshold` A threshold for deciding when to remove boxes based
+ * on score in non-maximum suppression. Defaults to 0.75.
+ *  - `shouldLoadIrisModel` Whether to also load the iris detection model.
+ * Defaults to true.
+ */
+async function load(
+    pkg = SupportedPackages.mediapipeFacemesh,
+    config = {}) {
+  if (pkg === SupportedPackages.mediapipeFacemesh) {
+    return load$1(config);
+  } else {
+    throw new Error(`${pkg} is not a valid package name.`);
+  }
+}
+
+function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }// miniprogram/pages/blazeface/blazeface.js
+
+
+const NUM_KEYPOINTS = 468;
+const GREEN = '#32EEDB';
+const RED = "#FF2C35";
+
+function distance(a, b) {
+  return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
+}
+
+Page({
+  helper: null ,
+
+  async onReady() {
+    console.log('face-landmarks onReady');
+    await tfjs.ready();
+    console.log('tf ready');
+    const helper = this.selectComponent('#helper');
+    console.log('face-landmarks load start');
+    const model = await load(
+      SupportedPackages.mediapipeFacemesh,
+      {
+        maxFaces: 1,
+        modelUrl: 'https://cdn.static.oppenlab.com/weblf/test/facemesh/model.json',
+        shouldLoadIrisModel: false,
+      });
+    console.log('face-landmarks load end');
+    helper.set({
+      onFrame: async (frame, deps) => {
+        const { ctx } = deps;
+        console.log('predict start');
+        // const video: tf.Tensor = tf.tidy(() => {
+        //   const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4]);
+        //   return tf.slice(temp, [0, 0, 0], [-1, -1, 3]);
+        // });
+        const video = {
+          width: frame.width,
+          height: frame.height,
+          data: new Uint8Array(frame.data),
+        };
+        const predictions = await model.estimateFaces({
+          input: video,
+          returnTensors: false, flipHorizontal: false, predictIrises: false
+        });
+
+        console.log('predict end', predictions.length);
+
+        helper.drawCanvas2D(frame);
+
+        if (predictions.length > 0) {
+          // helper.stop()
+          predictions.forEach(prediction => {
+            const keypoints = prediction.scaledMesh;
+
+            ctx.fillStyle = GREEN;
+            for (let i = 0; i < NUM_KEYPOINTS; i++) {
+              const x = keypoints[i][0];
+              const y = keypoints[i][1];
+
+              ctx.beginPath();
+              ctx.arc(x, y, 1 /* radius */, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+
+            if (keypoints.length > NUM_KEYPOINTS) {
+              ctx.strokeStyle = RED;
+              ctx.lineWidth = 1;
+
+              const leftCenter = keypoints[NUM_KEYPOINTS];
+              const leftDiameterY = distance(
+                keypoints[NUM_KEYPOINTS + 4],
+                keypoints[NUM_KEYPOINTS + 2]);
+              const leftDiameterX = distance(
+                keypoints[NUM_KEYPOINTS + 3],
+                keypoints[NUM_KEYPOINTS + 1]);
+
+              ctx.beginPath();
+              ctx.ellipse(leftCenter[0], leftCenter[1], leftDiameterX / 2, leftDiameterY / 2, 0, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+          });
+        }
+      },
+    });
+    this.helper = helper;
+  },
+
+  onShow: function () {
+    _optionalChain([this, 'access', _ => _.helper, 'optionalAccess', _2 => _2.start, 'call', _3 => _3()]);
+  },
+
+  onHide: function () {
+    _optionalChain([this, 'access', _4 => _4.helper, 'optionalAccess', _5 => _5.stop, 'call', _6 => _6()]);
+  },
+
+  onUnload: function () { },
+
+  onShareAppMessage: function () { },
+});

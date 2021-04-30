@@ -1,7 +1,8 @@
 // miniprogram/pages/blazeface/blazeface.js
-import * as blazeface from '@tensorflow-models/blazeface';
+import * as blazeface from '../../../tfjs-models/blazeface';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'
+import { Frame } from '../helper-view/FrameAdapter';
 
 Page({
   helper: null as any,
@@ -15,13 +16,18 @@ Page({
     const model = await blazeface.load();
     console.log('blazeface load end')
     helper.set({
-      onFrame: async (frame, deps: Deps) => {
+      onFrame: async (frame: Frame, deps: Deps) => {
         const { ctx } = deps;
         const video = {
           width: frame.width,
           height: frame.height,
           data: new Uint8Array(frame.data),
         };
+        // const video: tf.Tensor = tf.tidy(() => {
+        //   const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4]);
+        //   return tf.slice(temp, [0, 0, 0], [-1, -1, 3]);
+        // });
+      
         const returnTensors = false;
         const flipHorizontal = false;
         const annotateBoxes = true;

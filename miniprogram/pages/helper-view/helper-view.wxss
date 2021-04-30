@@ -16,6 +16,10 @@
   left: 0;
 }
 
+.canvas.canvas-input {
+  left: -100vw;
+}
+
 .info-can {
   height: 10vh;
   width: 100vw;
@@ -28,3 +32,13 @@
 }
 
 .info-item {}
+
+.btn {
+  padding: 5px;
+  border: 1px solid black;
+  margin: 0 5px;
+}
+
+.btn[data-on='true'] {
+  color: red;
+}

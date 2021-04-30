@@ -5,6 +5,7 @@ import builtins from 'rollup-plugin-node-builtins';
 import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
 import sucrase from '@rollup/plugin-sucrase';
+import alias from '@rollup/plugin-alias';
 
 const p = s => path.resolve(__dirname, s);
 
@@ -51,6 +52,8 @@ export default [
           '@tensorflow/tfjs-converter',
           '@tensorflow/tfjs-core',
         ],
+        'blazeface': ['@tensorflow-models/blazeface'],
+        'facemesh': ['@tensorflow-models/face-landmarks-detection']
       },
     },
     plugins: [
@@ -58,20 +61,19 @@ export default [
       commonjs(),
       codeTransform(),
       sucrase({ transforms: ['typescript'] }),
-      terser({ output: { comments: false } }),
+      // terser({ output: { comments: false } }),
       // esbuild({
       //   sourceMap: false,
-      //   minify: true,
-      //   target: 'es6',
+      //   minify: false,
+      //   target: 'es2018',
       //   legalComments: 'none',
       // }),
       resolve({
         extensions: ['.ts', '.js'],
         preferBuiltins: false,
-        mainFields: ['jsnext:main', 'jsnext', 'module', 'main'],
+        // mainFields: ['main'],
       }),
-      useCustomTFjs &&
-      alias({
+      useCustomTFjs && alias({
         entries: [
           {
             find: /@tensorflow\/tfjs$/,

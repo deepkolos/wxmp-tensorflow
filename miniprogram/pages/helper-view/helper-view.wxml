@@ -3,7 +3,10 @@
   <camera class="camera" device-position="{{cameraPosition}}"></camera>
   <canvas class="gl" type="webgl" id="gl"></canvas>
   <canvas class="canvas" type="2d" id="canvas"></canvas>
+  <canvas class="canvas canvas-input" type="2d" id="canvas-input"></canvas>
   <view class="info-can">
+    <view class="btn" bindtap="onBtnSelectClick">图片</view>
+    <view class="btn" bindtap="onBtnUseCameraClick" data-on="{{usingCamera}}">相机</view>
     <view class="info-item">FPS: {{FPS}}</view>
   </view>
 </view>
