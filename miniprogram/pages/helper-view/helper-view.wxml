@@ -8,5 +8,6 @@
     <view class="btn" bindtap="onBtnSelectClick">图片</view>
     <view class="btn" bindtap="onBtnUseCameraClick" data-on="{{usingCamera}}">相机</view>
     <view class="info-item">FPS: {{FPS}}</view>
+    <view class="info-item">{{backend}}</view>
   </view>
 </view>

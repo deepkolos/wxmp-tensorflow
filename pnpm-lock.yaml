@@ -7,6 +7,7 @@ specifiers:
   '@rollup/plugin-sucrase': ^3.1.0
   '@tensorflow-models/blazeface': ^0.0.7
   '@tensorflow-models/face-landmarks-detection': ^0.0.3
+  '@tensorflow/tfjs-backend-wasm': ^3.6.0
   '@tensorflow/tfjs-backend-webgl': ^3.6.0
   '@tensorflow/tfjs-converter': ^3.6.0
   '@tensorflow/tfjs-core': ^3.6.0
@@ -25,6 +26,7 @@ specifiers:
 dependencies:
   '@tensorflow-models/blazeface': 0.0.7_aedb0a4c03ce5e9cfeb5bf45d7529093
   '@tensorflow-models/face-landmarks-detection': 0.0.3_aedb0a4c03ce5e9cfeb5bf45d7529093
+  '@tensorflow/tfjs-backend-wasm': 3.6.0_@tensorflow+tfjs-core@3.6.0
   '@tensorflow/tfjs-backend-webgl': 3.6.0_@tensorflow+tfjs-core@3.6.0
   '@tensorflow/tfjs-converter': 3.6.0_@tensorflow+tfjs-core@3.6.0
   '@tensorflow/tfjs-core': 3.6.0
@@ -174,6 +176,16 @@ packages:
       seedrandom: 2.4.3
     dev: false
 
+  /@tensorflow/tfjs-backend-wasm/3.6.0_@tensorflow+tfjs-core@3.6.0:
+    resolution: {integrity: sha512-Ga3eX3U5j2gEQFfeiCyjwfQbaUKG2cdU1F07Y2DGU9AgKPBnuhbpZjAXxUwEpCjNM9ziVLwpUa2fXyEhgaOhOw==}
+    peerDependencies:
+      '@tensorflow/tfjs-core': 3.6.0
+    dependencies:
+      '@tensorflow/tfjs-backend-cpu': 3.6.0_@tensorflow+tfjs-core@3.6.0
+      '@tensorflow/tfjs-core': 3.6.0
+      '@types/emscripten': 0.0.34
+    dev: false
+
   /@tensorflow/tfjs-backend-webgl/3.6.0_@tensorflow+tfjs-core@3.6.0:
     resolution: {integrity: sha512-zp7l4TmD1khgeSux/Ujaaj8M/v+e8JVIKjOci6HCGaeMNrn74lTSH9oqGPWKUCmpZME17/V0LfRHK34ddmrPSA==}
     engines: {yarn: '>= 1.3.2'}
@@ -206,6 +218,10 @@ packages:
       '@types/webgl-ext': 0.0.30
       node-fetch: 2.6.1
       seedrandom: 2.4.3
+    dev: false
+
+  /@types/emscripten/0.0.34:
+    resolution: {integrity: sha512-QSb9ojDincskc+uKMI0KXp8e1NALFINCrMlp8VGKGcTSxeEyRTTKyjWw75NYrCZHUsVEEEpr1tYHpbtaC++/sQ==}
     dev: false
 
   /@types/estree/0.0.39:

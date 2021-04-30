@@ -25,6 +25,7 @@
   "dependencies": {
     "@tensorflow-models/blazeface": "^0.0.7",
     "@tensorflow-models/face-landmarks-detection": "^0.0.3",
+    "@tensorflow/tfjs-backend-wasm": "^3.6.0",
     "@tensorflow/tfjs-backend-webgl": "^3.6.0",
     "@tensorflow/tfjs-converter": "^3.6.0",
     "@tensorflow/tfjs-core": "^3.6.0",

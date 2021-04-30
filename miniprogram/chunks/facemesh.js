@@ -1,4 +1,1 @@
-'use strict';
-
-require('./tfjs.js');
-
+"use strict";require("./tfjs.js");

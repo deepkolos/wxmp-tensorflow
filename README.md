@@ -4,9 +4,24 @@
 
 ### TODO
 
-0. 运行 balzeface 安卓 √，IOS √但卡
+0. 运行 balzeface 安卓 √，IOS √ 但卡
 1. 运行 face-landmarks 安卓 √，IOS √ 但卡
 2. 集成 tfjsPlugin，方便使用，无需二次引用 √
+3. 支持 wasm backend √ ios性能比gl慢很多，安卓上骁龙CPU一样比gl慢，只有华为的比gl快
+
+### 性能
+
+|机器|模型|FPS|Backend|
+|-|-|-|
+|MI 8|BlazeFace|20|WebGL|
+|MI 8|BlazeFace|17|Wasm|
+|IPhone 7|BlazeFace|12|WebGL|
+|IPhone 7|BlazeFace|1|Wasm|
+
+### 问题
+
+0. ios async 版本会卡async await，所以改为sync版本，并且其他用到async await也可能出现
+1. wasm 只有在华为手机上比 webgl 好 (2.7测试的结果)
 
 ### 使用 custom_tfjs 进一步优化包大小
 

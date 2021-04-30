@@ -9,12 +9,29 @@ import * as webgl from '@tensorflow/tfjs-backend-webgl';
 import { setupWechatPlatform } from '../../../tfjs-plugin/wechat_platform'
 import { fetchFunc } from '../../../tfjs-plugin/fetch'
 import { isAndroid } from './env';
+import { version_wasm, setWasmPaths } from '@tensorflow/tfjs-backend-wasm'
+
+
+setWasmPaths(
+  // ['tfjs-backend-wasm.wasm', 'tfjs-backend-wasm-simd.wasm', 'tfjs-backend-wasm-threaded-simd.wasm']
+  // .reduce((acc, curr) => {
+  //   acc[curr] = `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${version_wasm}/wasm-out/${curr}`
+  //   return acc
+  // }, {}),
+  {
+    'tfjs-backend-wasm.wasm': '/tfjs-backend-wasm.wasm',
+    'tfjs-backend-wasm-simd.wasm': '/tfjs-backend-wasm.wasm',
+    'tfjs-backend-wasm-threaded-simd.wasm': '/tfjs-backend-wasm.wasm'
+  },
+  true
+);
 
 setupWechatPlatform({
   fetchFunc,
   tf,
   webgl,
-  canvas: wx.createOffscreenCanvas()
+  canvas: wx.createOffscreenCanvas(),
+  // backendName: 'wasm'
 });
 
 /**
@@ -54,6 +71,7 @@ Component({
 
   data: {
     FPS: '0',
+    backend: '',
     usingCamera: false,
   },
 
@@ -85,6 +103,8 @@ Component({
 
   async ready() {
     console.log('helper view ready')
+    // await tf.setBackend('wasm')
+    this.setData({ backend: tf.getBackend() })
     const [{ node: canvasGL }] = await getNode('#gl', this);
     const [{ node: canvas2D }] = await getNode('#canvas', this);
     const [{ node: canvasInput }] = await getNode('#canvas-input', this);
@@ -103,6 +123,7 @@ Component({
         const t = Date.now()
         // frame.data = frame.data.slice(0);
         userFrameCallback(frame, deps)
+        // 留一帧时间去更新视图，不然安卓不会同步显示计算结果
         if (isAndroid) await new Promise((resolve) => canvas2D.requestAnimationFrame(resolve))
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) })
       }

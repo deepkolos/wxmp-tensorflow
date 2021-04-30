@@ -31,7 +31,9 @@
   justify-content: center;
 }
 
-.info-item {}
+.info-item {
+  margin: 0 5px;
+}
 
 .btn {
   padding: 5px;
