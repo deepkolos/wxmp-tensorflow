@@ -357,19 +357,19 @@ const UPDATE_REGION_OF_INTEREST_IOU_THRESHOLD = 0.25;
 
 const MESH_MOUTH_INDEX = 13;
 const MESH_KEYPOINTS_LINE_OF_SYMMETRY_INDICES =
-    [MESH_MOUTH_INDEX, MESH_ANNOTATIONS['midwayBetweenEyes'][0]];
+  [MESH_MOUTH_INDEX, MESH_ANNOTATIONS['midwayBetweenEyes'][0]];
 
 const BLAZEFACE_MOUTH_INDEX = 3;
 const BLAZEFACE_NOSE_INDEX = 2;
 const BLAZEFACE_KEYPOINTS_LINE_OF_SYMMETRY_INDICES =
-    [BLAZEFACE_MOUTH_INDEX, BLAZEFACE_NOSE_INDEX];
+  [BLAZEFACE_MOUTH_INDEX, BLAZEFACE_NOSE_INDEX];
 
 const LEFT_EYE_OUTLINE = MESH_ANNOTATIONS['leftEyeLower0'];
 const LEFT_EYE_BOUNDS =
-    [LEFT_EYE_OUTLINE[0], LEFT_EYE_OUTLINE[LEFT_EYE_OUTLINE.length - 1]];
+  [LEFT_EYE_OUTLINE[0], LEFT_EYE_OUTLINE[LEFT_EYE_OUTLINE.length - 1]];
 const RIGHT_EYE_OUTLINE = MESH_ANNOTATIONS['rightEyeLower0'];
 const RIGHT_EYE_BOUNDS =
-    [RIGHT_EYE_OUTLINE[0], RIGHT_EYE_OUTLINE[RIGHT_EYE_OUTLINE.length - 1]];
+  [RIGHT_EYE_OUTLINE[0], RIGHT_EYE_OUTLINE[RIGHT_EYE_OUTLINE.length - 1]];
 
 const IRIS_UPPER_CENTER_INDEX = 3;
 const IRIS_LOWER_CENTER_INDEX = 4;
@@ -383,15 +383,15 @@ const IRIS_MODEL_INPUT_SIZE = 64;
 
 // A mapping from facemesh model keypoints to iris model keypoints.
 const MESH_TO_IRIS_INDICES_MAP = [
-  {key: 'EyeUpper0', indices: [9, 10, 11, 12, 13, 14, 15]},
-  {key: 'EyeUpper1', indices: [25, 26, 27, 28, 29, 30, 31]},
-  {key: 'EyeUpper2', indices: [41, 42, 43, 44, 45, 46, 47]},
-  {key: 'EyeLower0', indices: [0, 1, 2, 3, 4, 5, 6, 7, 8]},
-  {key: 'EyeLower1', indices: [16, 17, 18, 19, 20, 21, 22, 23, 24]},
-  {key: 'EyeLower2', indices: [32, 33, 34, 35, 36, 37, 38, 39, 40]},
-  {key: 'EyeLower3', indices: [54, 55, 56, 57, 58, 59, 60, 61, 62]},
-  {key: 'EyebrowUpper', indices: [63, 64, 65, 66, 67, 68, 69, 70]},
-  {key: 'EyebrowLower', indices: [48, 49, 50, 51, 52, 53]}
+  { key: 'EyeUpper0', indices: [9, 10, 11, 12, 13, 14, 15] },
+  { key: 'EyeUpper1', indices: [25, 26, 27, 28, 29, 30, 31] },
+  { key: 'EyeUpper2', indices: [41, 42, 43, 44, 45, 46, 47] },
+  { key: 'EyeLower0', indices: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+  { key: 'EyeLower1', indices: [16, 17, 18, 19, 20, 21, 22, 23, 24] },
+  { key: 'EyeLower2', indices: [32, 33, 34, 35, 36, 37, 38, 39, 40] },
+  { key: 'EyeLower3', indices: [54, 55, 56, 57, 58, 59, 60, 61, 62] },
+  { key: 'EyebrowUpper', indices: [63, 64, 65, 66, 67, 68, 69, 70] },
+  { key: 'EyebrowLower', indices: [48, 49, 50, 51, 52, 53] }
 ];
 
 // Replace the raw coordinates returned by facemesh with refined iris model
@@ -399,9 +399,9 @@ const MESH_TO_IRIS_INDICES_MAP = [
 // Update the z coordinate to be an average of the original and the new. This
 // produces the best visual effect.
 function replaceRawCoordinates(
-    rawCoords, newCoords, prefix, keys) {
+  rawCoords, newCoords, prefix, keys) {
   for (let i = 0; i < MESH_TO_IRIS_INDICES_MAP.length; i++) {
-    const {key, indices} = MESH_TO_IRIS_INDICES_MAP[i];
+    const { key, indices } = MESH_TO_IRIS_INDICES_MAP[i];
     const originalIndices = MESH_ANNOTATIONS[`${prefix}${key}`];
 
     const shouldReplaceAllKeys = keys == null;
@@ -437,10 +437,10 @@ class Pipeline {
    __init2() {this.runsWithoutFaceDetector = 0;}
 
   constructor(
-      boundingBoxDetector,
-      meshDetector, meshWidth, meshHeight,
-      maxContinuousChecks, maxFaces,
-      irisModel) {Pipeline.prototype.__init.call(this);Pipeline.prototype.__init2.call(this);
+    boundingBoxDetector,
+    meshDetector, meshWidth, meshHeight,
+    maxContinuousChecks, maxFaces,
+    irisModel) {Pipeline.prototype.__init.call(this);Pipeline.prototype.__init2.call(this);
     this.boundingBoxDetector = boundingBoxDetector;
     this.meshDetector = meshDetector;
     this.irisModel = irisModel;
@@ -451,26 +451,26 @@ class Pipeline {
   }
 
   transformRawCoords(
-      rawCoords, box, angle,
-      rotationMatrix) {
+    rawCoords, box, angle,
+    rotationMatrix) {
     const boxSize =
-        getBoxSize({startPoint: box.startPoint, endPoint: box.endPoint});
+      getBoxSize({ startPoint: box.startPoint, endPoint: box.endPoint });
     const scaleFactor =
-        [boxSize[0] / this.meshWidth, boxSize[1] / this.meshHeight];
+      [boxSize[0] / this.meshWidth, boxSize[1] / this.meshHeight];
     const coordsScaled = rawCoords.map(
-        coord => ([
-          scaleFactor[0] * (coord[0] - this.meshWidth / 2),
-          scaleFactor[1] * (coord[1] - this.meshHeight / 2), coord[2]
-        ]));
+      coord => ([
+        scaleFactor[0] * (coord[0] - this.meshWidth / 2),
+        scaleFactor[1] * (coord[1] - this.meshHeight / 2), coord[2]
+      ]));
 
     const coordsRotationMatrix = buildRotationMatrix(angle, [0, 0]);
     const coordsRotated = coordsScaled.map(
-        (coord) =>
-            ([...rotatePoint(coord, coordsRotationMatrix), coord[2]]));
+      (coord) =>
+        ([...rotatePoint(coord, coordsRotationMatrix), coord[2]]));
 
     const inverseRotationMatrix = invertTransformMatrix(rotationMatrix);
     const boxCenter = [
-      ...getBoxCenter({startPoint: box.startPoint, endPoint: box.endPoint}), 1
+      ...getBoxCenter({ startPoint: box.startPoint, endPoint: box.endPoint }), 1
     ];
 
     const originalBoxCenter = [
@@ -479,9 +479,9 @@ class Pipeline {
     ];
 
     return coordsRotated.map((coord) => ([
-                               coord[0] + originalBoxCenter[0],
-                               coord[1] + originalBoxCenter[1], coord[2]
-                             ]));
+      coord[0] + originalBoxCenter[0],
+      coord[1] + originalBoxCenter[1], coord[2]
+    ]));
   }
 
    getLeftToRightEyeDepthDifference(rawCoords) {
@@ -493,33 +493,33 @@ class Pipeline {
   // Returns a box describing a cropped region around the eye fit for passing to
   // the iris model.
   getEyeBox(
-      rawCoords, face, eyeInnerCornerIndex,
-      eyeOuterCornerIndex,
-      flip = false) {
+    rawCoords, face, eyeInnerCornerIndex,
+    eyeOuterCornerIndex,
+    flip = false) {
     const box = squarifyBox(enlargeBox(
-        this.calculateLandmarksBoundingBox(
-            [rawCoords[eyeInnerCornerIndex], rawCoords[eyeOuterCornerIndex]]),
-        ENLARGE_EYE_RATIO));
+      this.calculateLandmarksBoundingBox(
+        [rawCoords[eyeInnerCornerIndex], rawCoords[eyeOuterCornerIndex]]),
+      ENLARGE_EYE_RATIO));
     const boxSize = getBoxSize(box);
     let crop = tfjs.image.cropAndResize(
-        face, [[
-          box.startPoint[1] / this.meshHeight,
-          box.startPoint[0] / this.meshWidth, box.endPoint[1] / this.meshHeight,
-          box.endPoint[0] / this.meshWidth
-        ]],
-        [0], [IRIS_MODEL_INPUT_SIZE, IRIS_MODEL_INPUT_SIZE]);
+      face, [[
+        box.startPoint[1] / this.meshHeight,
+        box.startPoint[0] / this.meshWidth, box.endPoint[1] / this.meshHeight,
+        box.endPoint[0] / this.meshWidth
+      ]],
+      [0], [IRIS_MODEL_INPUT_SIZE, IRIS_MODEL_INPUT_SIZE]);
     if (flip) {
       crop = tfjs.image.flipLeftRight(crop);
     }
 
-    return {box, boxSize, crop};
+    return { box, boxSize, crop };
   }
 
   // Given a cropped image of an eye, returns the coordinates of the contours
   // surrounding the eye and the iris.
   getEyeCoords(
-      eyeData, eyeBox, eyeBoxSize,
-      flip = false) {
+    eyeData, eyeBox, eyeBoxSize,
+    flip = false) {
     const eyeRawCoords = [];
     for (let i = 0; i < IRIS_NUM_COORDINATES; i++) {
       const x = eyeData[i * 3];
@@ -527,27 +527,27 @@ class Pipeline {
       const z = eyeData[i * 3 + 2];
       eyeRawCoords.push([
         (flip ? (1 - (x / IRIS_MODEL_INPUT_SIZE)) :
-                (x / IRIS_MODEL_INPUT_SIZE)) *
-                eyeBoxSize[0] +
-            eyeBox.startPoint[0],
+          (x / IRIS_MODEL_INPUT_SIZE)) *
+        eyeBoxSize[0] +
+        eyeBox.startPoint[0],
         (y / IRIS_MODEL_INPUT_SIZE) * eyeBoxSize[1] + eyeBox.startPoint[1], z
       ]);
     }
 
-    return {rawCoords: eyeRawCoords, iris: eyeRawCoords.slice(IRIS_IRIS_INDEX)};
+    return { rawCoords: eyeRawCoords, iris: eyeRawCoords.slice(IRIS_IRIS_INDEX) };
   }
 
   // The z-coordinates returned for the iris are unreliable, so we take the z
   // values from the surrounding keypoints.
    getAdjustedIrisCoords(
-      rawCoords, irisCoords,
-      direction) {
+    rawCoords, irisCoords,
+    direction) {
     const upperCenterZ =
-        rawCoords[MESH_ANNOTATIONS[`${direction}EyeUpper0`]
-                                  [IRIS_UPPER_CENTER_INDEX]][2];
+      rawCoords[MESH_ANNOTATIONS[`${direction}EyeUpper0`]
+      [IRIS_UPPER_CENTER_INDEX]][2];
     const lowerCenterZ =
-        rawCoords[MESH_ANNOTATIONS[`${direction}EyeLower0`]
-                                  [IRIS_LOWER_CENTER_INDEX]][2];
+      rawCoords[MESH_ANNOTATIONS[`${direction}EyeLower0`]
+      [IRIS_LOWER_CENTER_INDEX]][2];
     const averageZ = (upperCenterZ + lowerCenterZ) / 2;
 
     // Iris indices:
@@ -568,14 +568,14 @@ class Pipeline {
    * @param input - tensor of shape [1, H, W, 3].
    * @param predictIrises - Whether to return keypoints for the irises.
    */
-  async predict(input, predictIrises)
+  predict(input, predictIrises)
  {
     if (this.shouldUpdateRegionsOfInterest()) {
       const returnTensors = false;
       const annotateFace = true;
-      const {boxes, scaleFactor} =
-          await this.boundingBoxDetector.getBoundingBoxes(
-              input, returnTensors, annotateFace);
+      const { boxes, scaleFactor } =
+        this.boundingBoxDetector.getBoundingBoxes(
+          input, returnTensors, annotateFace);
 
       if (boxes.length === 0) {
         this.regionsOfInterest = [];
@@ -583,22 +583,22 @@ class Pipeline {
       }
 
       const scaledBoxes =
-          boxes.map((prediction) => {
-            const predictionBoxCPU = {
-              startPoint: tfjs.squeeze(prediction.box.startPoint).arraySync() 
+        boxes.map((prediction) => {
+          const predictionBoxCPU = {
+            startPoint: tfjs.squeeze(prediction.box.startPoint).arraySync() 
 ,
-              endPoint: tfjs.squeeze(prediction.box.endPoint).arraySync() 
-            };
+            endPoint: tfjs.squeeze(prediction.box.endPoint).arraySync() 
+          };
 
-            const scaledBox =
-                scaleBoxCoordinates(predictionBoxCPU, scaleFactor );
-            const enlargedBox = enlargeBox(scaledBox);
-            const squarifiedBox = squarifyBox(enlargedBox);
-            return {
-              ...squarifiedBox,
-              landmarks: prediction.landmarks.arraySync() 
-            };
-          });
+          const scaledBox =
+            scaleBoxCoordinates(predictionBoxCPU, scaleFactor );
+          const enlargedBox = enlargeBox(scaledBox);
+          const squarifiedBox = squarifyBox(enlargedBox);
+          return {
+            ...squarifiedBox,
+            landmarks: prediction.landmarks.arraySync() 
+          };
+        });
 
       boxes.forEach((box
 
@@ -625,110 +625,110 @@ class Pipeline {
         // (if we are using a fresh box), or from the mesh model (if we are
         // reusing an old box).
         const boxLandmarksFromMeshModel =
-            box.landmarks.length >= LANDMARKS_COUNT;
+          box.landmarks.length >= LANDMARKS_COUNT;
         let [indexOfMouth, indexOfForehead] =
-            MESH_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
+          MESH_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
 
         if (boxLandmarksFromMeshModel === false) {
           [indexOfMouth, indexOfForehead] =
-              BLAZEFACE_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
+            BLAZEFACE_KEYPOINTS_LINE_OF_SYMMETRY_INDICES;
         }
 
         angle = computeRotation(
-            box.landmarks[indexOfMouth], box.landmarks[indexOfForehead]);
+          box.landmarks[indexOfMouth], box.landmarks[indexOfForehead]);
 
         const faceCenter =
-            getBoxCenter({startPoint: box.startPoint, endPoint: box.endPoint});
+          getBoxCenter({ startPoint: box.startPoint, endPoint: box.endPoint });
         const faceCenterNormalized =
-            [faceCenter[0] / input.shape[2], faceCenter[1] / input.shape[1]];
+          [faceCenter[0] / input.shape[2], faceCenter[1] / input.shape[1]];
 
         let rotatedImage = input;
         let rotationMatrix = IDENTITY_MATRIX;
         if (angle !== 0) {
           rotatedImage =
-              tfjs.image.rotateWithOffset(input, angle, 0, faceCenterNormalized);
+            tfjs.image.rotateWithOffset(input, angle, 0, faceCenterNormalized);
           rotationMatrix = buildRotationMatrix(-angle, faceCenter);
         }
 
-        const boxCPU = {startPoint: box.startPoint, endPoint: box.endPoint};
+        const boxCPU = { startPoint: box.startPoint, endPoint: box.endPoint };
         const face =
-            tfjs.div(cutBoxFromImageAndResize(boxCPU, rotatedImage, [
-              this.meshHeight, this.meshWidth
-            ]), 255);
+          tfjs.div(cutBoxFromImageAndResize(boxCPU, rotatedImage, [
+            this.meshHeight, this.meshWidth
+          ]), 255);
 
         // The first returned tensor represents facial contours, which are
         // included in the coordinates.
         const [, flag, coords] =
-            this.meshDetector.predict(
-                face) ;
+          this.meshDetector.predict(
+            face) ;
 
         const coordsReshaped = tfjs.reshape(coords, [-1, 3]);
         let rawCoords = coordsReshaped.arraySync() ;
 
         if (predictIrises) {
-          const {box: leftEyeBox, boxSize: leftEyeBoxSize, crop: leftEyeCrop} =
-              this.getEyeBox(
-                  rawCoords, face, LEFT_EYE_BOUNDS[0], LEFT_EYE_BOUNDS[1],
-                  true);
+          const { box: leftEyeBox, boxSize: leftEyeBoxSize, crop: leftEyeCrop } =
+            this.getEyeBox(
+              rawCoords, face, LEFT_EYE_BOUNDS[0], LEFT_EYE_BOUNDS[1],
+              true);
           const {
             box: rightEyeBox,
             boxSize: rightEyeBoxSize,
             crop: rightEyeCrop
           } =
-              this.getEyeBox(
-                  rawCoords, face, RIGHT_EYE_BOUNDS[0], RIGHT_EYE_BOUNDS[1]);
+            this.getEyeBox(
+              rawCoords, face, RIGHT_EYE_BOUNDS[0], RIGHT_EYE_BOUNDS[1]);
 
           const eyePredictions =
-              (this.irisModel.predict(
-                  tfjs.concat([leftEyeCrop, rightEyeCrop]))) ;
+            (this.irisModel.predict(
+              tfjs.concat([leftEyeCrop, rightEyeCrop]))) ;
           const eyePredictionsData = eyePredictions.dataSync() ;
 
           const leftEyeData =
-              eyePredictionsData.slice(0, IRIS_NUM_COORDINATES * 3);
-          const {rawCoords: leftEyeRawCoords, iris: leftIrisRawCoords} =
-              this.getEyeCoords(leftEyeData, leftEyeBox, leftEyeBoxSize, true);
+            eyePredictionsData.slice(0, IRIS_NUM_COORDINATES * 3);
+          const { rawCoords: leftEyeRawCoords, iris: leftIrisRawCoords } =
+            this.getEyeCoords(leftEyeData, leftEyeBox, leftEyeBoxSize, true);
 
           const rightEyeData =
-              eyePredictionsData.slice(IRIS_NUM_COORDINATES * 3);
-          const {rawCoords: rightEyeRawCoords, iris: rightIrisRawCoords} =
-              this.getEyeCoords(rightEyeData, rightEyeBox, rightEyeBoxSize);
+            eyePredictionsData.slice(IRIS_NUM_COORDINATES * 3);
+          const { rawCoords: rightEyeRawCoords, iris: rightIrisRawCoords } =
+            this.getEyeCoords(rightEyeData, rightEyeBox, rightEyeBoxSize);
 
           const leftToRightEyeDepthDifference =
-              this.getLeftToRightEyeDepthDifference(rawCoords);
+            this.getLeftToRightEyeDepthDifference(rawCoords);
           if (Math.abs(leftToRightEyeDepthDifference) <
-              30) {  // User is looking straight ahead.
+            30) {  // User is looking straight ahead.
             replaceRawCoordinates(rawCoords, leftEyeRawCoords, 'left');
             replaceRawCoordinates(rawCoords, rightEyeRawCoords, 'right');
           } else if (leftToRightEyeDepthDifference < 1) {  // User is looking
-                                                           // towards the
-                                                           // right.
+            // towards the
+            // right.
             // If the user is looking to the left or to the right, the iris
             // coordinates tend to diverge too much from the mesh coordinates
             // for them to be merged. So we only update a single contour line
             // above and below the eye.
             replaceRawCoordinates(
-                rawCoords, leftEyeRawCoords, 'left',
-                ['EyeUpper0', 'EyeLower0']);
+              rawCoords, leftEyeRawCoords, 'left',
+              ['EyeUpper0', 'EyeLower0']);
           } else {  // User is looking towards the left.
             replaceRawCoordinates(
-                rawCoords, rightEyeRawCoords, 'right',
-                ['EyeUpper0', 'EyeLower0']);
+              rawCoords, rightEyeRawCoords, 'right',
+              ['EyeUpper0', 'EyeLower0']);
           }
 
           const adjustedLeftIrisCoords =
-              this.getAdjustedIrisCoords(rawCoords, leftIrisRawCoords, 'left');
+            this.getAdjustedIrisCoords(rawCoords, leftIrisRawCoords, 'left');
           const adjustedRightIrisCoords = this.getAdjustedIrisCoords(
-              rawCoords, rightIrisRawCoords, 'right');
+            rawCoords, rightIrisRawCoords, 'right');
           rawCoords = rawCoords.concat(adjustedLeftIrisCoords)
-                          .concat(adjustedRightIrisCoords);
+            .concat(adjustedRightIrisCoords);
         }
 
         const transformedCoordsData =
-            this.transformRawCoords(rawCoords, box, angle, rotationMatrix);
+          this.transformRawCoords(rawCoords, box, angle, rotationMatrix);
         const transformedCoords = tfjs.tensor2d(transformedCoordsData);
 
         const landmarksBox = enlargeBox(
-            this.calculateLandmarksBoundingBox(transformedCoordsData));
+          this.calculateLandmarksBoundingBox(transformedCoordsData));
         const squarifiedLandmarksBox = squarifyBox(landmarksBox);
         this.regionsOfInterest[i] = {
           ...squarifiedLandmarksBox,
@@ -769,7 +769,7 @@ class Pipeline {
         const intersection = (xEndMin - xStartMax) * (yEndMin - yStartMax);
         const boxArea = (boxEndX - boxStartX) * (boxEndY - boxStartY);
         const previousBoxArea = (previousBoxEndX - previousBoxStartX) *
-            (previousBoxEndY - boxStartY);
+          (previousBoxEndY - boxStartY);
         iou = intersection / (boxArea + previousBoxArea - intersection);
       }
 
@@ -799,7 +799,7 @@ class Pipeline {
     }
 
     return roisCount !== this.maxFaces &&
-        this.runsWithoutFaceDetector >= this.maxContinuousChecks;
+      this.runsWithoutFaceDetector >= this.maxContinuousChecks;
   }
 
   calculateLandmarksBoundingBox(landmarks) {
@@ -808,7 +808,7 @@ class Pipeline {
 
     const startPoint = [Math.min(...xs), Math.min(...ys)];
     const endPoint = [Math.max(...xs), Math.max(...ys)];
-    return {startPoint, endPoint};
+    return { startPoint, endPoint };
   }
 }
 
@@ -1318,9 +1318,9 @@ const UV_COORDS = [
  */
 
 const FACEMESH_GRAPHMODEL_PATH =
-    'https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1';
+  'https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1';
 const IRIS_GRAPHMODEL_PATH =
-    'https://tfhub.dev/mediapipe/tfjs-model/iris/1/default/2';
+  'https://tfhub.dev/mediapipe/tfjs-model/iris/1/default/2';
 const MESH_MODEL_INPUT_WIDTH = 192;
 const MESH_MODEL_INPUT_HEIGHT = 192;
 
@@ -1444,18 +1444,18 @@ async function load$1(config
   }
 
   const faceMesh = new FaceMesh(
-      models[0], models[1], maxContinuousChecks, detectionConfidence, maxFaces,
-      shouldLoadIrisModel ? models[2] : null);
+    models[0], models[1], maxContinuousChecks, detectionConfidence, maxFaces,
+    shouldLoadIrisModel ? models[2] : null);
   return faceMesh;
 }
 
 async function loadDetectorModel(
-    modelUrl,
-    maxFaces,
-    iouThreshold,
-    scoreThreshold
+  modelUrl,
+  maxFaces,
+  iouThreshold,
+  scoreThreshold
 ) {
-  return load$2({modelUrl, maxFaces, iouThreshold, scoreThreshold});
+  return load$2({ modelUrl, maxFaces, iouThreshold, scoreThreshold });
 }
 
 async function loadMeshModel(modelUrl
@@ -1463,7 +1463,7 @@ async function loadMeshModel(modelUrl
   if (modelUrl != null) {
     return tfjs.loadGraphModel(modelUrl);
   }
-  return tfjs.loadGraphModel(FACEMESH_GRAPHMODEL_PATH, {fromTFHub_: true});
+  return tfjs.loadGraphModel(FACEMESH_GRAPHMODEL_PATH, { fromTFHub_: true });
 }
 
 async function loadIrisModel(modelUrl
@@ -1471,17 +1471,17 @@ async function loadIrisModel(modelUrl
   if (modelUrl != null) {
     return tfjs.loadGraphModel(modelUrl);
   }
-  return tfjs.loadGraphModel(IRIS_GRAPHMODEL_PATH, {fromTFHub: true});
+  return tfjs.loadGraphModel(IRIS_GRAPHMODEL_PATH, { fromTFHub: true });
 }
 
 function getInputTensorDimensions(input
 ) {
   return input instanceof tfjs.Tensor ? [input.shape[0], input.shape[1]] :
-                                      [input.height, input.width];
+    [input.height, input.width];
 }
 
 function flipFaceHorizontal(
-    face, imageWidth) {
+  face, imageWidth) {
   if (face.mesh instanceof tfjs.Tensor) {
     const [topLeft, bottomRight, mesh, scaledMesh] = tfjs.tidy(() => {
       const subtractBasis = tfjs.tensor1d([imageWidth - 1, 0, 0]);
@@ -1491,14 +1491,14 @@ function flipFaceHorizontal(
         return [
           tfjs.concat([
             tfjs.sub(
-                imageWidth - 1,
-                tfjs.slice((face.boundingBox.topLeft ), 0, 1)),
+              imageWidth - 1,
+              tfjs.slice((face.boundingBox.topLeft ), 0, 1)),
             tfjs.slice((face.boundingBox.topLeft ), 1, 1)
           ]),
           tfjs.concat([
             tfjs.sub(
-                imageWidth - 1,
-                tfjs.slice((face.boundingBox.bottomRight ), 0, 1)),
+              imageWidth - 1,
+              tfjs.slice((face.boundingBox.bottomRight ), 0, 1)),
             tfjs.slice((face.boundingBox.bottomRight ), 1, 1)
           ]),
           tfjs.mul(tfjs.sub(subtractBasis, face.mesh), multiplyBasis),
@@ -1508,7 +1508,7 @@ function flipFaceHorizontal(
     });
 
     return Object.assign(
-        {}, face, {boundingBox: {topLeft, bottomRight}, mesh, scaledMesh});
+      {}, face, { boundingBox: { topLeft, bottomRight }, mesh, scaledMesh });
   }
 
   return Object.assign({}, face, {
@@ -1544,15 +1544,15 @@ class FaceMesh  {
   
   
 
-   __init() {this.kind = 'MediaPipeFaceMesh'; } 
+   __init() {this.kind = 'MediaPipeFaceMesh'; }
 
   constructor(
-      blazeFace, blazeMeshModel,
-      maxContinuousChecks, detectionConfidence,
-      maxFaces, irisModel) {FaceMesh.prototype.__init.call(this);
+    blazeFace, blazeMeshModel,
+    maxContinuousChecks, detectionConfidence,
+    maxFaces, irisModel) {FaceMesh.prototype.__init.call(this);
     this.pipeline = new Pipeline(
-        blazeFace, blazeMeshModel, MESH_MODEL_INPUT_WIDTH,
-        MESH_MODEL_INPUT_HEIGHT, maxContinuousChecks, maxFaces, irisModel);
+      blazeFace, blazeMeshModel, MESH_MODEL_INPUT_WIDTH,
+      MESH_MODEL_INPUT_HEIGHT, maxContinuousChecks, maxFaces, irisModel);
 
     this.detectionConfidence = detectionConfidence;
   }
@@ -1583,7 +1583,7 @@ class FaceMesh  {
    *
    * @return An array of AnnotatedPrediction objects.
    */
-  async estimateFaces(config)
+  estimateFaces(config)
  {
     const {
       returnTensors = false,
@@ -1594,9 +1594,9 @@ class FaceMesh  {
 
     if (predictIrises && this.pipeline.irisModel == null) {
       throw new Error(
-          'The iris model was not loaded as part of facemesh. ' +
-          'Please initialize the model with ' +
-          'facemesh.load({shouldLoadIrisModel: true}).');
+        'The iris model was not loaded as part of facemesh. ' +
+        'Please initialize the model with ' +
+        'facemesh.load({shouldLoadIrisModel: true}).');
     }
 
     const [, width] = getInputTensorDimensions(input);
@@ -1615,26 +1615,25 @@ class FaceMesh  {
       // TODO(annxingyuan): call tf.enablePackedDepthwiseConv when available
       // (https://github.com/tensorflow/tfjs/issues/2821)
       const savedWebglPackDepthwiseConvFlag =
-          tfjs.env().get('WEBGL_PACK_DEPTHWISECONV');
+        tfjs.env().get('WEBGL_PACK_DEPTHWISECONV');
       tfjs.env().set('WEBGL_PACK_DEPTHWISECONV', true);
-      predictions = await this.pipeline.predict(image, predictIrises);
+      predictions = this.pipeline.predict(image, predictIrises);
       tfjs.env().set('WEBGL_PACK_DEPTHWISECONV', savedWebglPackDepthwiseConvFlag);
     } else {
-      predictions = await this.pipeline.predict(image, predictIrises);
+      predictions = this.pipeline.predict(image, predictIrises);
     }
 
     image.dispose();
 
     if (predictions != null && predictions.length > 0) {
-      return Promise.all(predictions.map(async (prediction, i) => {
-        const {coords, scaledCoords, box, flag} = prediction;
+      return predictions.map((prediction, i) => {
+        const { coords, scaledCoords, box, flag } = prediction;
         let tensorsToRead = [flag];
         if (!returnTensors) {
           tensorsToRead = tensorsToRead.concat([coords, scaledCoords]);
         }
 
-        const tensorValues = await Promise.all(
-            tensorsToRead.map(async (d) => d.array()));
+        const tensorValues = tensorsToRead.map((d) => d.arraySync());
         const flagValue = tensorValues[0] ;
 
         flag.dispose();
@@ -1661,8 +1660,7 @@ class FaceMesh  {
           return annotatedPrediction;
         }
 
-        const [coordsArr, coordsArrScaled] =
-            tensorValues.slice(1) ;
+        const [coordsArr, coordsArrScaled] = tensorValues.slice(1) ;
 
         scaledCoords.dispose();
         coords.dispose();
@@ -1670,14 +1668,14 @@ class FaceMesh  {
         let annotatedPrediction = {
           kind: PREDICTION_VALUES,
           faceInViewConfidence: flagValue,
-          boundingBox: {topLeft: box.startPoint, bottomRight: box.endPoint},
+          boundingBox: { topLeft: box.startPoint, bottomRight: box.endPoint },
           mesh: coordsArr,
           scaledMesh: coordsArrScaled
         };
 
         if (flipHorizontal) {
           annotatedPrediction =
-              flipFaceHorizontal(annotatedPrediction, width) 
+            flipFaceHorizontal(annotatedPrediction, width) 
 ;
         }
 
@@ -1685,13 +1683,13 @@ class FaceMesh  {
         for (const key in MESH_ANNOTATIONS) {
           if (predictIrises || key.includes('Iris') === false) {
             annotations[key] = MESH_ANNOTATIONS[key].map(
-                index => annotatedPrediction.scaledMesh[index]);
+              index => annotatedPrediction.scaledMesh[index]);
           }
         }
         annotatedPrediction['annotations'] = annotations;
 
         return annotatedPrediction;
-      }));
+      })
     }
 
     return [];
@@ -1779,7 +1777,6 @@ Page({
     helper.set({
       onFrame: async (frame, deps) => {
         const { ctx } = deps;
-        console.log('predict start');
         // const video: tf.Tensor = tf.tidy(() => {
         //   const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4]);
         //   return tf.slice(temp, [0, 0, 0], [-1, -1, 3]);
@@ -1793,8 +1790,6 @@ Page({
           input: video,
           returnTensors: false, flipHorizontal: false, predictIrises: false
         });
-
-        console.log('predict end', predictions.length);
 
         helper.drawCanvas2D(frame);
 

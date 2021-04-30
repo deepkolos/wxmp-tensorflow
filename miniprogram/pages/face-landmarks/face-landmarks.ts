@@ -1,6 +1,7 @@
 // miniprogram/pages/blazeface/blazeface.js
 // import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
-import * as faceLandmarksDetection from '../../../tfjs-models/face-landmarks';
+// import * as faceLandmarksDetection from '../../../tfjs-models/face-landmarks';
+import * as faceLandmarksDetection from '../../../tfjs-models-sync/face-landmarks';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'
 
@@ -34,7 +35,6 @@ Page({
     helper.set({
       onFrame: async (frame, deps: Deps) => {
         const { ctx } = deps;
-        console.log('predict start')
         // const video: tf.Tensor = tf.tidy(() => {
         //   const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4]);
         //   return tf.slice(temp, [0, 0, 0], [-1, -1, 3]);
@@ -48,8 +48,6 @@ Page({
           input: video,
           returnTensors: false, flipHorizontal: false, predictIrises: false
         })
-
-        console.log('predict end', predictions.length)
 
         helper.drawCanvas2D(frame);
 

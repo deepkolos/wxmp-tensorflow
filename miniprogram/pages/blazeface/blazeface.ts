@@ -1,5 +1,6 @@
 // miniprogram/pages/blazeface/blazeface.js
-import * as blazeface from '../../../tfjs-models/blazeface';
+// import * as blazeface from '../../../tfjs-models/blazeface';
+import * as blazeface from '../../../tfjs-models-sync/blazeface';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'
 import { Frame } from '../helper-view/FrameAdapter';

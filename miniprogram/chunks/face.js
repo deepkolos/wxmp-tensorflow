@@ -88,7 +88,7 @@ const ANCHORS_CONFIG = {
 const NUM_LANDMARKS = 6;
 
 function generateAnchors(
-    width, height, outputSpec) {
+  width, height, outputSpec) {
   const anchors = [];
   for (let i = 0; i < outputSpec.strides.length; i++) {
     const stride = outputSpec.strides[i];
@@ -112,8 +112,8 @@ function generateAnchors(
 }
 
 function decodeBounds(
-    boxOutputs, anchors,
-    inputSize) {
+  boxOutputs, anchors,
+  inputSize) {
   const boxStarts = tfjs.slice(boxOutputs, [0, 1], [-1, 2]);
   const centers = tfjs.add(boxStarts, anchors);
   const boxSizes = tfjs.slice(boxOutputs, [0, 3], [-1, 2]);
@@ -130,25 +130,25 @@ function decodeBounds(
 
   const concatAxis = 1;
   return tfjs.concat2d(
-      [startNormalized , endNormalized ],
-      concatAxis);
+    [startNormalized , endNormalized ],
+    concatAxis);
 }
 
 function getInputTensorDimensions(input
 
 ) {
   return input instanceof tfjs.Tensor ? [input.shape[0], input.shape[1]] :
-                                      [input.height, input.width];
+    [input.height, input.width];
 }
 
 function flipFaceHorizontal(
-    face, imageWidth) {
+  face, imageWidth) {
   let flippedTopLeft,
-      flippedBottomRight,
-      flippedLandmarks;
+    flippedBottomRight,
+    flippedLandmarks;
 
   if (face.topLeft instanceof tfjs.Tensor &&
-      face.bottomRight instanceof tfjs.Tensor) {
+    face.bottomRight instanceof tfjs.Tensor) {
     const [topLeft, bottomRight] = tfjs.tidy(() => {
       return [
         tfjs.concat([
@@ -169,7 +169,7 @@ function flipFaceHorizontal(
     if (face.landmarks != null) {
       flippedLandmarks = tfjs.tidy(() => {
         const a =
-            tfjs.sub(tfjs.tensor1d([imageWidth - 1, 0]), face.landmarks);
+          tfjs.sub(tfjs.tensor1d([imageWidth - 1, 0]), face.landmarks);
         const b = tfjs.tensor1d([1, -1]);
         const product = tfjs.mul(a, b);
         return product;
@@ -184,10 +184,10 @@ function flipFaceHorizontal(
 
     if (face.landmarks != null) {
       flippedLandmarks =
-          (face.landmarks ).map((coord) => ([
-                                               imageWidth - 1 - coord[0],
-                                               coord[1]
-                                             ]));
+        (face.landmarks ).map((coord) => ([
+          imageWidth - 1 - coord[0],
+          coord[1]
+        ]));
     }
   }
 
@@ -202,15 +202,15 @@ function flipFaceHorizontal(
 
   if (face.probability != null) {
     flippedFace.probability = face.probability instanceof tfjs.Tensor ?
-        face.probability.clone() :
-        face.probability;
+      face.probability.clone() :
+      face.probability;
   }
 
   return flippedFace;
 }
 
 function scaleBoxFromPrediction(
-    face, scaleFactor) {
+  face, scaleFactor) {
   return tfjs.tidy(() => {
     let box;
     if (face.hasOwnProperty('box')) {
@@ -235,15 +235,15 @@ class BlazeFaceModel {
   
 
   constructor(
-      model, width, height, maxFaces,
-      iouThreshold, scoreThreshold) {
+    model, width, height, maxFaces,
+    iouThreshold, scoreThreshold) {
     this.blazeFaceModel = model;
     this.width = width;
     this.height = height;
     this.maxFaces = maxFaces;
     this.anchorsData = generateAnchors(
-        width, height,
-        ANCHORS_CONFIG 
+      width, height,
+      ANCHORS_CONFIG 
 );
     this.anchors = tfjs.tensor2d(this.anchorsData);
     this.inputSizeData = [width, height];
@@ -253,9 +253,9 @@ class BlazeFaceModel {
     this.scoreThreshold = scoreThreshold;
   }
 
-  async getBoundingBoxes(
-      inputImage, returnTensors,
-      annotateBoxes = true)
+  getBoundingBoxes(
+    inputImage, returnTensors,
+    annotateBoxes = true)
 
 
  {
@@ -271,7 +271,7 @@ class BlazeFaceModel {
       const prediction = tfjs.squeeze((batchedPrediction ));
 
       const decodedBounds =
-          decodeBounds(prediction , this.anchors, this.inputSize);
+        decodeBounds(prediction , this.anchors, this.inputSize);
       const logits = tfjs.slice(prediction , [0, 0], [-1, 1]);
       const scores = tfjs.squeeze(tfjs.sigmoid(logits));
       return [prediction , decodedBounds, scores ];
@@ -280,23 +280,22 @@ class BlazeFaceModel {
     // TODO: Once tf.image.nonMaxSuppression includes a flag to suppress console
     // warnings for not using async version, pass that flag in.
     const savedConsoleWarnFn = console.warn;
-    console.warn = () => {};
+    console.warn = () => { };
     const boxIndicesTensor = tfjs.image.nonMaxSuppression(
-        boxes, scores, this.maxFaces, this.iouThreshold, this.scoreThreshold);
+      boxes, scores, this.maxFaces, this.iouThreshold, this.scoreThreshold);
     console.warn = savedConsoleWarnFn;
 
-    const boxIndices = await boxIndicesTensor.array();
+    const boxIndices = boxIndicesTensor.arraySync();
     boxIndicesTensor.dispose();
 
     let boundingBoxes = boxIndices.map(
-        (boxIndex) => tfjs.slice(boxes, [boxIndex, 0], [1, -1]));
+      (boxIndex) => tfjs.slice(boxes, [boxIndex, 0], [1, -1]));
     if (!returnTensors) {
-      boundingBoxes = await Promise.all(
-          boundingBoxes.map(async (boundingBox) => {
-            const vals = await boundingBox.array();
-            boundingBox.dispose();
-            return vals;
-          }));
+      boundingBoxes = boundingBoxes.map((boundingBox) => {
+        const vals = boundingBox.arraySync();
+        boundingBox.dispose();
+        return vals;
+      });
     }
 
     const originalHeight = inputImage.shape[1];
@@ -317,8 +316,8 @@ class BlazeFaceModel {
       const boundingBox = boundingBoxes[i] ;
       const annotatedBox = tfjs.tidy(() => {
         const box = boundingBox instanceof tfjs.Tensor ?
-            createBox(boundingBox) :
-            createBox(tfjs.tensor2d(boundingBox));
+          createBox(boundingBox) :
+          createBox(tfjs.tensor2d(boundingBox));
 
         if (!annotateBoxes) {
           return box;
@@ -337,7 +336,7 @@ class BlazeFaceModel {
           [boxIndex, NUM_LANDMARKS - 1], [1, -1])), [NUM_LANDMARKS, -1]);
         const probability = tfjs.slice(scores, [boxIndex], [1]);
 
-        return {box, landmarks, probability, anchor};
+        return { box, landmarks, probability, anchor };
       });
       annotatedBoxes.push(annotatedBox);
     }
@@ -372,11 +371,11 @@ class BlazeFaceModel {
    *  `landmarks`: facial landmark coordinates
    *  `probability`: the probability of the face being present
    */
-  async estimateFaces(
-      input
+   estimateFaces(
+    input
 ,
-      returnTensors = false, flipHorizontal = false,
-      annotateBoxes = true) {
+    returnTensors = false, flipHorizontal = false,
+    annotateBoxes = true) {
     const [, width] = getInputTensorDimensions(input);
     const image = tfjs.tidy(() => {
       if (!(input instanceof tfjs.Tensor)) {
@@ -384,28 +383,28 @@ class BlazeFaceModel {
       }
       return tfjs.expandDims(tfjs.cast((input ), 'float32'), 0);
     });
-    const {boxes, scaleFactor} = await this.getBoundingBoxes(
-        image , returnTensors, annotateBoxes);
+    const { boxes, scaleFactor } = this.getBoundingBoxes(
+      image , returnTensors, annotateBoxes);
     image.dispose();
 
     if (returnTensors) {
       return boxes.map((face) => {
         const scaledBox =
-            scaleBoxFromPrediction(face, scaleFactor );
+          scaleBoxFromPrediction(face, scaleFactor );
         let normalizedFace = {
           topLeft: tfjs.slice(scaledBox, [0], [2]) ,
           bottomRight: tfjs.slice(scaledBox, [2], [2]) 
         };
 
         if (annotateBoxes) {
-          const {landmarks, probability, anchor} = face 
+          const { landmarks, probability, anchor } = face 
 
 
 
 ;
 
           const normalizedLandmarks =
-              tfjs.mul(tfjs.add(landmarks, anchor), scaleFactor);
+            tfjs.mul(tfjs.add(landmarks, anchor), scaleFactor);
           normalizedFace.landmarks = normalizedLandmarks;
           normalizedFace.probability = probability;
         }
@@ -417,29 +416,29 @@ class BlazeFaceModel {
       });
     }
 
-    return Promise.all(boxes.map(async (face) => {
+    return boxes.map((face) => {
       const scaledBox =
-          scaleBoxFromPrediction(face, scaleFactor );
+        scaleBoxFromPrediction(face, scaleFactor );
       let normalizedFace;
       if (!annotateBoxes) {
-        const boxData = await scaledBox.array();
+        const boxData = scaledBox.arraySync();
         normalizedFace = {
           topLeft: (boxData ).slice(0, 2) ,
           bottomRight: (boxData ).slice(2) 
         };
       } else {
         const [landmarkData, boxData, probabilityData] =
-            await Promise.all([face.landmarks, scaledBox, face.probability].map(
-                async d => d.array()));
+          [face.landmarks, scaledBox, face.probability].map(
+            d => d.arraySync());
 
         const anchor = face.anchor ;
         const [scaleFactorX, scaleFactorY] = scaleFactor ;
         const scaledLandmarks =
-            (landmarkData )
-                .map(landmark => ([
-                       (landmark[0] + anchor[0]) * scaleFactorX,
-                       (landmark[1] + anchor[1]) * scaleFactorY
-                     ]));
+          (landmarkData )
+            .map(landmark => ([
+              (landmark[0] + anchor[0]) * scaleFactorX,
+              (landmark[1] + anchor[1]) * scaleFactorY
+            ]));
 
         normalizedFace = {
           topLeft: (boxData ).slice(0, 2) ,
@@ -460,7 +459,7 @@ class BlazeFaceModel {
       }
 
       return normalizedFace;
-    }));
+    })
   }
 }
 

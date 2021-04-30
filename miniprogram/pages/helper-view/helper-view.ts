@@ -95,17 +95,16 @@ Component({
     // const renderer = new WebGL1Renderer({ canvas: canvasGL, antialias: true });
     // const scene = new Scene();
     const cameraCtx = wx.createCameraContext();
-    const frameAdapter = new FrameAdapter(async frame => {
+    const frameAdapter = new FrameAdapter();
+    const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
+    frameAdapter.onProcessFrame(async frame => {
       if (userFrameCallback) {
         const t = Date.now()
-        console.log('trigger userFrameCallback')
         frame.data = frame.data.slice(0);
         await userFrameCallback(frame, deps)
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) })
       }
-    });
-    const cameraListener = cameraCtx.onCameraFrame(frameAdapter.onFrame.bind(frameAdapter));
-
+    })
     deps = {
       ctx,
       inputCtx,

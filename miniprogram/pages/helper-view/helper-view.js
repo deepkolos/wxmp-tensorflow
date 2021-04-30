@@ -2,32 +2,76 @@
 
 var tfjs = require('../../chunks/tfjs.js');
 
+function _optionalChain$1(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }
+
+
+
+
+
 class FrameAdapter {
+  __init() {this.frameNum = 0;}
+  __init2() {this.processFrameNum = 0;}
   
   
   
-  __init() {this.enable = true;}
+  
+  __init3() {this.currGap = 0;}
+  __init4() {this.lastFrameDone = true;}
+  
 
-  constructor( consumer) {this.consumer = consumer;FrameAdapter.prototype.__init.call(this); }
-
-  onFrame(frame) {
-    this.currFrame = frame;
-    this.currFrameReachTime = Date.now();
-    this.processFrame();
+  constructor(maxProcessFrame = Number.MAX_SAFE_INTEGER, frameGap = 30) {FrameAdapter.prototype.__init.call(this);FrameAdapter.prototype.__init2.call(this);FrameAdapter.prototype.__init3.call(this);FrameAdapter.prototype.__init4.call(this);
+    this.frameGap = frameGap;
+    this.maxProcessFrame = maxProcessFrame;
   }
 
-  async processFrame() {
-    if (!this.enable || this.processing) return
+  onProcessFrame(cb) {
+    this.frameProcesser = cb;
+  }
 
-    const frame = this.currFrame;
-    this.processing = true;
-    try {
-      await this.consumer(frame);
-      this.processing = false;
-    } catch (error) {
-      console.error(error);
-      this.enable = false;
+  onMaxFrame(cb) {
+    this.maxFrameCB = cb;
+  }
+
+  reset() {
+    this.currGap = 0;
+    this.frameNum = 0;
+    this.processFrameNum = 0;
+  }
+
+  async triggerFrame(frame) {
+    if (this.frameProcesser && this.processFrameNum < this.maxProcessFrame && this.lastFrameDone) {
+      // console.log('triggerFrame', this.frameNum, Date.now())
+
+      if (this.frameNum === 0 || this.lastProcessTime === undefined) {
+        await this.processFrame(frame);
+      } else {
+        const gap = Math.max(Math.round(this.lastProcessTime / this.frameGap), 1);
+        this.currGap = gap;
+        if (this.frameNum >= gap) {
+        await this.processFrame(frame);
+        this.frameNum = 0;
+        }
+      }
+
+      this.frameNum++;
     }
+
+    if (this.processFrameNum === this.maxProcessFrame) {
+      this.processFrameNum++;
+      _optionalChain$1([this, 'access', _ => _.maxFrameCB, 'optionalCall', _2 => _2()]);
+    }
+  }
+
+   async processFrame(frame) {
+    if (this.frameProcesser) {
+      this.lastFrameDone = false;
+      const t = Date.now();
+      // console.log('processFrame', this.frameNum, t)
+      await this.frameProcesser(frame);
+      this.lastFrameDone = true;
+      this.lastProcessTime = Date.now() - t;
+    }
+    this.processFrameNum++;
   }
 }
 
@@ -526,17 +570,16 @@ Component({
     // const renderer = new WebGL1Renderer({ canvas: canvasGL, antialias: true });
     // const scene = new Scene();
     const cameraCtx = wx.createCameraContext();
-    const frameAdapter = new FrameAdapter(async frame => {
+    const frameAdapter = new FrameAdapter();
+    const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
+    frameAdapter.onProcessFrame(async frame => {
       if (userFrameCallback) {
         const t = Date.now();
-        console.log('trigger userFrameCallback');
         frame.data = frame.data.slice(0);
         await userFrameCallback(frame, deps);
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
       }
     });
-    const cameraListener = cameraCtx.onCameraFrame(frameAdapter.onFrame.bind(frameAdapter));
-
     deps = {
       ctx,
       inputCtx,
