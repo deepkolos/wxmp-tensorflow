@@ -47,9 +47,10 @@ class FrameAdapter {
       } else {
         const gap = Math.max(Math.round(this.lastProcessTime / this.frameGap), 1);
         this.currGap = gap;
+        // console.log('gap', gap)
         if (this.frameNum >= gap) {
-        await this.processFrame(frame);
-        this.frameNum = 0;
+          await this.processFrame(frame);
+          this.frameNum = 0;
         }
       }
 
@@ -482,6 +483,9 @@ function fetchFunc(url, options) {
   });
 }
 
+const { platform } = wx.getSystemInfoSync();
+const isAndroid = platform === 'android';
+
 function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }// components/helper-view/helper-view.js
 
 setupWechatPlatform({
@@ -575,8 +579,9 @@ Component({
     frameAdapter.onProcessFrame(async frame => {
       if (userFrameCallback) {
         const t = Date.now();
-        frame.data = frame.data.slice(0);
-        await userFrameCallback(frame, deps);
+        // frame.data = frame.data.slice(0);
+        userFrameCallback(frame, deps);
+        if (isAndroid) await new Promise((resolve) => canvas2D.requestAnimationFrame(resolve));
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
       }
     });

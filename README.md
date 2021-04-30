@@ -4,9 +4,9 @@
 
 ### TODO
 
-0. 运行 balzeface 安卓 done IOS todo
-1. 集成 tfjsPlugin，方便使用，无需二次引用 done
-2. 运行face-landmarks 安卓 done IOS todo
+0. 运行 balzeface 安卓 √，IOS √但卡
+1. 运行 face-landmarks 安卓 √，IOS √ 但卡
+2. 集成 tfjsPlugin，方便使用，无需二次引用 √
 
 ### 使用 custom_tfjs 进一步优化包大小
 

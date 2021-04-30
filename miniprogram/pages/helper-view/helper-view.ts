@@ -8,6 +8,7 @@ import * as tf from '@tensorflow/tfjs-core';
 import * as webgl from '@tensorflow/tfjs-backend-webgl';
 import { setupWechatPlatform } from '../../../tfjs-plugin/wechat_platform'
 import { fetchFunc } from '../../../tfjs-plugin/fetch'
+import { isAndroid } from './env';
 
 setupWechatPlatform({
   fetchFunc,
@@ -100,8 +101,9 @@ Component({
     frameAdapter.onProcessFrame(async frame => {
       if (userFrameCallback) {
         const t = Date.now()
-        frame.data = frame.data.slice(0);
-        await userFrameCallback(frame, deps)
+        // frame.data = frame.data.slice(0);
+        userFrameCallback(frame, deps)
+        if (isAndroid) await new Promise((resolve) => canvas2D.requestAnimationFrame(resolve))
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) })
       }
     })

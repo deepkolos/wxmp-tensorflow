@@ -20,7 +20,7 @@ export class FrameAdapter {
     this.maxProcessFrame = maxProcessFrame;
   }
 
-  onProcessFrame(cb: (frame: Frame) => Promise<any>) {
+  onProcessFrame(cb: (frame: Frame) => any) {
     this.frameProcesser = cb;
   }
 
@@ -43,9 +43,10 @@ export class FrameAdapter {
       } else {
         const gap = Math.max(Math.round(this.lastProcessTime / this.frameGap), 1);
         this.currGap = gap
+        // console.log('gap', gap)
         if (this.frameNum >= gap) {
-        await this.processFrame(frame);
-        this.frameNum = 0;
+          await this.processFrame(frame);
+          this.frameNum = 0;
         }
       }
 
