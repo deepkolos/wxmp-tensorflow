@@ -20,7 +20,7 @@ setWasmPaths(
   // }, {}),
   {
     'tfjs-backend-wasm.wasm': '/tfjs-backend-wasm.wasm',
-    'tfjs-backend-wasm-simd.wasm': '/tfjs-backend-wasm.wasm',
+    'tfjs-backend-wasm-simd.wasm': '/tfjs-backend-wasm-simd.wasm',
     'tfjs-backend-wasm-threaded-simd.wasm': '/tfjs-backend-wasm.wasm'
   },
   true
@@ -103,7 +103,7 @@ Component({
 
   async ready() {
     console.log('helper view ready')
-    // await tf.setBackend('wasm')
+    await tf.setBackend('wasm')
     this.setData({ backend: tf.getBackend() })
     const [{ node: canvasGL }] = await getNode('#gl', this);
     const [{ node: canvas2D }] = await getNode('#canvas', this);

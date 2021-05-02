@@ -46,7 +46,7 @@ function codeTransform() {
             return {};`)
       }
       code = code.replace(`WebAssembly.`, `WXWebAssembly.`)
-      code = code.replace(`env().getAsync('WASM_HAS_SIMD_SUPPORT')`, 'true')
+      code = code.replace(`env().getAsync('WASM_HAS_SIMD_SUPPORT')`, 'false')
       code = code.replace(`env().getAsync('WASM_HAS_MULTITHREAD_SUPPORT')`, 'false')
       code = code.replace(`typeof WebAssembly`, `typeof WXWebAssembly`)
       return { code };
