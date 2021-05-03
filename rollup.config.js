@@ -8,8 +8,8 @@ import sucrase from '@rollup/plugin-sucrase';
 import alias from '@rollup/plugin-alias';
 
 const p = s => path.resolve(__dirname, s);
-
 const useCustomTFjs = process.argv.includes('--customtfjs');
+const isDev = process.argv.includes('-w');
 
 function codeTransform() {
   return {
@@ -83,14 +83,14 @@ export default [
       // sucrase({ transforms: ['typescript'] }),
       esbuild({
         sourceMap: false,
-        minify: false,
+        minify: !isDev,
         target: 'es2018',
         legalComments: 'none',
       }),
       terser({
         output: { comments: false },
-        mangle: false,
-        compress: false, // { typeofs: false }
+        mangle: !isDev,
+        compress: !isDev, // { typeofs: false }
       }),
       resolve({
         extensions: ['.ts', '.js'],

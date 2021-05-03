@@ -1,8 +1,21 @@
 /**index.wxss**/
+.title {
+  color: #425066;
+  font-size: larger;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.desc, .link {
+  color: #616161;
+  padding: 0 10px;
+}
 
 .nav-btn {
+  color: white;
   margin: 10px;
-  border: 1px solid;
+  background-image: linear-gradient(to right, #ff6f00, #ff9100);
   padding: 5px;
   text-align: center;
+  border-radius: 5px;
 }

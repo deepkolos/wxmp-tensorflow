@@ -1,10 +1,7 @@
 <!--index.wxml-->
-<view 
-  class="nav-btn" 
-  wx:for="{{pages}}" 
-  wx:for-index="idx"
-  wx:for-item="item"
-  wx:key="idx"
-  data-item="{{item}}" 
-  bindtap="onBtnClick"
->{{item.title}}</view>
+<view class="title">WXMP-TensorFlow</view>
+<view class="desc">微信小程序下运行最新TensorFlow的工程解决办法</view>
+<view class="link">https://github.com/deepkolos/wxmp-tensorflow</view>
+
+<view class="nav-btn" wx:for="{{pages}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" data-item="{{item}}"
+  bindtap="onBtnClick">{{item.title}}</view>

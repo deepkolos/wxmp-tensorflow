@@ -1,5 +1,6 @@
 {
   "usingComponents": {
     "helper-view": "../helper-view/helper-view"
-  }
+  },
+  "navigationBarTitleText": "FaceLandMarks"
 }

@@ -4,6 +4,7 @@
   z-index: 0;
   height: 100vh;
   width: 100vw;
+  color: #425066;
 }
 
 .gl,
@@ -37,21 +38,24 @@
 
 .btn {
   padding: 5px;
-  border: 1px solid black;
+  border: 2px solid #ff9100;
+  border-radius: 5px;
   margin: 0 5px;
 }
 
 .btn[data-on='true'] {
-  color: red;
+  color: white;
+  background-image: linear-gradient(to right, #ff6f00, #ff9100);
 }
 
 .radio {
   margin: 5px;
-  border-width: 1px;
+  border-width: 2px;
   border-color: transparent;
   border-style: solid;
+  border-radius: 3px;
 }
 
 .radio[data-active='true']{
-  border-bottom-color: #000;
+  border-bottom-color: #ff9100;
 }
