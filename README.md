@@ -20,7 +20,7 @@
 
 ### 问题
 
-0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现
+0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS下Promise是setTimeout模拟的，见[小程序JavaScript支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）
 1. wasm 只有在华为手机上比 webgl 好 (2.7 测试的结果)
 
 ### TODO
