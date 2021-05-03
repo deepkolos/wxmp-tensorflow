@@ -65,15 +65,15 @@ export default [
       chunkFileNames: 'chunks/[name].js',
       entryFileNames: 'pages/[name]/[name].js',
       manualChunks: {
-        'three-platformize': ['three-platformize'],
+        // 'three-platformize': ['three-platformize'],
         tfjs: [
           '@tensorflow/tfjs-backend-webgl',
           '@tensorflow/tfjs-converter',
           '@tensorflow/tfjs-core',
         ],
         wasm: ['@tensorflow/tfjs-backend-wasm'],
-        blazeface: ['@tensorflow-models/blazeface'],
-        facemesh: ['@tensorflow-models/face-landmarks-detection'],
+        // blazeface: ['@tensorflow-models/blazeface'],
+        // facemesh: ['@tensorflow-models/face-landmarks-detection'],
       },
     },
     plugins: [
