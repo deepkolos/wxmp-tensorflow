@@ -5,9 +5,10 @@
   <canvas class="canvas" type="2d" id="canvas"></canvas>
   <canvas class="canvas canvas-input" type="2d" id="canvas-input"></canvas>
   <view class="info-can">
+    <view class="info-item">FPS: {{FPS}}</view>
     <view class="btn" bindtap="onBtnSelectClick">图片</view>
     <view class="btn" bindtap="onBtnUseCameraClick" data-on="{{usingCamera}}">相机</view>
-    <view class="info-item">FPS: {{FPS}}</view>
-    <view class="info-item">{{backend}}</view>
+    <view class="radio" data-backend="wechat-webgl" bindtap="onRadioClick" data-active="{{backend === 'wechat-webgl'}}">GL</view>
+    <view class="radio" data-backend="wasm"  bindtap="onRadioClick" data-active="{{backend === 'wasm'}}">WASM</view>
   </view>
 </view>

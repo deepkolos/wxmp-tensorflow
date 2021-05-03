@@ -44,3 +44,14 @@
 .btn[data-on='true'] {
   color: red;
 }
+
+.radio {
+  margin: 5px;
+  border-width: 1px;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.radio[data-active='true']{
+  border-bottom-color: #000;
+}
