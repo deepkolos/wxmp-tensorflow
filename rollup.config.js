@@ -56,6 +56,7 @@ export default [
     input: [
       './miniprogram/pages/blazeface/blazeface.ts',
       './miniprogram/pages/face-landmarks/face-landmarks.ts',
+      './miniprogram/pages/posenet/posenet.ts',
       './miniprogram/pages/helper-view/helper-view.ts',
     ],
     treeshake: true,

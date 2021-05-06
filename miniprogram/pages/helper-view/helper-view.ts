@@ -67,6 +67,7 @@ Component({
     backend: '',
     usingCamera: false,
     // cameraPosition: 'front',
+    switchingBackend: false,
   },
 
   behaviors: ['wx://component-export'],
@@ -117,7 +118,7 @@ Component({
     const frameAdapter = new FrameAdapter();
     const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
     frameAdapter.onProcessFrame(async frame => {
-      if (userFrameCallback) {
+      if (userFrameCallback && !this.data.switchingBackend) {
         const t = Date.now();
         // frame.data = frame.data.slice(0);
         userFrameCallback(frame, deps);
@@ -196,7 +197,9 @@ Component({
 
     async onRadioClick(e) {
       const { backend } = e.target.dataset;
+      this.data.switchingBackend = true
       await tf.setBackend(backend);
+      this.data.switchingBackend = false
       this.setData({ backend: tf.getBackend() });
     },
   },

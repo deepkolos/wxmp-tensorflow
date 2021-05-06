@@ -9,6 +9,10 @@ Page({
         title: 'FaceLandMarks',
         href: '/pages/face-landmarks/face-landmarks',
       },
+      {
+        title: 'PoseNet',
+        href: '/pages/posenet/posenet',
+      },
     ],
   },
   onBtnClick(e) {
