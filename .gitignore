@@ -1,5 +1,4 @@
 node_modules
 miniprogram/chunks
-miniprogram/pages/blazeface/*.js
-miniprogram/pages/face-landmarks/*.js
-miniprogram/pages/helper-view/*.js
+miniprogram/pages/*/*.js
+!miniprogram/pages/index/*.js
