@@ -6,7 +6,8 @@
 1. 运行 face-landmarks 安卓 √，IOS √
 2. 集成 tfjsPlugin，方便使用，无需二次引用 √
 3. 支持 wasm backend √
-4. custom tfjs 减少包体积 blazeface 例子
+4. 运行 posenet (例子是 mobilenet 0.50 stride16) √
+5. custom tfjs 减少包体积 blazeface 例子
 
 <img width="120" src="https://upload-images.jianshu.io/upload_images/252050-c99071dc4bf61185.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 
