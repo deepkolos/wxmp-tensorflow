@@ -144,7 +144,7 @@ Component({
   },
 
   detached() {
-    deps?.cameraListener.stop();
+    if (this.data.usingCamera) deps?.cameraListener.stop();
     // PLATFORM.dispose();
     // @ts-ignore
     deps = null;
