@@ -51,6 +51,7 @@
 
 0. [[962K -> 347K] TensorflowJS 基于 Runtime 结果的 TreeShaking](https://juejin.cn/post/6947198156987711524/)
 1. [https://github.com/mattsoulanille/tfjs_custom_module_demo](https://github.com/mattsoulanille/tfjs_custom_module_demo)
+2. [https://github.com/deepkolos/tfjs-treeshaking-test](https://github.com/deepkolos/tfjs-treeshaking-test)
 
 ## 赞助
 
