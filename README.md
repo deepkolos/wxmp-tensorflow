@@ -7,7 +7,7 @@
 2. 集成 tfjsPlugin，方便使用，无需二次引用 √
 3. 支持 wasm backend √
 4. 运行 posenet (例子是 mobilenet 0.50 stride16) √
-5. custom tfjs 减少包体积 blazeface 例子
+5. custom tfjs 减少包体积 blazeface 例子 √
 
 <img width="120" src="https://upload-images.jianshu.io/upload_images/252050-c99071dc4bf61185.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 
@@ -39,6 +39,10 @@
 > pnpm i / npm i / yarn
 > npm run dev
 # 使用小程序开发工具打开，替换appid为测试appid，不校验域名
+
+# 编写custom tfjs，例子是仅仅blazeface可用tf + webgl backend 小程序包从 985KB下降到534KB (js大概下降234KB)
+> npm run make-custom
+> npm run build-custom
 ```
 
 ### 使用 custom_tfjs 进一步优化包大小

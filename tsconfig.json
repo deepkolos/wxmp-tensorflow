@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noImplicitAny": false,
-    "module": "CommonJS",
+    "module": "es2020",
     "target": "ES2018",
     "allowJs": false,
     "moduleResolution": "Node",

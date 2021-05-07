@@ -1,4 +1,5 @@
 node_modules
 miniprogram/chunks
 miniprogram/pages/*/*.js
+miniprogram/tfjs-backend-wasm.wasm
 !miniprogram/pages/index/*.js

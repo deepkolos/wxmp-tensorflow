@@ -2,21 +2,21 @@
 // import * as blazeface from '../../../tfjs-models/blazeface';
 import * as blazeface from '../../../tfjs-models-sync/blazeface';
 import * as tf from '@tensorflow/tfjs-core';
-import { Deps } from '../helper-view/helper-view'
+import { Deps } from '../helper-view/helper-view';
 import { Frame } from '../helper-view/FrameAdapter';
 
 Page({
   helper: null as any,
 
   async onReady() {
-    console.log('blazeface onReady')
-    await tf.ready()
-    console.log('tf ready')
+    console.log('blazeface onReady');
+    await tf.ready();
+    console.log('tf ready');
     const helper = this.selectComponent('#helper');
-    console.log('blazeface load start')
+    console.log('blazeface load start');
     const model = await blazeface.load();
-    console.log('blazeface load end')
-
+    console.log('blazeface load end');
+    let profiled = false;
     const onFrame = (frame: Frame, deps: Deps) => {
       const { ctx } = deps;
       const video = {
@@ -32,9 +32,23 @@ Page({
       const returnTensors = false;
       const flipHorizontal = false;
       const annotateBoxes = true;
-      const t = Date.now()
-      const predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes)
-      console.log('predict cost', Date.now() - t)
+      // 用于CustomTFJS
+      let predictions;
+      const t = Date.now();
+      if (!profiled) {
+        tf.profile(() => {
+          // @ts-ignore
+          predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
+        }).then(e => {
+          console.log(e.kernelNames);
+        });
+        profiled = true
+      } else {
+        // @ts-ignore
+        predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
+      }
+      console.log('predict cost', Date.now() - t);
+
       helper.drawCanvas2D(frame);
 
       // console.log(predictions.length)
@@ -66,7 +80,7 @@ Page({
           }
         }
       }
-    }
+    };
 
     helper.set({ onFrame });
     this.helper = helper;
@@ -80,7 +94,7 @@ Page({
     this.helper?.stop();
   },
 
-  onUnload: function () { },
+  onUnload: function () {},
 
-  onShareAppMessage: function () { },
+  onShareAppMessage: function () {},
 });

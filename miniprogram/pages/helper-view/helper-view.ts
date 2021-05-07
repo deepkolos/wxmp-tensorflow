@@ -11,14 +11,16 @@ import { fetchFunc } from '../../../tfjs-plugin/fetch';
 import { isAndroid } from './env';
 import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm';
 
-setWasmPaths(
-  {
-    'tfjs-backend-wasm.wasm': '/tfjs-backend-wasm.wasm',
-    'tfjs-backend-wasm-simd.wasm': '/tfjs-backend-wasm.wasm',
-    'tfjs-backend-wasm-threaded-simd.wasm': '/tfjs-backend-wasm.wasm',
-  },
-  true,
-);
+if (!import.meta.CUSTOM) {
+  setWasmPaths(
+    {
+      'tfjs-backend-wasm.wasm': '/tfjs-backend-wasm.wasm',
+      'tfjs-backend-wasm-simd.wasm': '/tfjs-backend-wasm.wasm',
+      'tfjs-backend-wasm-threaded-simd.wasm': '/tfjs-backend-wasm.wasm',
+    },
+    true,
+  );
+}
 
 setupWechatPlatform({
   fetchFunc,
@@ -197,9 +199,9 @@ Component({
 
     async onRadioClick(e) {
       const { backend } = e.target.dataset;
-      this.data.switchingBackend = true
+      this.data.switchingBackend = true;
       await tf.setBackend(backend);
-      this.data.switchingBackend = false
+      this.data.switchingBackend = false;
       this.setData({ backend: tf.getBackend() });
     },
   },

@@ -4,16 +4,20 @@ import commonjs from '@rollup/plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
 import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
-import sucrase from '@rollup/plugin-sucrase';
+// import sucrase from '@rollup/plugin-sucrase';
 import alias from '@rollup/plugin-alias';
+import copy from 'rollup-plugin-copy';
 
 const p = s => path.resolve(__dirname, s);
-const useCustomTFjs = process.argv.includes('--customtfjs');
+const useCustom = process.argv.includes('--custom');
 const isDev = process.argv.includes('-w');
 
 function codeTransform() {
   return {
     transform(code, file) {
+      // 注入环境变量
+      code = code.replace(`import.meta.CUSTOM`, `${useCustom}`);
+
       // 因为tfhub需要翻墙，所以构建时替换地址
       code = code
         .replace('fromTFHub:', 'fromTFHub_:')
@@ -51,70 +55,100 @@ function codeTransform() {
   };
 }
 
+const aliasPlugin = useCustom
+  ? alias({
+      entries: [
+        {
+          find: /@tensorflow\/tfjs$/,
+          replacement: p('./custom_tfjs/custom_tfjs.js'),
+        },
+        {
+          find: /@tensorflow\/tfjs-core$/,
+          replacement: p('./custom_tfjs/custom_tfjs_core.js'),
+        },
+        {
+          find: '@tensorflow/tfjs-core/dist/ops/ops_for_converter',
+          replacement: p('./custom_tfjs/custom_ops_for_converter.js'),
+        },
+        {
+          find: /@tensorflow\/tfjs-backend-webgl$/,
+          replacement: p('./custom_tfjs/custom_tfjs.js'),
+        },
+        {
+          find: /@tensorflow\/tfjs-backend-wasm$/,
+          replacement: p('./custom_tfjs/custom_tfjs.js'),
+        },
+      ],
+    })
+  : null;
+
 export default [
   {
-    input: [
-      './miniprogram/pages/blazeface/blazeface.ts',
-      './miniprogram/pages/face-landmarks/face-landmarks.ts',
-      './miniprogram/pages/posenet/posenet.ts',
-      './miniprogram/pages/helper-view/helper-view.ts',
-    ],
+    input: useCustom
+      ? [
+          './miniprogram/pages/blazeface/blazeface.ts',
+          './miniprogram/pages/helper-view/helper-view.ts',
+        ]
+      : [
+          './miniprogram/pages/blazeface/blazeface.ts',
+          './miniprogram/pages/face-landmarks/face-landmarks.ts',
+          './miniprogram/pages/posenet/posenet.ts',
+          './miniprogram/pages/helper-view/helper-view.ts',
+        ],
     treeshake: true,
     output: {
       format: 'cjs', // 小程序大文件不会把esm转cjs
       dir: 'miniprogram/',
       chunkFileNames: 'chunks/[name].js',
       entryFileNames: 'pages/[name]/[name].js',
-      manualChunks: {
-        // 'three-platformize': ['three-platformize'],
-        tfjs: [
-          '@tensorflow/tfjs-backend-webgl',
-          '@tensorflow/tfjs-converter',
-          '@tensorflow/tfjs-core',
-        ],
-        wasm: ['@tensorflow/tfjs-backend-wasm'],
-        // blazeface: ['@tensorflow-models/blazeface'],
-        // facemesh: ['@tensorflow-models/face-landmarks-detection'],
-      },
+      manualChunks: useCustom
+        ? {
+            index: ['three-platformize'], // 其他页面空引用
+            tfjs: [
+              './custom_tfjs/custom_ops_for_converter.js',
+              './custom_tfjs/custom_tfjs_core.js',
+              './custom_tfjs/custom_tfjs.js',
+            ],
+          }
+        : {
+            // 'three-platformize': ['three-platformize'],
+            tfjs: [
+              '@tensorflow/tfjs-backend-webgl',
+              '@tensorflow/tfjs-converter',
+              '@tensorflow/tfjs-core',
+            ],
+            wasm: ['@tensorflow/tfjs-backend-wasm'],
+            // blazeface: ['@tensorflow-models/blazeface'],
+            // facemesh: ['@tensorflow-models/face-landmarks-detection'],
+          },
     },
     plugins: [
       codeTransform(),
+      aliasPlugin,
       builtins(),
-      commonjs(),
-      // sucrase({ transforms: ['typescript'] }),
+      resolve({
+        extensions: ['.ts', '.js'],
+        preferBuiltins: false,
+        mainFields: ['jsnext:main', 'jsnext', 'module', 'main'],
+      }),
+      commonjs({ include: ['node_modules/**'] }),
       esbuild({
         sourceMap: false,
         minify: !isDev,
         target: 'es2018',
         legalComments: 'none',
       }),
+      // sucrase({ transforms: ['typescript'] }),
       terser({
         output: { comments: false },
         mangle: !isDev,
         compress: !isDev, // { typeofs: false }
       }),
-      resolve({
-        extensions: ['.ts', '.js'],
-        preferBuiltins: false,
-        mainFields: ['jsnext:main', 'jsnext', 'module', 'main'],
-      }),
-      useCustomTFjs &&
-        alias({
-          entries: [
-            {
-              find: /@tensorflow\/tfjs$/,
-              replacement: p('./custom_tfjs/custom_tfjs.js'),
-            },
-            {
-              find: /@tensorflow\/tfjs-core$/,
-              replacement: p('./custom_tfjs/custom_tfjs_core.js'),
-            },
-            {
-              find: '@tensorflow/tfjs-core/dist/ops/ops_for_converter',
-              replacement: p('./custom_tfjs/custom_ops_for_converter.js'),
-            },
-          ],
-        }),
+      !useCustom
+        ? copy({
+            targets: [{ src: 'tfjs-plugin/tfjs-backend-wasm.wasm', dest: 'miniprogram/' }],
+          })
+        : null,
     ],
   },
 ];
