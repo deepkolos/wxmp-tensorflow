@@ -38,6 +38,7 @@
 0. 结果 UI 美化
 1. handpose
 2. face-api.js
+3. warm up 通用化，根据已注册的registerKernel做warm up
 
 ### 运行
 
