@@ -52,6 +52,8 @@ let deps: {
   cameraListener: WechatMiniprogram.CameraFrameListener;
 };
 
+let userInitedResolver;
+
 let userFrameCallback: (frame: Frame, deps: any) => Promise<any> | void;
 
 export type Deps = typeof deps;
@@ -67,6 +69,7 @@ Component({
   data: {
     FPS: '0',
     backend: '',
+    inited: false,
     usingCamera: false,
     // cameraPosition: 'front',
     switchingBackend: false,
@@ -75,8 +78,9 @@ Component({
   behaviors: ['wx://component-export'],
   export() {
     return {
-      set(cfg: { onFrame: (frame: Frame, deps: any) => Promise<any> | void }) {
+      set: (cfg: { onFrame: (frame: Frame, deps: any) => Promise<any> | void }) => {
         userFrameCallback = cfg.onFrame;
+        userInitedResolver?.();
       },
       drawCanvas2D(frame: Frame) {
         if (deps) {
@@ -103,6 +107,8 @@ Component({
   },
 
   async ready() {
+    const userInitPromise = new Promise((resolve) => { userInitedResolver = resolve })
+    wx.showLoading({ title: '初始化中', mask: false })
     console.log('helper view ready');
     // await tf.setBackend('wasm')
     this.setData({ backend: tf.getBackend() });
@@ -128,7 +134,7 @@ Component({
         // @ts-ignore
         if (isAndroid) await new Promise(resolve => canvas2D.requestAnimationFrame(resolve));
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
-      }
+      } else return false;
     });
     deps = {
       ctx,
@@ -145,6 +151,10 @@ Component({
     // deps.cameraListener.start();
     this.triggerEvent('inited');
     console.log('helper view inited');
+
+    await userInitPromise;
+    wx.hideLoading()
+    this.onBtnUseCameraClick();
   },
 
   detached() {

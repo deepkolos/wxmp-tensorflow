@@ -4,6 +4,7 @@ import * as blazeface from '../../../tfjs-models-sync/blazeface';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view';
 import { Frame } from '../helper-view/FrameAdapter';
+import { onePixel } from '../helper-view/utils'
 
 Page({
   helper: null as any,
@@ -16,6 +17,11 @@ Page({
     console.log('blazeface load start');
     const model = await blazeface.load();
     console.log('blazeface load end');
+    // 预热模型，把所需要的shader 编译
+    const t = Date.now()
+    model.estimateFaces(onePixel, false, false, true);
+    console.log('blazeface warm up', Date.now() - t);
+
     let profiled = false;
     const onFrame = (frame: Frame, deps: Deps) => {
       const { ctx } = deps;
@@ -33,20 +39,21 @@ Page({
       const flipHorizontal = false;
       const annotateBoxes = true;
       // 用于CustomTFJS
-      let predictions;
       const t = Date.now();
-      if (!profiled) {
-        tf.profile(() => {
-          // @ts-ignore
-          predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
-        }).then(e => {
-          console.log(e.kernelNames);
-        });
-        profiled = true
-      } else {
-        // @ts-ignore
-        predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
-      }
+      let predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
+      // let predictions;
+      // if (!profiled) {
+      //   tf.profile(() => {
+      //     // @ts-ignore
+      //     predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
+      //   }).then(e => {
+      //     console.log(e.kernelNames);
+      //   });
+      //   profiled = true
+      // } else {
+      //   // @ts-ignore
+      //   predictions = model.estimateFaces(video, returnTensors, flipHorizontal, annotateBoxes);
+      // }
       console.log('predict cost', Date.now() - t);
 
       helper.drawCanvas2D(frame);
@@ -94,7 +101,7 @@ Page({
     this.helper?.stop();
   },
 
-  onUnload: function () {},
+  onUnload: function () { },
 
-  onShareAppMessage: function () {},
+  onShareAppMessage: function () { },
 });

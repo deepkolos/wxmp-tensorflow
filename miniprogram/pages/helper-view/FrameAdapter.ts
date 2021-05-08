@@ -14,10 +14,12 @@ export class FrameAdapter {
   currGap = 0;
   lastFrameDone = true;
   maxFrameCB?: () => void;
+  defaultProcessTime: number;
 
-  constructor(maxProcessFrame = Number.MAX_SAFE_INTEGER, frameGap = 30) {
+  constructor(maxProcessFrame = Number.MAX_SAFE_INTEGER, frameGap = 30, defaultProcessTime = 500) {
     this.frameGap = frameGap;
     this.maxProcessFrame = maxProcessFrame;
+    this.defaultProcessTime = defaultProcessTime;
   }
 
   onProcessFrame(cb: (frame: Frame) => any) {
@@ -43,7 +45,6 @@ export class FrameAdapter {
       } else {
         const gap = Math.max(Math.round(this.lastProcessTime / this.frameGap), 1);
         this.currGap = gap
-        // console.log('gap', gap)
         if (this.frameNum >= gap) {
           await this.processFrame(frame);
           this.frameNum = 0;
@@ -66,6 +67,7 @@ export class FrameAdapter {
       // console.log('processFrame', this.frameNum, t)
       await this.frameProcesser(frame);
       this.lastFrameDone = true
+      // this.lastProcessTime = updateGap === false ? this.defaultProcessTime : Date.now() - t;
       this.lastProcessTime = Date.now() - t;
     }
     this.processFrameNum++;

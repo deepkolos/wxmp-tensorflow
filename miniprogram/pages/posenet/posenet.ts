@@ -5,6 +5,7 @@ import * as posenet from '../../../tfjs-models-sync/posenet';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'
 import { drawPoses } from './util';
+import { onePixel } from '../helper-view/utils'
 
 const POSENET_URL =
   'https://www.gstaticcnapps.cn/tfjs-models/savedmodel/posenet/mobilenet/float/050/model-stride16.json';
@@ -23,6 +24,9 @@ Page({
       modelUrl: POSENET_URL
     });
     console.log('posenet load end')
+    const t = Date.now()
+    model.estimateSinglePose(onePixel, { flipHorizontal: false })
+    console.log('posenet warm up', Date.now() - t)
 
     const onFrame = (frame, deps: Deps) => {
       const { ctx } = deps;

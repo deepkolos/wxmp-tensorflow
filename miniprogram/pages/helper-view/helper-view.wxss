@@ -17,7 +17,7 @@
   left: 0;
 }
 
-.canvas.canvas-input {
+.canvas.canvas-input, .camera {
   left: -100vw;
 }
 

@@ -4,6 +4,7 @@
 import * as faceLandmarksDetection from '../../../tfjs-models-sync/face-landmarks';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'
+import { onePixel } from '../helper-view/utils'
 
 const NUM_KEYPOINTS = 468;
 const NUM_IRIS_KEYPOINTS = 5;
@@ -32,6 +33,9 @@ Page({
         shouldLoadIrisModel: false,
       });
     console.log('face-landmarks load end')
+    const t = Date.now()
+    model.estimateFaces({ input: onePixel, returnTensors: false, flipHorizontal: false, predictIrises: false })
+    console.log('face-landmarks warm up', Date.now() - t)
 
     const onFrame = (frame, deps: Deps) => {
       const { ctx } = deps;

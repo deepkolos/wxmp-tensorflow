@@ -1,3 +1,5 @@
+const { platform } = wx.getSystemInfoSync();
+
 export const TEXT_FILE_EXTS = /\.(txt|json|html|txt|csv)/;
 
 export function parseResponse(url: string, res: WechatMiniprogram.RequestSuccessCallbackResult) {
@@ -49,8 +51,17 @@ export function parseResponse(url: string, res: WechatMiniprogram.RequestSuccess
 export function fetchFunc(url: string, options: any) {
   options = options || {};
   const dataType = url.match(TEXT_FILE_EXTS) ? 'text' : 'arraybuffer';
+  const usePatch = dataType === 'arraybuffer' && platform === 'ios';
 
+  console.log('fetch start', url)
   return new Promise((resolve, reject) => {
+    let successed = false;
+    const onSuccess = function (resp) {
+      if (successed) return
+      console.log('fetch done', url)
+      successed = true;
+      return resolve(parseResponse(url, resp));
+    }
     wx.request({
       url,
       method: options.method || 'GET',
@@ -58,8 +69,25 @@ export function fetchFunc(url: string, options: any) {
       header: options.headers,
       dataType,
       responseType: dataType,
-      success: (resp) => resolve(parseResponse(url, resp)),
-      fail: (err) => reject(err)
+      enableCache: true,
+      success: onSuccess,
+      fail: reject
     });
+
+    if (usePatch) {
+      setTimeout(function () {
+        wx.request({
+          url: url,
+          method: options.method || 'GET',
+          data: options.body,
+          header: options.headers,
+          dataType,
+          responseType: dataType,
+          enableCache: true,
+          success: onSuccess,
+          fail: reject,
+        });
+      }, 200);
+    }
   });
 };

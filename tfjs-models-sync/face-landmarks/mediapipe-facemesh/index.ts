@@ -24,6 +24,8 @@ import { Pipeline, Prediction } from './pipeline';
 import { Coord2D, Coords3D } from './util';
 import { UV_COORDS } from './uv_coords';
 
+const { platform } = wx.getSystemInfoSync()
+
 const FACEMESH_GRAPHMODEL_PATH =
   'https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1';
 const IRIS_GRAPHMODEL_PATH =
@@ -133,21 +135,48 @@ export async function load(config: {
   } = config;
 
   let models;
-  if (shouldLoadIrisModel) {
-    models = await Promise.all([
-      loadDetectorModel(
+  if (platform === 'ios') {
+    if (shouldLoadIrisModel) {
+      models = []
+      await loadDetectorModel(
         detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
-      ),
-      loadMeshModel(modelUrl),
-      loadIrisModel(irisModelUrl)
-    ]);
+      ).then(model => {
+        models[0] = model
+        return loadMeshModel(modelUrl).then((model) => {
+          models[1] = model
+          return loadIrisModel(irisModelUrl).then((model) => {
+            models[2] = model
+          })
+        })
+      });
+    } else {
+      models = []
+      await loadDetectorModel(
+        detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
+      ).then(model => {
+        models[0] = model
+        return loadMeshModel(modelUrl).then((model) => {
+          models[1] = model
+        })
+      });
+    }
   } else {
-    models = await Promise.all([
-      loadDetectorModel(
-        detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
-      ),
-      loadMeshModel(modelUrl)
-    ]);
+    if (shouldLoadIrisModel) {
+      models = await Promise.all([
+        loadDetectorModel(
+          detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
+        ),
+        loadMeshModel(modelUrl),
+        loadIrisModel(irisModelUrl)
+      ]);
+    } else {
+      models = await Promise.all([
+        loadDetectorModel(
+          detectorModelUrl, maxFaces, iouThreshold, scoreThreshold
+        ),
+        loadMeshModel(modelUrl)
+      ]);
+    }
   }
 
   const faceMesh = new FaceMesh(
