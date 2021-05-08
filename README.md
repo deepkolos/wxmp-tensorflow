@@ -33,6 +33,7 @@
 
 0. 使用FrameAdapter动态跳帧处理
 1. 正式处理数据前，预热处理一个空白帧，把所用到的shader编译
+2. 利用 profile 生成 custom tfjs 优化包大小
 
 ### TODO
 
