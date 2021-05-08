@@ -24,12 +24,12 @@
 
 ### 问题
 
-0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS下Promise是setTimeout模拟的，见[小程序JavaScript支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）
+0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS 下 Promise 是 setTimeout 模拟的，见[小程序 JavaScript 支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）
 1. wasm 只有在华为手机上比 webgl 好 (2.7 测试的结果)
 
 ### TODO
 
-0. 结果UI美化
+0. 结果 UI 美化
 1. handpose
 2. face-api.js
 
@@ -52,6 +52,10 @@
 0. [[962K -> 347K] TensorflowJS 基于 Runtime 结果的 TreeShaking](https://juejin.cn/post/6947198156987711524/)
 1. [https://github.com/mattsoulanille/tfjs_custom_module_demo](https://github.com/mattsoulanille/tfjs_custom_module_demo)
 2. [https://github.com/deepkolos/tfjs-treeshaking-test](https://github.com/deepkolos/tfjs-treeshaking-test)
+
+### tfjs-models async 转 sync 方法
+
+只需要把读取数据部分的 async 方法比如`Tensor.array()`改为`Tensor.arraySync()`，或者`Tensor.buffer()`改为`Tensor.bufferSync()`，然后把`async`和`await`，`Promise.all`等关键字去除，即可
 
 ## 赞助
 
