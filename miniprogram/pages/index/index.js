@@ -13,6 +13,10 @@ Page({
         title: 'PoseNet',
         href: '/pages/posenet/posenet',
       },
+      {
+        title: 'HandPose',
+        href: '/pages/handpose/handpose',
+      },
     ],
   },
   onBtnClick(e) {

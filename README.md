@@ -8,6 +8,7 @@
 3. 支持 wasm backend √
 4. 运行 posenet (例子是 mobilenet 0.50 stride16) √
 5. custom tfjs 减少包体积 blazeface 例子 √
+6. 运行 handpose √
 
 <img width="120" src="https://upload-images.jianshu.io/upload_images/252050-c99071dc4bf61185.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 
@@ -36,9 +37,8 @@
 ### TODO
 
 0. 结果 UI 美化
-1. handpose
-2. face-api.js
-3. warm up 通用化，根据已注册的registerKernel做warm up
+1. face-api.js
+2. warm up 通用化，根据已注册的registerKernel做warm up
 
 ### 运行
 

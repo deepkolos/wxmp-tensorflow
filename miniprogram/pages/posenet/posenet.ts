@@ -1,6 +1,3 @@
-// miniprogram/pages/blazeface/blazeface.js
-// import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
-// import * as faceLandmarksDetection from '../../../tfjs-models/face-landmarks';
 import * as posenet from '../../../tfjs-models-sync/posenet';
 import * as tf from '@tensorflow/tfjs-core';
 import { Deps } from '../helper-view/helper-view'

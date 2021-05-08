@@ -20,10 +20,19 @@ function codeTransform() {
 
       // 因为tfhub需要翻墙，所以构建时替换地址
       code = code
-        .replace('fromTFHub:', 'fromTFHub_:')
+        .replace(/fromTFHub:/g, 'fromTFHub_:')
         .replace(
           'https://tfhub.dev/tensorflow/tfjs-model/blazeface/1/default/1',
           'https://cdn.static.oppenlab.com/weblf/test/blazeface/model.json',
+        ).replace(
+          'https://tfhub.dev/mediapipe/tfjs-model/handdetector/1/default/1',
+          'https://cdn.static.oppenlab.com/weblf/test/handdetector_1_default_1/model.json',
+        ).replace(
+          'https://tfhub.dev/mediapipe/tfjs-model/handskeleton/1/default/1',
+          'https://cdn.static.oppenlab.com/weblf/test/handskeleton_1_default_1/model.json',
+        ).replace(
+          'https://tfhub.dev/mediapipe/tfjs-model/handskeleton/1/default/1/anchors.json?tfjs-format=file',
+          'https://cdn.static.oppenlab.com/weblf/test/handpose/anchors.json',
         );
       // 修复tfjs的webgl版本检测
       code = code.replace(`isWebGLVersionEnabled(2)`, `false`);
@@ -93,6 +102,7 @@ export default [
           './miniprogram/pages/blazeface/blazeface.ts',
           './miniprogram/pages/face-landmarks/face-landmarks.ts',
           './miniprogram/pages/posenet/posenet.ts',
+          './miniprogram/pages/handpose/handpose.ts',
           './miniprogram/pages/helper-view/helper-view.ts',
         ],
     treeshake: true,

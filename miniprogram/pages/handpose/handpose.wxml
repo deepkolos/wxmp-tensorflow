@@ -1,2 +1,2 @@
-<!--miniprogram/pages/posenet/posenet.wxml-->
+<!--miniprogram/pages/handpose/handpose.wxml-->
 <helper-view id="helper" cameraPosition="back"></helper-view>
