@@ -47,7 +47,7 @@
 > npm run dev
 # 使用小程序开发工具打开，替换appid为测试appid，不校验域名
 
-# 编写custom tfjs，例子是仅仅blazeface可用tf + webgl backend 小程序包从 985KB下降到534KB (js大概下降234KB)
+# 使用custom tfjs编译，例子是仅仅blazeface可用tf + webgl backend 小程序包从 985KB下降到534KB (js大概下降234KB)
 > npm run make-custom
 > npm run build-custom
 ```
