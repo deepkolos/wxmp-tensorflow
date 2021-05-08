@@ -29,9 +29,9 @@
 
 ### TODO
 
-0. postnet
-1. 体验小程序码
-2. 结果UI美化
+0. 结果UI美化
+1. handpose
+2. face-api.js
 
 ### 运行
 

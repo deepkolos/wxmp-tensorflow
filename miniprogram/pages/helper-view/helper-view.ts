@@ -125,6 +125,7 @@ Component({
         // frame.data = frame.data.slice(0);
         userFrameCallback(frame, deps);
         // 留一帧时间去更新视图，不然安卓不会同步显示计算结果
+        // @ts-ignore
         if (isAndroid) await new Promise(resolve => canvas2D.requestAnimationFrame(resolve));
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
       }
