@@ -21,6 +21,7 @@
 | IPhone 7 | BlazeFace | 1   | WASM    |
 
 > 注：WASM 为非 SIMD 版，安卓微信小程序运行 SIMD WASM 报错
+> 虽说能跑，但是微信IOS上面问题多多，建议能webview还是webview，性能好，gl起码符合标准也无内存问题
 
 ### 问题
 
