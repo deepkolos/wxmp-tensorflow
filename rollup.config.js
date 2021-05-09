@@ -24,13 +24,16 @@ function codeTransform() {
         .replace(
           'https://tfhub.dev/tensorflow/tfjs-model/blazeface/1/default/1',
           'https://cdn.static.oppenlab.com/weblf/test/blazeface/model.json',
-        ).replace(
+        )
+        .replace(
           'https://tfhub.dev/mediapipe/tfjs-model/handdetector/1/default/1',
           'https://cdn.static.oppenlab.com/weblf/test/handdetector_1_default_1/model.json',
-        ).replace(
+        )
+        .replace(
           'https://tfhub.dev/mediapipe/tfjs-model/handskeleton/1/default/1',
           'https://cdn.static.oppenlab.com/weblf/test/handskeleton_1_default_1/model.json',
-        ).replace(
+        )
+        .replace(
           'https://tfhub.dev/mediapipe/tfjs-model/handskeleton/1/default/1/anchors.json?tfjs-format=file',
           'https://cdn.static.oppenlab.com/weblf/test/handpose/anchors.json',
         );
@@ -156,7 +159,13 @@ export default [
       }),
       !useCustom
         ? copy({
-            targets: [{ src: 'tfjs-plugin/tfjs-backend-wasm.wasm', dest: 'miniprogram/' }],
+            targets: [
+              {
+                src:
+                  './node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.wasm',
+                dest: 'miniprogram/',
+              },
+            ],
           })
         : null,
     ],

@@ -134,7 +134,7 @@ Component({
         // @ts-ignore
         if (isAndroid) await new Promise(resolve => canvas2D.requestAnimationFrame(resolve));
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
-      } else return false;
+      }
     });
     deps = {
       ctx,

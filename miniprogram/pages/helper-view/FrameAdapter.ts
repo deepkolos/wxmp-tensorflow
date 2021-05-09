@@ -1,7 +1,7 @@
 export interface Frame {
-  data: ArrayBuffer
-  width: number
-  height: number
+  data: ArrayBuffer;
+  width: number;
+  height: number;
 }
 
 export class FrameAdapter {
@@ -14,12 +14,10 @@ export class FrameAdapter {
   currGap = 0;
   lastFrameDone = true;
   maxFrameCB?: () => void;
-  defaultProcessTime: number;
 
-  constructor(maxProcessFrame = Number.MAX_SAFE_INTEGER, frameGap = 30, defaultProcessTime = 500) {
+  constructor(maxProcessFrame = Number.MAX_SAFE_INTEGER, frameGap = 30) {
     this.frameGap = frameGap;
     this.maxProcessFrame = maxProcessFrame;
-    this.defaultProcessTime = defaultProcessTime;
   }
 
   onProcessFrame(cb: (frame: Frame) => any) {
@@ -31,9 +29,9 @@ export class FrameAdapter {
   }
 
   reset() {
-    this.currGap = 0
-    this.frameNum = 0
-    this.processFrameNum = 0
+    this.currGap = 0;
+    this.frameNum = 0;
+    this.processFrameNum = 0;
   }
 
   async triggerFrame(frame: Frame) {
@@ -44,7 +42,7 @@ export class FrameAdapter {
         await this.processFrame(frame);
       } else {
         const gap = Math.max(Math.round(this.lastProcessTime / this.frameGap), 1);
-        this.currGap = gap
+        this.currGap = gap;
         if (this.frameNum >= gap) {
           await this.processFrame(frame);
           this.frameNum = 0;
@@ -55,18 +53,18 @@ export class FrameAdapter {
     }
 
     if (this.processFrameNum === this.maxProcessFrame) {
-      this.processFrameNum++
-      this.maxFrameCB?.()
+      this.processFrameNum++;
+      this.maxFrameCB?.();
     }
   }
 
   private async processFrame(frame: Frame) {
     if (this.frameProcesser) {
-      this.lastFrameDone = false
+      this.lastFrameDone = false;
       const t = Date.now();
       // console.log('processFrame', this.frameNum, t)
       await this.frameProcesser(frame);
-      this.lastFrameDone = true
+      this.lastFrameDone = true;
       // this.lastProcessTime = updateGap === false ? this.defaultProcessTime : Date.now() - t;
       this.lastProcessTime = Date.now() - t;
     }
