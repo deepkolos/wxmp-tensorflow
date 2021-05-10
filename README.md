@@ -26,7 +26,7 @@
 
 ### 问题
 
-0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS 下 Promise 是 setTimeout 模拟的，见[小程序 JavaScript 支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）目前facelandmark ios下比较容易卡初始化
+0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS 下 Promise 是 setTimeout 模拟的，见[小程序 JavaScript 支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）**目前ios下比较容易卡初始化**
 1. wasm 只有在华为手机上比 webgl 好 (2.7 测试的结果)
 
 ### 优化经验
@@ -34,6 +34,7 @@
 0. 使用FrameAdapter动态跳帧处理
 1. 正式处理数据前，预热处理一个空白帧，把所用到的shader编译
 2. 利用 profile 生成 custom tfjs 优化包大小
+3. 微信小程序cameraFrame的ArrayBuffer是复用的，可能推理完成后，内容就被更新了，所以先绘制背景，再绘制推理结果，另种解法是拿到相机帧时候复制一份(iPhone7大概 0~5ms, 大部分是1ms)
 
 ### TODO
 

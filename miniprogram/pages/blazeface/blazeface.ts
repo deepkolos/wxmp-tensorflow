@@ -28,10 +28,7 @@ Page({
         height: frame.height,
         data: new Uint8Array(frame.data),
       };
-      // const video: tf.Tensor = tf.tidy(() => {
-      //   const temp = tf.tensor(new Uint8Array(frame.data), [frame.height, frame.width, 4]);
-      //   return tf.slice(temp, [0, 0, 0], [-1, -1, 3]);
-      // });
+      helper.drawCanvas2D(frame);
 
       const returnTensors = false;
       const flipHorizontal = false;
@@ -54,7 +51,6 @@ Page({
       // }
       console.log('predict cost', Date.now() - t);
 
-      helper.drawCanvas2D(frame);
 
       // console.log(predictions.length)
       if (predictions.length > 0) {

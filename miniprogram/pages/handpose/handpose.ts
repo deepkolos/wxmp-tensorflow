@@ -26,11 +26,7 @@ Page({
         height: frame.height,
         data: new Uint8Array(frame.data),
       };
-      const t = Date.now();
-      // @ts-ignore
-      const predictions = model.estimateHands(video, false);
-      console.log('predict cost', Date.now() - t);
-
+      
       if (!initCanvas) {
         ctx.strokeStyle = 'red';
         ctx.fillStyle = 'red';
@@ -41,6 +37,12 @@ Page({
       }
 
       helper.drawCanvas2D(frame);
+
+      const t = Date.now();
+      // @ts-ignore
+      const predictions = model.estimateHands(video, false);
+      console.log('predict cost', Date.now() - t);
+
       if (predictions.length > 0) {
         const result = predictions[0].landmarks;
         drawKeypoints(ctx, result);

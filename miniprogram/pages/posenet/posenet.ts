@@ -32,12 +32,14 @@ Page({
         height: frame.height,
         data: new Uint8Array(frame.data),
       }
+
+      helper.drawCanvas2D(frame);
+
       const t = Date.now()
       // @ts-ignore
       const prediction = model.estimateSinglePose(video, { flipHorizontal: false })
       console.log('predict cost', Date.now() - t)
 
-      helper.drawCanvas2D(frame);
       drawPoses([prediction], ctx)
     }
 

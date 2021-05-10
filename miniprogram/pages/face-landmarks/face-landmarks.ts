@@ -45,11 +45,13 @@ Page({
         height: frame.height,
         data: new Uint8Array(frame.data),
       }
+
+      // 先渲染背景再渲染推理结果
+      helper.drawCanvas2D(frame);
+
       const t = Date.now()
       const predictions = model.estimateFaces({ input: video, returnTensors: false, flipHorizontal: false, predictIrises: false })
       console.log('predict cost', Date.now() - t)
-
-      helper.drawCanvas2D(frame);
 
       if (predictions.length > 0) {
         // helper.stop()

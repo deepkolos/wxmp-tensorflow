@@ -71,7 +71,6 @@ Component({
     backend: '',
     inited: false,
     usingCamera: false,
-    // cameraPosition: 'front',
     switchingBackend: false,
   },
 
@@ -98,10 +97,10 @@ Component({
         }
       },
       start() {
-        // deps?.cameraListener.start();
+        deps?.cameraListener.start();
       },
       stop() {
-        // deps?.cameraListener.stop();
+        deps?.cameraListener.stop();
       },
     };
   },
@@ -125,14 +124,24 @@ Component({
     const cameraCtx = wx.createCameraContext();
     const frameAdapter = new FrameAdapter();
     const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
+    // let frameBuffer;
     frameAdapter.onProcessFrame(async frame => {
       if (userFrameCallback && !this.data.switchingBackend) {
         const t = Date.now();
+        // 拷贝当前帧，以免推理完成后帧内容已变化，也可以先把背景绘制或者写到纹理，复制iPhone7大概 0~5ms, 大部分是1ms
         // frame.data = frame.data.slice(0);
+        // if (!frameBuffer) frameBuffer = new ArrayBuffer(frame.data.byteLength)
+        // const tmp = new Uint8Array(frameBuffer, 0, frame.data.byteLength);
+        // tmp.set(new Uint8Array(frame.data), 0);
+        // frame.data = tmp.buffer;
+        // console.log('copy cost', Date.now() - t)
+
         userFrameCallback(frame, deps);
         // 留一帧时间去更新视图，不然安卓不会同步显示计算结果
+        // if (isAndroid)
         // @ts-ignore
-        if (isAndroid) await new Promise(resolve => canvas2D.requestAnimationFrame(resolve));
+        await new Promise(resolve => canvas2D.requestAnimationFrame(resolve));
+        // if (isAndroid) await new Promise(resolve => setTimeout(resolve, 5));
         this.setData({ FPS: (1000 / (Date.now() - t)).toFixed(2) });
       }
     });
