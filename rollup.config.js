@@ -38,8 +38,8 @@ function codeTransform() {
           'https://cdn.static.oppenlab.com/weblf/test/handpose/anchors.json',
         );
       // 修复tfjs的webgl版本检测
-      code = code.replace(`isWebGLVersionEnabled(2)`, `false`);
-      code = code.replace(`isWebGLVersionEnabled(1)`, `true`);
+      // code = code.replace(`isWebGLVersionEnabled(2)`, `false`);
+      // code = code.replace(`isWebGLVersionEnabled(1)`, `true`);
       // 修复wasm
       if (
         file.endsWith('tfjs-backend-wasm-threaded-simd.worker.js') ||
