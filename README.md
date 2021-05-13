@@ -5,7 +5,7 @@
 0. 运行 balzeface 安卓 √，IOS √
 1. 运行 face-landmarks 安卓 √，IOS √
 2. 集成 tfjsPlugin，方便使用，无需二次引用 √
-3. 支持 wasm backend √
+3. 支持 wasm backend √ 给 tfjs 提的[PR](https://github.com/tensorflow/tfjs/pull/5056)已合并
 4. 运行 posenet (例子是 mobilenet 0.50 stride16) √
 5. custom tfjs 减少包体积 blazeface 例子 √
 6. 运行 handpose √
@@ -22,25 +22,25 @@
 | IPhone 7 | BlazeFace | 1   | WASM    |
 
 > 注：WASM 为非 SIMD 版，安卓微信小程序运行 SIMD WASM 报错
-> 虽说能跑，但是微信IOS上面问题多多，建议能webview还是webview，性能好，gl起码符合标准也无内存问题
+> 虽说能跑，但是微信 IOS 上面问题多多，建议能 webview 还是 webview，性能好，gl 起码符合标准也无内存问题
 
 ### 问题
 
-0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS 下 Promise 是 setTimeout 模拟的，见[小程序 JavaScript 支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）**目前ios下比较容易卡初始化**
+0. ios async 版本会卡 async await，所以改为 sync 版本，并且其他用到 async await 也可能出现（IOS 下 Promise 是 setTimeout 模拟的，见[小程序 JavaScript 支持情况](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/js-support.html)）**目前 ios 下比较容易卡初始化**
 1. wasm 只有在华为手机上比 webgl 好 (2.7 测试的结果)
 
 ### 优化经验
 
-0. 使用FrameAdapter动态跳帧处理
-1. 正式处理数据前，预热处理一个空白帧，把所用到的shader编译
+0. 使用 FrameAdapter 动态跳帧处理
+1. 正式处理数据前，预热处理一个空白帧，把所用到的 shader 编译
 2. 利用 profile 生成 custom tfjs 优化包大小
-3. 微信小程序cameraFrame的ArrayBuffer是复用的，可能推理完成后，内容就被更新了，所以先绘制背景，再绘制推理结果，另种解法是拿到相机帧时候复制一份(iPhone7大概 0~5ms, 大部分是1ms)
+3. 微信小程序 cameraFrame 的 ArrayBuffer 是复用的，可能推理完成后，内容就被更新了，所以先绘制背景，再绘制推理结果，另种解法是拿到相机帧时候复制一份(iPhone7 大概 0~5ms, 大部分是 1ms)
 
 ### TODO
 
 0. 结果 UI 美化
 1. face-api.js
-2. warm up 通用化，根据已注册的registerKernel做warm up
+2. warm up 通用化，根据已注册的 registerKernel 做 warm up
 
 ### 运行
 
