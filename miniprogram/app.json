@@ -4,7 +4,8 @@
     "pages/blazeface/blazeface",
     "pages/face-landmarks/face-landmarks",
     "pages/posenet/posenet",
-    "pages/handpose/handpose"
+    "pages/handpose/handpose",
+    "pages/face-landmarks-68-tiny/face-landmarks-68-tiny"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -106,6 +106,7 @@ export default [
           './miniprogram/pages/face-landmarks/face-landmarks.ts',
           './miniprogram/pages/posenet/posenet.ts',
           './miniprogram/pages/handpose/handpose.ts',
+          './miniprogram/pages/face-landmarks-68-tiny/face-landmarks-68-tiny.ts',
           './miniprogram/pages/helper-view/helper-view.ts',
         ],
     treeshake: true,
@@ -152,11 +153,11 @@ export default [
         legalComments: 'none',
       }),
       // sucrase({ transforms: ['typescript'] }),
-      terser({
-        output: { comments: false },
-        mangle: !isDev,
-        compress: !isDev, // { typeofs: false }
-      }),
+      // terser({
+      //   output: { comments: false },
+      //   mangle: !isDev,
+      //   compress: !isDev, // { typeofs: false }
+      // }),
       !useCustom
         ? copy({
             targets: [

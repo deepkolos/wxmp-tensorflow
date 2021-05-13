@@ -1,0 +1,2 @@
+<!--miniprogram/pages/face-landmarks-68-tiny/face-landmarks-68-tiny.wxml-->
+<helper-view id="helper" cameraPosition="back"></helper-view>

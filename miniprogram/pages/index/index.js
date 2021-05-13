@@ -17,6 +17,10 @@ Page({
         title: 'HandPose',
         href: '/pages/handpose/handpose',
       },
+      {
+        title: 'FaceLandmarks68Tiny',
+        href: '/pages/face-landmarks-68-tiny/face-landmarks-68-tiny',
+      },
     ],
   },
   onBtnClick(e) {

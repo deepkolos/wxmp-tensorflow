@@ -1,6 +1,6 @@
 # wxmp-tensorflow
 
-微信小程序下运行最新`TensorFlow`的工程解决方案，有以下特点
+微信小程序下运行最新`TensorFlowJS`的工程解决方案，有以下特点
 
 0. 运行 balzeface 安卓 √，IOS √
 1. 运行 face-landmarks 安卓 √，IOS √

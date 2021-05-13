@@ -122,7 +122,7 @@ Component({
     // const renderer = new WebGL1Renderer({ canvas: canvasGL, antialias: true });
     // const scene = new Scene();
     const cameraCtx = wx.createCameraContext();
-    const frameAdapter = new FrameAdapter();
+    const frameAdapter = new FrameAdapter(10);
     const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
     // let frameBuffer;
     frameAdapter.onProcessFrame(async frame => {
@@ -135,8 +135,7 @@ Component({
         // tmp.set(new Uint8Array(frame.data), 0);
         // frame.data = tmp.buffer;
         // console.log('copy cost', Date.now() - t)
-
-        userFrameCallback(frame, deps);
+        await userFrameCallback(frame, deps);
         // 留一帧时间去更新视图，不然安卓不会同步显示计算结果
         // if (isAndroid)
         // @ts-ignore
