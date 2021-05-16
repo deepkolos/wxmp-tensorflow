@@ -12,6 +12,8 @@
 
 <img width="120" src="https://upload-images.jianshu.io/upload_images/252050-c99071dc4bf61185.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 
+> 注: Paddle.js 已适配百度小程序和微信小程序，https://github.com/PaddlePaddle/Paddle.js
+
 ### 性能数据
 
 | 机器     | 模型      | FPS | Backend |
