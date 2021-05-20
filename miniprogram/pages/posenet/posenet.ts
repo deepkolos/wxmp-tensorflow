@@ -47,13 +47,14 @@ Page({
     this.helper = helper;
   },
 
-  onShow: function () {
+  onShow() {
     this.helper?.start();
   },
 
-  onHide: function () {
+  onHide() {
     this.helper?.stop();
   },
 
-  onUnload: function () { },
+  onUnload: function () {},
+  onShareAppMessage() {},
 });

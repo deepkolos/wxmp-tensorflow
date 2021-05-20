@@ -27,4 +27,5 @@ Page({
     const { item } = e.target.dataset;
     wx.navigateTo({ url: item.href });
   },
+  onShareAppMessage() {},
 });
