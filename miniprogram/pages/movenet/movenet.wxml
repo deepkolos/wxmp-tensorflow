@@ -1,0 +1,2 @@
+<!--miniprogram/pages/posenet/posenet.wxml-->
+<helper-view id="helper" cameraPosition="back"></helper-view>

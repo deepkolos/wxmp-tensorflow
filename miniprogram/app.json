@@ -4,6 +4,7 @@
     "pages/blazeface/blazeface",
     "pages/face-landmarks/face-landmarks",
     "pages/posenet/posenet",
+    "pages/movenet/movenet",
     "pages/handpose/handpose"
   ],
   "window": {

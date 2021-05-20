@@ -17,6 +17,10 @@ Page({
         title: 'HandPose',
         href: '/pages/handpose/handpose',
       },
+      {
+        title: 'MoveNet Lightning',
+        href: '/pages/movenet/movenet',
+      },
     ],
   },
   onBtnClick(e) {

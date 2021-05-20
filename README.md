@@ -22,6 +22,14 @@
 | MI 8     | BlazeFace | 17  | WASM    |
 | IPhone 7 | BlazeFace | 12  | WebGL   |
 | IPhone 7 | BlazeFace | 1   | WASM    |
+| MI 8     | FaceLandMarks   | 20  | WebGL  |
+| MI 8     | FaceLandMarks   | 10  | WASM   |
+| MI 8     | PoseNet   | 20  | WebGL   |
+| MI 8     | PoseNet   | 5   | WASM    |
+| MI 8     | HandPose  | 14  | WebGL   |
+| MI 8     | HandPose  | 1   | WASM    |
+| MI 8     | MoveNet   | 14  | WebGL   |
+| MI 8     | MoveNet   | 2.5 | WASM    |
 
 > 注：WASM 为非 SIMD 版，安卓微信小程序运行 SIMD WASM 报错
 > 虽说能跑，但是微信 IOS 上面问题多多，建议能 webview 还是 webview，性能好，gl 起码符合标准也无内存问题

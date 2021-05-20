@@ -18,6 +18,8 @@ function codeTransform() {
       // 注入环境变量
       code = code.replace(`import.meta.CUSTOM`, `${useCustom}`);
 
+      // 改为国内地址, 但是handpose不可用
+      // code = code.replace(/https:\/\/tfhub.dev\//g, 'https://hub.tensorflow.google.cn/')
       // 因为tfhub需要翻墙，所以构建时替换地址
       code = code
         .replace(/fromTFHub:/g, 'fromTFHub_:')
@@ -36,6 +38,10 @@ function codeTransform() {
         .replace(
           'https://tfhub.dev/mediapipe/tfjs-model/handskeleton/1/default/1/anchors.json?tfjs-format=file',
           'https://cdn.static.oppenlab.com/weblf/test/handpose/anchors.json',
+        )
+        .replace(
+          'https://tfhub.dev/google/tfjs-model/movenet/singlepose/lightning/3',
+          'https://cdn.static.oppenlab.com/weblf/test/movenet-singlepose-lightning/model.json',
         );
       // 修复tfjs的webgl版本检测
       // code = code.replace(`isWebGLVersionEnabled(2)`, `false`);
@@ -69,45 +75,46 @@ function codeTransform() {
 
 const aliasPlugin = useCustom
   ? alias({
-      entries: [
-        {
-          find: /@tensorflow\/tfjs$/,
-          replacement: p('./custom_tfjs/custom_tfjs.js'),
-        },
-        {
-          find: /@tensorflow\/tfjs-core$/,
-          replacement: p('./custom_tfjs/custom_tfjs_core.js'),
-        },
-        {
-          find: '@tensorflow/tfjs-core/dist/ops/ops_for_converter',
-          replacement: p('./custom_tfjs/custom_ops_for_converter.js'),
-        },
-        {
-          find: /@tensorflow\/tfjs-backend-webgl$/,
-          replacement: p('./custom_tfjs/custom_tfjs.js'),
-        },
-        {
-          find: /@tensorflow\/tfjs-backend-wasm$/,
-          replacement: p('./custom_tfjs/custom_tfjs.js'),
-        },
-      ],
-    })
+    entries: [
+      {
+        find: /@tensorflow\/tfjs$/,
+        replacement: p('./custom_tfjs/custom_tfjs.js'),
+      },
+      {
+        find: /@tensorflow\/tfjs-core$/,
+        replacement: p('./custom_tfjs/custom_tfjs_core.js'),
+      },
+      {
+        find: '@tensorflow/tfjs-core/dist/ops/ops_for_converter',
+        replacement: p('./custom_tfjs/custom_ops_for_converter.js'),
+      },
+      {
+        find: /@tensorflow\/tfjs-backend-webgl$/,
+        replacement: p('./custom_tfjs/custom_tfjs.js'),
+      },
+      {
+        find: /@tensorflow\/tfjs-backend-wasm$/,
+        replacement: p('./custom_tfjs/custom_tfjs.js'),
+      },
+    ],
+  })
   : null;
 
 export default [
   {
     input: useCustom
       ? [
-          './miniprogram/pages/blazeface/blazeface.ts',
-          './miniprogram/pages/helper-view/helper-view.ts',
-        ]
+        './miniprogram/pages/blazeface/blazeface.ts',
+        './miniprogram/pages/helper-view/helper-view.ts',
+      ]
       : [
-          './miniprogram/pages/blazeface/blazeface.ts',
-          './miniprogram/pages/face-landmarks/face-landmarks.ts',
-          './miniprogram/pages/posenet/posenet.ts',
-          './miniprogram/pages/handpose/handpose.ts',
-          './miniprogram/pages/helper-view/helper-view.ts',
-        ],
+        './miniprogram/pages/blazeface/blazeface.ts',
+        './miniprogram/pages/face-landmarks/face-landmarks.ts',
+        './miniprogram/pages/posenet/posenet.ts',
+        './miniprogram/pages/movenet/movenet.ts',
+        './miniprogram/pages/handpose/handpose.ts',
+        './miniprogram/pages/helper-view/helper-view.ts',
+      ],
     treeshake: true,
     output: {
       format: 'cjs', // 小程序大文件不会把esm转cjs
@@ -116,24 +123,24 @@ export default [
       entryFileNames: 'pages/[name]/[name].js',
       manualChunks: useCustom
         ? {
-            index: ['three-platformize'], // 其他页面空引用
-            tfjs: [
-              './custom_tfjs/custom_ops_for_converter.js',
-              './custom_tfjs/custom_tfjs_core.js',
-              './custom_tfjs/custom_tfjs.js',
-            ],
-          }
+          index: ['three-platformize'], // 其他页面空引用
+          tfjs: [
+            './custom_tfjs/custom_ops_for_converter.js',
+            './custom_tfjs/custom_tfjs_core.js',
+            './custom_tfjs/custom_tfjs.js',
+          ],
+        }
         : {
-            // 'three-platformize': ['three-platformize'],
-            tfjs: [
-              '@tensorflow/tfjs-backend-webgl',
-              '@tensorflow/tfjs-converter',
-              '@tensorflow/tfjs-core',
-            ],
-            wasm: ['@tensorflow/tfjs-backend-wasm'],
-            // blazeface: ['@tensorflow-models/blazeface'],
-            // facemesh: ['@tensorflow-models/face-landmarks-detection'],
-          },
+          // 'three-platformize': ['three-platformize'],
+          tfjs: [
+            '@tensorflow/tfjs-backend-webgl',
+            '@tensorflow/tfjs-converter',
+            '@tensorflow/tfjs-core',
+          ],
+          wasm: ['@tensorflow/tfjs-backend-wasm'],
+          // blazeface: ['@tensorflow-models/blazeface'],
+          // facemesh: ['@tensorflow-models/face-landmarks-detection'],
+        },
     },
     plugins: [
       codeTransform(),
@@ -159,14 +166,14 @@ export default [
       }),
       !useCustom
         ? copy({
-            targets: [
-              {
-                src:
-                  './node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.wasm',
-                dest: 'miniprogram/',
-              },
-            ],
-          })
+          targets: [
+            {
+              src:
+                './node_modules/@tensorflow/tfjs-backend-wasm/wasm-out/tfjs-backend-wasm.wasm',
+              dest: 'miniprogram/',
+            },
+          ],
+        })
         : null,
     ],
   },
