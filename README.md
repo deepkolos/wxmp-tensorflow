@@ -49,7 +49,7 @@
 
 ### TODO
 
-0. 结果 UI 美化
+0. 结果 UI 美化 done 显示正常
 1. face-api.js
 2. warm up 通用化，根据已注册的 registerKernel 做 warm up
 
