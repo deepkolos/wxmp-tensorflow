@@ -3,7 +3,7 @@
 import { Frame, FrameAdapter } from './FrameAdapter';
 // import { Scene, WebGL1Renderer, PLATFORM } from 'three-platformize';
 // import { WechatPlatform } from 'three-platformize/src/WechatPlatform';
-import { getNode } from './utils';
+import { getNode, objectFit } from './utils';
 import * as tf from '@tensorflow/tfjs-core';
 import * as webgl from '@tensorflow/tfjs-backend-webgl';
 import { setupWechatPlatform } from '../../../tfjs-plugin/wechat_platform';
@@ -58,6 +58,8 @@ let userFrameCallback: (frame: Frame, deps: any) => Promise<any> | void;
 
 export type Deps = typeof deps;
 
+const { windowWidth, windowHeight } = wx.getSystemInfoSync()
+
 Component({
   properties: {
     cameraPosition: {
@@ -72,12 +74,17 @@ Component({
     inited: false,
     usingCamera: false,
     switchingBackend: false,
+
+    canvas2DW: null,
+    canvas2DH: null,
   },
 
   behaviors: ['wx://component-export'],
   export() {
     return {
-      set: (cfg: { onFrame: (frame: Frame, deps: any) => Promise<any> | void }) => {
+      set: (cfg: {
+        onFrame: (frame: Frame, deps: any) => Promise<any> | void;
+      }) => {
         userFrameCallback = cfg.onFrame;
         userInitedResolver?.();
       },
@@ -106,8 +113,10 @@ Component({
   },
 
   async ready() {
-    const userInitPromise = new Promise((resolve) => { userInitedResolver = resolve })
-    wx.showLoading({ title: '初始化中', mask: false })
+    const userInitPromise = new Promise(resolve => {
+      userInitedResolver = resolve;
+    });
+    wx.showLoading({ title: '初始化中', mask: false });
     console.log('helper view ready');
     // await tf.setBackend('wasm')
     this.setData({ backend: tf.getBackend() });
@@ -123,9 +132,22 @@ Component({
     // const scene = new Scene();
     const cameraCtx = wx.createCameraContext();
     const frameAdapter = new FrameAdapter();
-    const cameraListener = cameraCtx.onCameraFrame(frameAdapter.triggerFrame.bind(frameAdapter));
+    const cameraListener = cameraCtx.onCameraFrame(
+      frameAdapter.triggerFrame.bind(frameAdapter),
+    );
+    let canvasSizeInited = false;
     // let frameBuffer;
     frameAdapter.onProcessFrame(async frame => {
+      if (!canvasSizeInited) {
+        const [canvas2DW, canvas2DH] = objectFit(
+          frame.width,
+          frame.height,
+          windowWidth,
+          windowHeight * 0.9,
+        );
+        this.setData({ canvas2DW, canvas2DH });
+        canvasSizeInited = true;
+      }
       if (userFrameCallback && !this.data.switchingBackend) {
         const t = Date.now();
         // 拷贝当前帧，以免推理完成后帧内容已变化，也可以先把背景绘制或者写到纹理，复制iPhone7大概 0~5ms, 大部分是1ms
@@ -162,7 +184,7 @@ Component({
     console.log('helper view inited');
 
     await userInitPromise;
-    wx.hideLoading()
+    wx.hideLoading();
     this.onBtnUseCameraClick();
   },
 
@@ -194,12 +216,14 @@ Component({
         success: res => {
           const imgPath = res.tempFilePaths[0];
           Promise.all([
-            new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>(resolve => {
-              wx.getImageInfo({
-                src: imgPath,
-                success: resolve,
-              });
-            }),
+            new Promise<WechatMiniprogram.GetImageInfoSuccessCallbackResult>(
+              resolve => {
+                wx.getImageInfo({
+                  src: imgPath,
+                  success: resolve,
+                });
+              },
+            ),
             new Promise<HTMLImageElement>(resolve => {
               // @ts-ignore
               const img = deps.canvasInput.createImage();

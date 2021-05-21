@@ -3,7 +3,7 @@ export function getNode(
   ctx,
 ): Promise<[{ node: HTMLCanvasElement; width: number; height: Number }]> {
   return new Promise(resolve => {
-    wx.createSelectorQuery().in(ctx).select(id).fields({ node: true, rect: true }).exec(resolve);
+    wx.createSelectorQuery().in(ctx).select(id).fields({ node: true, rect: true, size: true }).exec(resolve);
   });
 }
 

@@ -1,8 +1,8 @@
 <!--components/helper-view/helper-view.wxml-->
 <view class="page">
-  <camera class="camera" device-position="{{cameraPosition}}"></camera>
+  <camera class="camera" frame-size="medium" device-position="{{cameraPosition}}"></camera>
   <canvas class="gl" type="webgl" id="gl"></canvas>
-  <canvas class="canvas" type="2d" id="canvas"></canvas>
+  <canvas class="canvas" type="2d" id="canvas" style="width: {{canvas2DW}}px; height: {{canvas2DH}}px;"></canvas>
   <canvas class="canvas canvas-input" type="2d" id="canvas-input"></canvas>
   <view class="info-can">
     <view class="info-item">FPS: {{FPS}}</view>
