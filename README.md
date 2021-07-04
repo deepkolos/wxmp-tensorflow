@@ -10,6 +10,7 @@
 5. custom tfjs 减少包体积 blazeface 例子 √
 6. 运行 handpose √
 7. 运行 movenet √
+8. 运行 blazepose-tfjs √
 
 <img width="120" src="https://upload-images.jianshu.io/upload_images/252050-c99071dc4bf61185.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 
