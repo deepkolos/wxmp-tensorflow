@@ -21,6 +21,10 @@ Page({
         title: 'MoveNet Lightning',
         href: '/pages/movenet/movenet',
       },
+      {
+        title: 'BlazePose TFJS',
+        href: '/pages/blazepose-tfjs/blazepose-tfjs',
+      },
     ],
   },
   onBtnClick(e) {

@@ -113,6 +113,7 @@ export default [
         './miniprogram/pages/posenet/posenet.ts',
         './miniprogram/pages/movenet/movenet.ts',
         './miniprogram/pages/handpose/handpose.ts',
+        './miniprogram/pages/blazepose-tfjs/blazepose-tfjs.ts',
         './miniprogram/pages/helper-view/helper-view.ts',
       ],
     treeshake: true,

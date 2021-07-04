@@ -17,9 +17,9 @@
 import * as tf from '@tensorflow/tfjs-core';
 import {Detection} from './interfaces/shape_interfaces';
 
-export async function nonMaxSuppression(
+export function nonMaxSuppression(
     detections: Detection[], maxPoses: number, iouThreshold: number,
-    scoreThreshold: number): Promise<Detection[]> {
+    scoreThreshold: number): Detection[] {
   const detectionsTensor = tf.tensor2d(detections.map(
       d =>
           [d.locationData.relativeBoundingBox.yMin,
@@ -28,9 +28,9 @@ export async function nonMaxSuppression(
            d.locationData.relativeBoundingBox.xMax]));
   const scoresTensor = tf.tensor1d(detections.map(d => d.score[0]));
 
-  const selectedIdsTensor = await tf.image.nonMaxSuppressionAsync(
+  const selectedIdsTensor = tf.image.nonMaxSuppression(
       detectionsTensor, scoresTensor, maxPoses, iouThreshold, scoreThreshold);
-  const selectedIds = await selectedIdsTensor.array();
+  const selectedIds = selectedIdsTensor.arraySync();
 
   const selectedDetections =
       detections.filter((_, i) => (selectedIds.indexOf(i) > -1));

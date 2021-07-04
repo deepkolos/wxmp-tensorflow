@@ -33,9 +33,9 @@ import {AnchorTensor, Detection} from './interfaces/shape_interfaces';
  *     (num_boxes * 4).
  * @param config
  */
-export async function tensorsToDetections(
+export function tensorsToDetections(
     detectionTensors: [tf.Tensor1D, tf.Tensor2D], anchor: AnchorTensor,
-    config: TensorsToDetectionsConfig): Promise<Detection[]> {
+    config: TensorsToDetectionsConfig): Detection[] {
   const rawScoreTensor = detectionTensors[0];
   const rawBoxTensor = detectionTensors[1];
 
@@ -59,19 +59,19 @@ export async function tensorsToDetections(
   });
 
   const outputDetections =
-      await convertToDetections(boxes, normalizedScore, config);
+      convertToDetections(boxes, normalizedScore, config);
 
   tf.dispose([boxes, normalizedScore]);
 
   return outputDetections;
 }
 
-export async function convertToDetections(
+export function convertToDetections(
     detectionBoxes: tf.Tensor2D, detectionScore: tf.Tensor1D,
     config: TensorsToDetectionsConfig): Promise<Detection[]> {
   const outputDetections: Detection[] = [];
-  const detectionBoxesData = await detectionBoxes.data() as Float32Array;
-  const detectionScoresData = await detectionScore.data() as Float32Array;
+  const detectionBoxesData = detectionBoxes.dataSync() as Float32Array;
+  const detectionScoresData = detectionScore.dataSync() as Float32Array;
 
   for (let i = 0; i < config.numBoxes; ++i) {
     if (config.minScoreThresh != null &&

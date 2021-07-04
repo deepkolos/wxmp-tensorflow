@@ -109,9 +109,9 @@ class BlazePoseTfjsDetector implements PoseDetector {
   // TF.js implementation of the mediapipe pose detection pipeline.
   // ref graph:
   // https://github.com/google/mediapipe/blob/master/mediapipe/modules/pose_landmark/pose_landmark_cpu.pbtxt
-  async estimatePoses(
+  estimatePoses(
       image: PoseDetectorInput, estimationConfig: BlazePoseTfjsEstimationConfig,
-      timestamp?: number): Promise<Pose[]> {
+      timestamp?: number): Pose[] {
     const config = validateEstimationConfig(estimationConfig);
 
     if (image == null) {
@@ -137,7 +137,7 @@ class BlazePoseTfjsDetector implements PoseDetector {
 
     if (poseRect == null) {
       // Need to run detector again.
-      const detections = await this.detectPose(image3d);
+      const detections = this.detectPose(image3d);
 
       if (detections.length === 0) {
         this.reset();
@@ -154,7 +154,7 @@ class BlazePoseTfjsDetector implements PoseDetector {
     }
 
     // Detects pose landmarks within specified region of interest of the image.
-    const poseLandmarks = await this.poseLandmarksByRoi(poseRect, image3d);
+    const poseLandmarks = this.poseLandmarksByRoi(poseRect, image3d);
 
     image3d.dispose();
 
@@ -216,7 +216,7 @@ class BlazePoseTfjsDetector implements PoseDetector {
   // Subgraph: PoseDetectionCpu.
   // ref:
   // https://github.com/google/mediapipe/blob/master/mediapipe/modules/pose_detection/pose_detection_cpu.pbtxt
-  private async detectPose(image: PoseDetectorInput): Promise<Detection[]> {
+  private detectPose(image: PoseDetectorInput): Detection[] {
     // PoseDetectionCpu: ImageToTensorCalculator
     // Transforms the input image into a 224x224 while keeping the aspect ratio
     // resulting in potential letterboxing in the transformed image.
@@ -232,12 +232,12 @@ class BlazePoseTfjsDetector implements PoseDetector {
         detectorInference(imageValueShifted, this.detectorModel);
 
     // PoseDetectionCpu: TensorsToDetectionsCalculator
-    const detections: Detection[] = await tensorsToDetections(
+    const detections: Detection[] = tensorsToDetections(
         [scores, boxes], this.anchorTensor,
         constants.BLAZEPOSE_TENSORS_TO_DETECTION_CONFIGURATION);
 
     // PoseDetectionCpu: NonMaxSuppressionCalculator
-    const selectedDetections = await nonMaxSuppression(
+    const selectedDetections = nonMaxSuppression(
         detections, this.maxPoses,
         constants.BLAZEPOSE_DETECTOR_NON_MAX_SUPPRESSION_CONFIGURATION
             .minSuppressionThreshold,
@@ -288,8 +288,8 @@ class BlazePoseTfjsDetector implements PoseDetector {
   // ref:
   // https://github.com/google/mediapipe/blob/master/mediapipe/modules/pose_landmark/pose_landmark_by_roi_cpu.pbtxt
   // When poseRect is not null, image should not be null either.
-  private async poseLandmarksByRoi(poseRect: Rect, image?: tf.Tensor3D):
-      Promise<PoseLandmarksByRoiResult> {
+  private poseLandmarksByRoi(poseRect: Rect, image?: tf.Tensor3D):
+      PoseLandmarksByRoiResult {
     // Transforms the input image into a 256x256 tensor while keeping the aspect
     // ratio, resulting in potential letterboxing in the transformed image.
     const {imageTensor, padding} = convertImageToTensor(
@@ -346,7 +346,7 @@ class BlazePoseTfjsDetector implements PoseDetector {
 
     // Converts the pose-flag tensor into a float that represents the
     // confidence score of pose presence.
-    const poseScore = (await poseFlagTensor.data())[0];
+    const poseScore = (poseFlagTensor.dataSync())[0];
 
     // Applies a threshold to the confidence score to determine whether a pose
     // is present.
@@ -360,11 +360,11 @@ class BlazePoseTfjsDetector implements PoseDetector {
     // Decodes the landmark tensors into a list of landmarks, where the landmark
     // coordinates are normalized by the size of the input image to the model.
     // PoseLandmarksByRoiCpu: TensorsToLandmarksCalculator.
-    const landmarks = await tensorsToLandmarks(
+    const landmarks = tensorsToLandmarks(
         landmarkTensor, constants.BLAZEPOSE_TENSORS_TO_LANDMARKS_CONFIG);
 
     // Refine landmarks with heatmap tensor.
-    const refinedLandmarks = await refineLandmarksFromHeatmap(
+    const refinedLandmarks = refineLandmarksFromHeatmap(
         landmarks, heatmapTensor,
         constants.BLAZEPOSE_REFINE_LANDMARKS_FROM_HEATMAP_CONFIG);
 

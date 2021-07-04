@@ -37,9 +37,9 @@ import {RefineLandmarksFromHeatmapConfig} from './interfaces/config_interfaces';
  *
  * @returns Normalized landmarks.
  */
-export async function refineLandmarksFromHeatmap(
+export function refineLandmarksFromHeatmap(
     landmarks: Keypoint[], heatmapTensor: tf.Tensor4D,
-    config: RefineLandmarksFromHeatmapConfig): Promise<Keypoint[]> {
+    config: RefineLandmarksFromHeatmapConfig): Keypoint[] {
   // tslint:disable-next-line: no-unnecessary-type-assertion
   const $heatmapTensor = tf.squeeze(heatmapTensor, [0]) as tf.Tensor3D;
   const [hmHeight, hmWidth, hmChannels] = $heatmapTensor.shape;
@@ -50,7 +50,7 @@ export async function refineLandmarksFromHeatmap(
   }
 
   const outLandmarks = [];
-  const heatmapBuf = await $heatmapTensor.buffer();
+  const heatmapBuf = $heatmapTensor.bufferSync();
 
   for (let i = 0; i < landmarks.length; i++) {
     const landmark = landmarks[i];

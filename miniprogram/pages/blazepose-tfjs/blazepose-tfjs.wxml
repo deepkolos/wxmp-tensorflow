@@ -1,0 +1,2 @@
+<!--miniprogram/pages/blazepose-tfjs/blazepose-tfjs.wxml-->
+<helper-view id="helper" cameraPosition="back"></helper-view>

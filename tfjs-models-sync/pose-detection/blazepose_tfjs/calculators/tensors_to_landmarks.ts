@@ -38,12 +38,12 @@ import {TensorsToLandmarksConfig} from './interfaces/config_interfaces';
  *
  * @returns Normalized landmarks.
  */
-export async function tensorsToLandmarks(
+export function tensorsToLandmarks(
     landmarkTensor: tf.Tensor2D, config: TensorsToLandmarksConfig,
     flipHorizontally = false, flipVertically = false) {
   const numValues = landmarkTensor.size;
   const numDimensions = numValues / config.numLandmarks;
-  const rawLandmarks = await landmarkTensor.data() as Float32Array;
+  const rawLandmarks = landmarkTensor.dataSync() as Float32Array;
 
   const outputLandmarks: Keypoint[] = [];
   for (let ld = 0; ld < config.numLandmarks; ++ld) {

@@ -5,7 +5,8 @@
     "pages/face-landmarks/face-landmarks",
     "pages/posenet/posenet",
     "pages/movenet/movenet",
-    "pages/handpose/handpose"
+    "pages/handpose/handpose",
+    "pages/blazepose-tfjs/blazepose-tfjs"
   ],
   "window": {
     "backgroundTextStyle": "light",
