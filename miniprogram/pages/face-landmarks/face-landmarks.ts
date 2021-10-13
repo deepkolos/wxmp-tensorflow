@@ -16,6 +16,15 @@ function distance(a, b) {
 Page({
   helper: null as any,
 
+  data: {
+    iris: false
+  },
+
+  onRadioClick() {
+    console.log('here')
+    this.setData({ iris: !this.data.iris })
+  },
+
   async onReady() {
     console.log('face-landmarks onReady')
     await tf.ready()
@@ -27,7 +36,8 @@ Page({
       {
         maxFaces: 1,
         modelUrl: 'https://cdn.static.oppenlab.com/weblf/test/facemesh/model.json',
-        shouldLoadIrisModel: false,
+        irisModelUrl: 'https://cdn.static.oppenlab.com/weblf/test/iris/model.json',
+        shouldLoadIrisModel: true,
       });
     console.log('face-landmarks load end')
     const t = Date.now()
@@ -50,8 +60,8 @@ Page({
       helper.drawCanvas2D(frame);
 
       const t = Date.now()
-      const predictions = model.estimateFaces({ input: video, returnTensors: false, flipHorizontal: false, predictIrises: false })
-      console.log('predict cost', Date.now() - t)
+      const predictions = model.estimateFaces({ input: video, returnTensors: false, flipHorizontal: false, predictIrises: this.data.iris })
+      // console.log('predict cost', Date.now() - t)
 
       if (predictions.length > 0) {
         // helper.stop()
@@ -83,6 +93,20 @@ Page({
             ctx.beginPath();
             ctx.ellipse(leftCenter[0], leftCenter[1], leftDiameterX / 2, leftDiameterY / 2, 0, 0, 2 * Math.PI);
             ctx.stroke();
+
+            if (keypoints.length > NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS) {
+              const rightCenter = keypoints[NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS];
+              const rightDiameterY = distance(
+                keypoints[NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS + 2],
+                keypoints[NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS + 4]);
+              const rightDiameterX = distance(
+                keypoints[NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS + 3],
+                keypoints[NUM_KEYPOINTS + NUM_IRIS_KEYPOINTS + 1]);
+
+              ctx.beginPath();
+              ctx.ellipse(rightCenter[0], rightCenter[1], rightDiameterX / 2, rightDiameterY / 2, 0, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
           }
         });
       }

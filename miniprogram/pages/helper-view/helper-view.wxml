@@ -10,5 +10,6 @@
     <view class="btn" bindtap="onBtnUseCameraClick" data-on="{{usingCamera}}">相机</view>
     <view class="radio" data-backend="wechat-webgl" bindtap="onRadioClick" data-active="{{backend === 'wechat-webgl'}}">GL</view>
     <view class="radio" data-backend="wasm"  bindtap="onRadioClick" data-active="{{backend === 'wasm'}}">WASM</view>
+    <slot></slot>
   </view>
 </view>

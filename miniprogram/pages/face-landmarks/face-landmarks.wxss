@@ -1,1 +1,12 @@
 /* miniprogram/pages/face-landmarks/face-landmarks.wxss */
+.radio {
+  margin: 5px;
+  border-width: 2px;
+  border-color: transparent;
+  border-style: solid;
+  border-radius: 3px;
+}
+
+.radio[data-active='true']{
+  border-bottom-color: #ff9100;
+}

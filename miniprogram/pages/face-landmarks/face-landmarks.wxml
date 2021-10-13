@@ -1,1 +1,3 @@
-<helper-view id="helper"></helper-view>
+<helper-view id="helper">
+  <view class="radio"  bindtap="onRadioClick" data-active="{{iris}}">IRIS</view>
+</helper-view>
