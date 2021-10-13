@@ -68,6 +68,12 @@ function codeTransform() {
       }
       code = code.replace(`WebAssembly.`, `WXWebAssembly.`);
       code = code.replace(`typeof WebAssembly`, `typeof WXWebAssembly`);
+
+      // 微信新版有了HTMLCanvasElement, 但是和web不一样...
+      code = code.replace(
+        `typeof (HTMLCanvasElement) !== 'undefined'`,
+        'false',
+      );
       return { code };
     },
   };
