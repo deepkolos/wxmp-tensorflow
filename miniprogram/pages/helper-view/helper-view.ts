@@ -29,6 +29,8 @@ setupWechatPlatform({
   canvas: wx.createOffscreenCanvas(),
 });
 
+tf.enableProdMode()
+
 /**
  * HelperView
  * 集成展示TensorFlow Demo常用的逻辑
