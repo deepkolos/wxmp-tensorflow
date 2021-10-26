@@ -5,7 +5,9 @@ import { drawPoses } from './util';
 import { onePixel } from '../helper-view/utils'
 
 const POSENET_URL =
-  'https://www.gstaticcnapps.cn/tfjs-models/savedmodel/posenet/mobilenet/float/050/model-stride16.json';
+  // 'https://www.gstaticcnapps.cn/tfjs-models/savedmodel/posenet/mobilenet/float/050/model-stride16.json';
+  // 'https://storage.googleapis.com/tfjs-models/savedmodel/posenet/mobilenet/float/050/model-stride16.json'
+  'https://cdn.static.oppenlab.com/weblf/test/posenet-mobilenet-float-050/model-stride16.json'
 
 Page({
   helper: null as any,
