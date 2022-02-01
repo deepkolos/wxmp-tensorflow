@@ -3,3 +3,4 @@ miniprogram/chunks
 miniprogram/pages/*/*.js
 miniprogram/tfjs-backend-wasm.wasm
 !miniprogram/pages/index/*.js
+.DS_Store
