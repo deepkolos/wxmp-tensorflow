@@ -138,10 +138,10 @@ export function initWebGL(
     if (debug) {
       console.log('start backend registration');
     }
-    webgl.setWebGLContext(1, gl);
-    tf.ENV.set('WEBGL_VERSION', 1);
     try {
       tf.registerBackend(backendName, () => {
+        webgl.setWebGLContext(1, gl);
+        tf.ENV.set('WEBGL_VERSION', 1);
         const context = new webgl.GPGPUContext(gl);
         return new webgl.MathBackendWebGL(context);
       }, BACKEND_PRIORITY);
